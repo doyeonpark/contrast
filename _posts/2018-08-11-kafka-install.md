@@ -1,21 +1,25 @@
 ---
-title:  "Kafka 설치하기"
+title:  "kafka 설치하기"
 date:   2018-08-11 06:46:00
 categories: posts
 ---
 
-팀에서 관리하는 웹서버의 로깅시스템을 구축하면서 kafka를 사용하기로 했다. kafka는 서버간 데이터 전달을 위한 브로커 어플리케이션으로, 급격하게 증가하는 데이터를 장애없이 빠르게 보낼수 있는 messaging queue 역할을 한다. kafka를 사용하기로 한 데 있어서 결정적인 요소는 두가지였는데,
+팀에서 관리하는 웹서버의 로깅시스템을 구축하면서 [kafka](https://kafka.apache.org/) 사용하기로 했다. [kafka](https://kafka.apache.org/) 서버간 데이터 전달을 위한 브로커 어플리케이션으로, 급격하게 증가하는 데이터를 장애없이 빠르게 보낼수 있는 messaging queue 역할을 한다. [kafka](https://kafka.apache.org/) 사용하기로 한 데 있어서 결정적인 요소는 두가지였는데,
 1. 게임 사이트, 런처를 관리하는 우리팀의 경우 서비스는 오픈이나 트래픽을 공격과 같이 급격하게 데이터가 밀려들어오는 이벤트가 자주 발생하고,
-2. 기존 로깅시스템에서 사용되던 fluntd를 밀어내면서 fluntd의 대용량 처리기능을 보완하는 시스템이 필요했다.
+2. 기존 로깅시스템에서 사용되던 [fluntd](https://www.fluentd.org/)를 밀어내면서 [fluntd](https://www.fluentd.org/) 대용량 처리기능을 보완하는 시스템이 필요했다.
 
 아직 프로덕션 레벨 적용단계라 얼만큼 더 효과적으로 사용되고 있는지 확인하긴 어렵지만, 카프카의 목적과 취지를 고려했을때 현재 로깅 시스템 환경에 적합할 것이라고 판단했다.
 
 
-### **Kafka와 Zookeeper**
+### **kafka와 zookeeper**
 
-Kafka는 부하처리 시스템을 목적으로 한 어플리케이션이다보니 클러스터링 구성이 관건인데, Kafka는 분산 시스템을 관리하는(coordination) 기능이 내장되어있지 않고 따로 주키퍼를 사용한다(Apache는 개발리소스를 생각해서 함께 개발하지 않았다고 한다). 주키퍼는 카프카 application의 정보를 중앙에 집중하고 구성관리, 그룹관리네이밍, 동기화 등의 서비스를 제공한다. 아파치 카프카 공식 사이트에서 작성시점 현재 최신버전인 1.1.1버전을 받으면 함께 인스톨이 된다. 
+kafka는 부하처리를 목적으로 한 어플리케이션이다보니 클러스터링 구성이 자유로워야하는데, 분산 시스템을 관리하는(coordination) 기능이 내장되어있지 않고 따로 주키퍼를 사용한다(Apache에서 개발리소스를 생각해서 함께 개발하지 않았다고 한다). 주키퍼는 카프카 application의 정보를 중앙에 집중하고 구성관리, 그룹관리네이밍, 동기화 등의 서비스를 제공한다. 아파치 카프카 공식 사이트에서 작성시점 현재 최신버전인 1.1.1버전을 받으면 함께 인스톨이 된다. 브로커를 1개만 운용한다고 해서 주키퍼 실행하지 않아도 되는 것은 아니므로, <u>반드시 카프카와의 연결 설정파일을 작성하고 먼저 실행을 시켜주도록하자.</u>
 
 ### **설치방법**
+
+- JDK기반으로 돌아가기때문에 실행환경에서는 꼭 자바를 먼저 설치해놓도록 하자!
+    (나의경우 카프카를 도커 이미지로 빌드했기 때문에 카프카는 볼륨으로 연결해서 실행하고, JDK는 이미지에 직접 설치했다)
+
 
 - https://kafka.apache.org/downloads 에서 apache에서 권장하는 미러사이트로 tar파일 설치 
 {% highlight bash %}
@@ -32,48 +36,41 @@ $ tar -xvf kafka_2.11-1.1.1.tgz
 $ mv kafka_2.11-1.1.1 kafka
 {% endhighlight %}
 
-### **Zookeeper 설정파일 변경하기**
+### **zookeeper 설정파일 변경하기**
+- 하단에 server.id로 입력된 주키퍼 서버 아이디의 넘버값은 dataDir경로에 myid이라는 파일명으로 작성되어있어야한다.
+
 {% highlight bash %}
+$ cat kafka/zkdata/myid # id가 1인 zookeeper데이터의 id파일
+1
 $ cd kafka/config
 $ vi zookeeper.properties
 {% endhighlight %}
 
 {% highlight yaml %}
-# 주키퍼의 트랜젝션 로그와 스냅샷이 저장되는 저장경로, 직접 편한 경로에 만들어주면 된다.
-dataDir=/home/user/kafka/zkdata
-
-# the port at which the clients will connect (TCP)
-clientPort=2181
-
-# disable the per-ip limit on the number of connections since this is a non-production config
-maxClientCnxns=0
-
-# 팔로워가 리더가 초기에 연결하는 시간에 대한 타임아웃 tick 수
-initLimit=5
-
-# 팔로워가 리더와 동기화하는 시간에 대한 타임아웃 tick수 (주키퍼에 저장된 데이터가 크면 늘려야함)
-syncLimit=2
+dataDir=/home/user/kafka/zkdata # 주키퍼의 트랜젝션 로그와 스냅샷이 저장되는 저장경로, 직접 편한 경로에 만들어주면 된다.
+clientPort=2181 # client가 연결하는 TCP 포트
+maxClientCnxns=0 # disable the per-ip limit on the number of connections since this is a non-production config
+initLimit=5 # 팔로워가 리더가 초기에 연결하는 시간에 대한 타임아웃 tick 수
+syncLimit=2 # 팔로워가 리더와 동기화하는 시간에 대한 타임아웃 tick수 (주키퍼에 저장된 데이터가 크면 늘려야함)
 
 #서버.서버id=서버ip:리더인 경우 팔로워에 연결할 때 사용하는포트:리더 선출 시점에 사용하는 포트
-#주키퍼 앙상블 id값과 서버, 포트를 입력해주면 된다. 나의 경우 같은 서버에 3개의 서비스를 올리려고했기 때문에 포트를 다 다르게 넣어줬다. 한 서버 내에서 리더팔로워 포트만 구분되면 된다. 
+#주키퍼 앙상블 전체의 id값과 서버, 포트를 입력해주면 된다. 나의 경우 같은 서버에 3개의 서비스를 올리려고했기 때문에 포트를 다 다르게 넣어줬다. 한 서버 내에서 리더팔로워 포트만 구분되면 된다.
 server.1=localhost:2888:3888
 server.2=localhost:2889:3889
 server.3=localhost:2890:3890
 {% endhighlight %}
 
 
-### **Kafka 설정파일 변경하기**
+### **kafka 설정파일 변경하기**
 {% highlight bash %}
 $ vi server.properties
 {% endhighlight %}
 
 {% highlight yaml %}
-# The id of the broker. This must be set to a unique integer for each broker.
-broker.id=1
-port=9092
 
-#없으면 토픽삭제시 삭제가 안되므로 반드시 넣자
-delete.topic.enable=true
+broker.id=1 # The id of the broker. This must be set to a unique integer for each broker.
+port=9092
+delete.topic.enable=true #없으면 토픽삭제시 삭제가 안되므로 반드시 넣자
 
 ############################# Socket Server Settings #############################
 
@@ -152,9 +149,9 @@ log.segment.bytes=1073741824
 # to the retention policies
 log.retention.check.interval.ms=300000
 
-############################# Zookeeper #############################
+############################# zookeeper #############################
 
-# Zookeeper connection string (see zookeeper docs for details).
+# zookeeper connection string (see zookeeper docs for details).
 # This is a comma separated host:port pairs, each corresponding to a zk
 # server. e.g. "127.0.0.1:3000,127.0.0.1:3001,127.0.0.1:3002".
 # You can also append an optional chroot string to the urls to specify the
