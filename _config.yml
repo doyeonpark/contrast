@@ -15,8 +15,9 @@ style:
 navigation:
   - index.html
   - posts.html
-  - me.md
-  - projects.md
+  - dev-memo.html
+  - about.md
+#  - projects.md
 
 comments:
   disqus: "disqus-contrast"
@@ -30,3 +31,4 @@ links: # see http://fontawesome.io/icons/#brand for all possible icons
 defaults: [{scope: {path: ""}, values: {layout: "default"}}, {scope: {path: "", type: "posts"}, values: {comments: true}}]
 sass: {style: expanded}
 plugins: [jekyll-feed, jekyll-paginate]
+future: true
