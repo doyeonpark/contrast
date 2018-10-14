@@ -1,12 +1,12 @@
 ---
-title:  "10/14 c# 기본서"
+title:  "10/14 c# 기본서 - 객체지향"
 date:   2018-10-14 18:10:00
-categories: dev-memo
+categories: study-log
 ---
 
 ## Getter Setter를 사용하면 좋은 이유
-- 필드 값을 직접 호출하여 값변경을 하면 필드값에 제약을 두고싶을때(ex 환율계산, 값 범위 제한) 필드값이 사용되는 지점에 직접 가서 변경해야한다.
-- Get/Set 프로퍼티 정의를 위한 접근제한을 걸어두면 추후에 유지/보수가 용이하다.
+- 필드를 직접 호출하여 값변경을 하면 제약을 두고싶을때(ex 환율계산, 값 범위 제한 등 ) 필드값이 사용되는 지점에 직접 가서 변경해야한다.
+- Get/Set 프로퍼티 정의를 위한 접근제한을 걸어두면 추후에 유지보수가 용이하다.
 
 ## 접근제한자와 base 예약어
 - C#은 접근제한자를 생략하면 기본적으로 internal이 적용된다.
@@ -25,11 +25,9 @@ class EBook : Book
 {
     public EBook() : base(0)
     {
-
     }
     public EBook(decimal isbn) : base(isbn) //이렇게 연계도 가능
     {
-
     }
 }
 {% endhighlight %}
