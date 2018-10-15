@@ -1,5 +1,5 @@
 ---
-title:  "10/14 c# 기본서 - 객체지향"
+title:  "c# 기본서 - 객체지향"
 date:   2018-10-14 18:10:00
 categories: study-log
 ---
