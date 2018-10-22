@@ -1,18 +1,19 @@
 ---
-title: "study-log"
+title: "Study-log"
 layout: blank
 ---
 <main class="archive">
   <article>
+    <header><h1>{{ page.title }}</h1></header>
     {%- for page in site.categories.study-log -%}
       {%- if page.next -%}
         {%- assign year = page.date | date: '%Y' -%}
         {%- assign prev_year = page.next.date | date: '%Y' -%}
         {%- if year != prev_year -%}
-          <header><h1>{{ page.date | date: '%Y' }}</h1></header>
+          <header><h2>{{ page.date | date: '%Y' }}</h2></header>
         {%- endif -%}
       {%- else -%}
-        <header><h1>{{ page.date | date: '%Y' }}</h1></header>
+        <header><h2>{{ page.date | date: '%Y' }}</h2></header>
       {%- endif -%}
       <li>
         <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%B %-d, %Y" }}</time>
