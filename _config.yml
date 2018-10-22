@@ -1,6 +1,6 @@
-title: "안녕하세요, 박도연입니다."
+title: "me write code"
 author: "박도연"
-description: "판교에서 웹사이트를 만들고있습니다."
+description: "park doyeon"
 more: "read more »"
 url: "https://parkdoyeon.github.io/"
 baseurl: ""
@@ -24,6 +24,7 @@ comments:
 #  isso: "comments.mysite.org"
 
 links: # see http://fontawesome.io/icons/#brand for all possible icons
+  - tag: "/tags"
   - twitter: "https://twitter.com/twitter/"
   - github: "https://github.com/parkdoyeon"
   - envelope: "mailto:park.doyeonn@gmail.com"
