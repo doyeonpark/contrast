@@ -8,7 +8,8 @@ layout: blank
     
     <header>
       <h1><a href="{{ page.url | prepend: site.baseurl }}">{{ page.title }}</a></h1>
-      <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%B %-d, %Y" }}</time>
+      <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%B %-d, %Y" }} || {{ page.categories }}</time>
+      
     </header>
     {% include tagitems.html %}
     {{ page.excerpt }}

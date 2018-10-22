@@ -4,16 +4,15 @@ description: "park doyeon"
 more: "read more »"
 url: "https://parkdoyeon.github.io/"
 baseurl: ""
-paginate: 2
+paginate: 4
 permalink: pretty
-excerpt_separator: "\n\n\n" # two blank lines
+excerpt_separator: "\n\n" # two blank lines
 
 style:
   minimalist: false
   dark: false
 
 navigation:
-  - index.html
   - posts.html
   - study-log.html
   - about.md
