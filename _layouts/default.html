@@ -7,14 +7,13 @@ layout: blank
       <h1><a href="{{ page.url | prepend: site.baseurl }}">{{ page.title }}</a></h1>
       <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%B %-d, %Y" }}</time>
     </header>
-{{ content }}
-    <!-- {% if site.comments.isso and page.comments %}
-    <hr><div id="isso-thread"></div>
-    {% endif %} -->
+
+    {% include tagitems.html %}
+
+    {{ content }}
     {% if site.comments.disqus and page.comments %}
     <hr>
     <div id="disqus_thread">
-      
     </div>
     {% include comments.html %}
     <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
