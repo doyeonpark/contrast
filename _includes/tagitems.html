@@ -1,0 +1,8 @@
+<div class="tag-list tag">
+    {% for tag in page.tags %}
+        <a class="button" href="{{ site.url }}/tags#{{ tag | cgi_escape }}" title="Pages tagged {{ tag }}" rel="tag">
+            <i class="fa fa-tag fa-fw"></i>
+            {{ tag }}
+        </a>
+    {% endfor %}
+</div>
