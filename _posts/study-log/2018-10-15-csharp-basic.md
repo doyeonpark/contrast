@@ -1,6 +1,7 @@
 ---
 title:  "c# 기본서 - 다형성"
 date:   2018-10-15 21:10:00
+tags: [c#, 객체지향, 기본, delegate, class, interface]
 categories: study-log
 ---
 

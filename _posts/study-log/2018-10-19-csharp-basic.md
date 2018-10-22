@@ -1,6 +1,7 @@
 ---
 title:  "c# 기본서 - 구조체, 예약어, Enum"
 date:   2018-10-19 21:10:00
+tags: [c#, 객체지향, struct, ref, out, coupling, enum]
 categories: study-log
 ---
 

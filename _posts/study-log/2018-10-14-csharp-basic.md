@@ -1,6 +1,7 @@
 ---
 title:  "c# 기본서 - 객체지향"
 date:   2018-10-14 18:10:00
+tags: [c#, 객체지향, 기본, base, getter, setter, as, static]
 categories: study-log
 ---
 
