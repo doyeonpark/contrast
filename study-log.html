@@ -4,19 +4,20 @@ layout: blank
 ---
 <main class="archive">
   <article>
-    {%- for post in site.categories.study-log -%}
-      {%- if post.next -%}
-        {%- assign year = post.date | date: '%Y' -%}
-        {%- assign prev_year = post.next.date | date: '%Y' -%}
+    {%- for page in site.categories.study-log -%}
+      {%- if page.next -%}
+        {%- assign year = page.date | date: '%Y' -%}
+        {%- assign prev_year = page.next.date | date: '%Y' -%}
         {%- if year != prev_year -%}
-          <header><h1>{{ post.date | date: '%Y' }}</h1></header>
+          <header><h1>{{ page.date | date: '%Y' }}</h1></header>
         {%- endif -%}
       {%- else -%}
-        <header><h1>{{ post.date | date: '%Y' }}</h1></header>
+        <header><h1>{{ page.date | date: '%Y' }}</h1></header>
       {%- endif -%}
       <li>
-        <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%B %-d, %Y" }}</time>
-        <h3><a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a></h3>
+        <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%B %-d, %Y" }}</time>
+        {% include tagitems.html %}
+        <h3><a href="{{ page.url | prepend: site.baseurl }}">{{ page.title }}</a></h3>
       </li>
     {%- endfor -%}
   </article>
