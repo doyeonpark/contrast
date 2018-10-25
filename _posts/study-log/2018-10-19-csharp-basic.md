@@ -1,7 +1,7 @@
 ---
 title:  "c# 기본서 - 구조체, 예약어, Enum"
 date:   2018-10-19 21:10:00
-tags: [c#, 객체지향, struct, ref, out, coupling, enum]
+tags: [c#, 객체지향, 기본, struct, ref, out, coupling, enum]
 categories: study-log
 ---
 
@@ -39,3 +39,4 @@ if(int.TryParse("1234567", out n) == true)
 - 열거형 사용자 정의 타입. 정수를 상속받아 열거된 이름에 순차적으로 숫자값을 부여받음. System.Object를 상속받아 ToString()을 재정의했기 때문에 Console.WriteLine()에 찍으면 문자열 반환함.
 - 숫자로 표현하도록 변환할 수 있는데 반드시 명시적 형변환 해야한다는 제약이 있음.
 - 연산시 숫자연산을 하기 때문에 여러개의 문자열을 다룬다는 특성(Attribute) [Flag]를 지정할 수 있음.
+- enum은 const의 묶음을 표현한 것과 같다.
