@@ -1,6 +1,7 @@
 ---
 title:  "kafka 설치하기"
 date:   2018-08-11 06:46:00
+tags: [kafka, zookeeper, logger]
 categories: posts
 ---
 

@@ -1,6 +1,7 @@
 ---
 title:  "iOS App을 In House로 배포하기"
 date:   2018-06-17 01:11:00
+tags: [swift, 배포, fastlane]
 categories: posts
 ---
 
