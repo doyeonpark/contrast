@@ -55,7 +55,7 @@ output {
 
 ### filter 세팅
 
-로그스태시 설정을 하면서 가장 애를 먹었던 부분은 로그스태시가 파이프라인의 input 영역을 지나면서 **위의 데이터를 message영역으로 한번 더 감싼다는 것**을 너무 늦게알았기 때문이다. 뿐만아니라, 파일비트에서 제이슨 형식으로 만들어서 전달한 데이터를 deserialize한다. 이렇게 되면 filter에 들어왔을 때 root 영역에 있는 field만 인식이 되고, nested field영역은 접근이 되지 않는다. 그렇기 때문에 먼저 json serialize를 해줘야했다. json 필터는 `source`를 `message`영역으로 지정해주면 감싸진 `message` 필드는 삭제하고, 그 안의 데이터가 루트가 되어 필드가 구성된다.
+로그스태시 설정을 하면서 가장 애를 먹었던 부분은 로그스태시가 파이프라인의 input 영역을 지나면서 **위의 데이터를 message영역으로 한번 더 감싼다는 것**을 너무 늦게알았기 때문이다. 뿐만 아니라, 파일비트에서 제이슨 형식으로 만들어서 전달한 데이터를 deserialize한다. 이렇게 되면 filter에 들어왔을 때 root 영역에 있는 field만 인식이 되고, nested field영역은 접근이 되지 않는다. 그렇기 때문에 먼저 json serialize를 해줘야했다. json 필터는 `source`를 message 영역으로 지정해주면 감싸진 message 필드는 삭제하고, 그 안의 데이터가 루트가 되어 필드가 구성된다.
 
 {% highlight conf %}
 filter {
