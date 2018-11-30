@@ -31,7 +31,7 @@ static void ThreadFunc() {
 
 
 
-### 다중스레드 자원관리: System.Threading.Monitor
+### 다중스레드에서의 공유 자원 관리: System.Threading.Monitor
 - 한개의 스레드에 할당된 스택의 용량은 1MB이며, 메모리가 허용하는한 원하는만큼 생성할 수 있다.
     - 가령 32비트 윈도우에서 32비트 프로세스는 2GB메모리가 허용되므로, 오직 스레드에만 메모리가 사용된다고 가정해도 2000개를 넘을 수 없다.
     - 그러나 64비트 시대가 열리면서 tera바이트 단위로 메모리 할당이 가능해져 스레드 갯수의 제한이 풀렸다봐도 무방하다.
@@ -53,7 +53,7 @@ static void ThreadFunc(object inst) {
 }
 {% endhighlight %}
 
-### 다중스레드 자원관리: lock
+### 다중스레드에서의 공유 자원 관리: lock
 - C#은 Monitor와 동일하지만 더 간결한 lock예약어를 제공한다. 다음과 같다.
 {% highlight c# %}
 static void ThreadFunc(object inst) {
@@ -72,7 +72,7 @@ static void ThreadFunc(object inst) {
     - 그럼 전부 thread safe하게 만들면 되지 않나 할 수 있지만 그럼 성능이 나지 않는다!
 
 
-### 다중스레드 자원관리: interlocked
+### 다중스레드에서의 공유 자원 관리: interlocked
 - BCL은 다중 스레드에서의 공유자원을 사용하는 몇몇 패턴에 대해 정적메서드를 제공한다.
 - 가령 32/64비트 숫자 타입의 일부 연산은 interlocked를 통해 처리할 수 있다
 {% highlight c# %}
@@ -85,3 +85,31 @@ class MyData {
 }
 {% endhighlight %}
 - 위와 같은 연산을 원자적인 연산, 즉 쪼갤수 없는 단일한 연산이라고 할 수 있는데, 이는 프로그래밍적인 의미에서 비트 연산을 생각하면 된다.
+- 가령 32비트 운영체제에서 int64 변수에 5를 할당하면 아래와같이 연산을 한다.
+    1. 하위 32비트에 0x00000000를 쓰고
+    2. 상위 32비트에 0x05000000를 쓴다 *16비트 연산의 경우 [참고](http://webcreate.tistory.com/entry/16%EB%B9%84%ED%8A%B8-32%EB%B9%84%ED%8A%B8-%EB%B9%84%ED%8A%B8%EC%97%B0%EC%82%B0-%EB%B0%A9%EB%B2%95)
+
+
+### 스레드 효율적으로 쓰기: System.Threading.ThreadPool
+- 특정스레드를 연산만 하고 바로 종료하는 경우, 효율적으로 사용하기 위해서 ThreadPool이 제공된다
+- ThreadPool을 사용해서 스레드를 실행하면 메서드를 실행한 스레드는 바로 종료되지 않고 일정시간 보관된다.
+{% highlight c# %}
+static void Main(string[] args) {
+    MyData data = new MyData();
+    ThreadPool.QueueUserWorkItem(threadFunc, data);
+    ThreadPool.QueueUserWorkItem(threadFunc, data);
+    Thread.Sleep(1000);
+}
+{% endhighlight %}
+
+
+### 스레드간 동기화: System.Threading.EventWaitHandle
+- EventWaitHandle은 Monitor처럼 스레드간 동기화 수단중 하나라고 보면 된다
+- 스레드간 non-signal <--> signal 상태별로 할 액션을 지정해주며 동기화 처리를 한다
+{% highlight c# %}
+static void Main(string[] args) {
+    //
+    EventWaitHandle ewh = new EventWaitHandle (false, EventResetMode.ManualReset)
+
+}
+{% endhighlight %}
