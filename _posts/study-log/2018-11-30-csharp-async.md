@@ -1,6 +1,6 @@
 ---
 title:  "c# 기본서 - BCL: 비동기 호출"
-date:   2018-11-30 00:12:02
+date:   2018-11-30 12:02:00
 tags: [c#, bcl, thread, async]
 categories: study-log
 ---

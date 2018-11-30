@@ -1,26 +1,9 @@
 ---
-title:  "c# 기본서 - BCL: Collection, File, Direcotry, Path"
+title:  "c# 기본서 - BCL: File, Direcotry, Path"
 date:   2018-11-21 23:18:00
 tags: [c#, bcl, FileStream, File, Directory, Path]
 categories: study-log
 ---
-
-### Collection 
-- 정해지지 않은 크기의 배열을 구현한 것을 컬렉션이라고 한다.
-- 콜렉션타입 리스트들은 키와 값으로 들어가는 자료형이 Object형식이라 박싱문제가 있다.
-- ArrayList
-    - 이를 해결하기 위해서는 닷넷 2.0부터 지원되는 Generic이 적용된 List<T>을 사용하는 것이 권장된다.
-    - 같은 타입 Object를 사용하면 Sort()를 통해 순서를 정리할 수 있다.
-    - 사용자 지정타입 Object의 경우 Sort의 델리게이트 인자를 받아 구현하면 된다.
-- Hashtable
-    - value뿐만이 아니라 바로 hash값이 있는 key가 있는 배열이다.
-    - 때문에 ArrayList와 비교했을때 빠른 검색속도에 유리하다.
-    - 중복 key가 들어가면 Argument Exception이 발생하므로 유의
-- SortedList
-    - Hashtable과 유사하지만,
-    - key자체가 정렬되어 값의 순서에 영향을 준다.
-- Stack, Queue
-
 
 ### System.IO.FileStream
 - MemoryStream은 메모리에 할당된 바이트배열을 읽고 쓰지만
