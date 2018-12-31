@@ -1,7 +1,7 @@
 ---
 title:  "effective c# - 1. 언어요소"
 date:   2018-12-18 16:41:00
-tags: [effectivec#, c#]
+tags: [effectivec#, c#, is, as, delegate, var]
 categories: study-log
 ---
 
