@@ -1,7 +1,7 @@
 ---
 title:  "effective c# - 2. 리소스 관리"
 date:   2018-12-18 16:41:00
-tags: [effectivec#, c#]
+tags: [effectivec#, c#, finalizer, IDisposable, virtual, constructor]
 categories: study-log
 ---
 
