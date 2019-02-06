@@ -2,7 +2,7 @@
 title: "About"
 ---
 
-![desk]({{site.baseurl}}/img/IMG2139.jpg)
+![desk](/img/2139.jpg)
  
 ### as a developer
 
