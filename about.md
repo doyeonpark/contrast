@@ -2,7 +2,7 @@
 title: "About"
 ---
 
-![desk](/img/2139.jpg)
+![desk](/img/2139.JPG)
  
 ### as a developer
 
