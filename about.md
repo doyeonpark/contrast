@@ -2,7 +2,7 @@
 title: "About"
 ---
 
-![desk](/img/2139.JPG)
+![desk](/assets/img/me.JPEG)
  
 ### as a developer
 

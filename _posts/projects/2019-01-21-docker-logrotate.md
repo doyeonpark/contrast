@@ -2,7 +2,7 @@
 title:  "Docker를 돌리고있는 서버 용량이 꽉찼을 때"
 date:   2019-01-21 12:05:00
 tags: [docker, log, mapper]
-categories: posts
+categories: projects
 ---
 
 평소와 같이 logstash에 파이프라인을 추가하려고 서버에 들어갔다가, 자동완성을 하려고 배시에 cd p를 입력한 다음 tab키를 눌렀더니 다음과 같은 텍스트가 출력됐다.

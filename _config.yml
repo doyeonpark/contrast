@@ -13,10 +13,9 @@ style:
   dark: false
 
 navigation:
-  - posts.html
-  - study-log.html
-  - about.md
-#  - projects.md
+  - projects.html
+  - resume.md
+  - blog: "https://dev-yeon.tistory.com"
 
 comments:
   disqus: "disqus-contrast"
@@ -28,7 +27,10 @@ links: # see http://fontawesome.io/icons/#brand for all possible icons
   - github: "https://github.com/parkdoyeon"
   - envelope: "mailto:park.doyeonn@gmail.com"
 
-defaults: [{scope: {path: ""}, values: {layout: "default"}}, {scope: {path: "", type: "posts"}, values: {comments: true}}]
+defaults: [
+  {scope: {path: ""}, values: {layout: "default"}},
+  {scope: {path: "", type: "posts"}, values: {comments: true}}
+  ]
 sass: {style: expanded}
 plugins: [jekyll-feed, jekyll-paginate]
 future: true
