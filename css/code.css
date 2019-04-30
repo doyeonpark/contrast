@@ -1,0 +1,89 @@
+
+@font-face {
+font-family: 'Bitstream Vera Sans Mono';
+font-style: normal;
+font-weight: normal;
+src: local('Bitstream Vera Sans Mono'), url('VeraMono.woff') format('woff');
+}
+
+
+@font-face {
+font-family: 'Bitstream Vera Sans Mono Oblique';
+font-style: normal;
+font-weight: normal;
+src: local('Bitstream Vera Sans Mono Oblique'), url('VeraMono-Italic.woff') format('woff');
+}
+
+
+@font-face {
+font-family: 'Bitstream Vera Sans Mono Bold';
+font-style: normal;
+font-weight: normal;
+src: local('Bitstream Vera Sans Mono Bold'), url('VeraMono-Bold.woff') format('woff');
+}
+
+
+@font-face {
+font-family: 'Bitstream Vera Sans Mono Bold Oblique';
+font-style: normal;
+font-weight: normal;
+src: local('Bitstream Vera Sans Mono Bold Oblique'), url('VeraMono-Bold-Italic.woff') format('woff');
+}
+
+
+
+pre, code {
+    font-family: bitstream_vera_sans_monoroman, sans-serif;
+  }
+  
+  .gist td {
+    border-bottom: 0;
+  }
+  
+  pre {
+    margin: 1em 0;
+    background: #282c34;
+    font-size: 0.9em;
+    border-radius: 1px;
+    padding: 10px;
+    color: white;
+  }
+  
+  p > .hljs-keyword {
+    background: #efefef;
+    padding: 1px 3px;
+  }
+  
+  .hljs-keyword pre.hljs {
+    overflow: auto;
+  }
+  
+  figure code > table {
+    width: auto;
+    margin-bottom: 0;
+  }
+  
+  figure > pre {
+    padding: 0;
+    overflow: auto;
+  }
+  
+  figure > pre .lineno {
+    padding: 0 20px;
+    border-right: 1px solid white;
+    margin-right: 5px;
+  }
+  
+  figure .code pre {
+    padding: 0;
+    padding-right: 20px;
+  }
+  
+  .clearfix:after {
+     content: " ";
+     visibility: hidden;
+     display: block;
+     height: 0;
+     clear: both;
+  }
+  
