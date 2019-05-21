@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.8.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="Python - 독립실행환경 virtualenv 만들기">
+
+
+
+
+  <meta name="keywords" content="Python,venv,pip,">
+
+
+
+
+
+  <link rel="alternate" href="/default" title="Park Doyeon">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="https://parkdoyeon.github.io/2019/04/18/Python/2019-04-18-python-venv/">
+
+
+<meta name="description" content="virtaulenv를 통해 활상화된 가상환경 아래에서 개발하면,파이썬 실행환경을 독립적으로 관리할 수 있는 것은 물론이고, 모듈관리를 체계적으로 할 수 있다. pip 인스톨을 통해 virtualenv를 설치하고,해당 프로젝트 경로에서 virtualenv 명령어를 통해 가상환경 이름을 명명하면해당 디렉토리에 가상환경 디렉토리가 생성된다.123pip3 inst">
+<meta name="keywords" content="Python,venv,pip">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python - 독립실행환경 virtualenv 만들기">
+<meta property="og:url" content="https://parkdoyeon.github.io/2019/04/18/Python/2019-04-18-python-venv/index.html">
+<meta property="og:site_name" content="Park Doyeon">
+<meta property="og:description" content="virtaulenv를 통해 활상화된 가상환경 아래에서 개발하면,파이썬 실행환경을 독립적으로 관리할 수 있는 것은 물론이고, 모듈관리를 체계적으로 할 수 있다. pip 인스톨을 통해 virtualenv를 설치하고,해당 프로젝트 경로에서 virtualenv 명령어를 통해 가상환경 이름을 명명하면해당 디렉토리에 가상환경 디렉토리가 생성된다.123pip3 inst">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-05-21T15:59:37.428Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python - 독립실행환경 virtualenv 만들기">
+<meta name="twitter:description" content="virtaulenv를 통해 활상화된 가상환경 아래에서 개발하면,파이썬 실행환경을 독립적으로 관리할 수 있는 것은 물론이고, 모듈관리를 체계적으로 할 수 있다. pip 인스톨을 통해 virtualenv를 설치하고,해당 프로젝트 경로에서 virtualenv 명령어를 통해 가상환경 이름을 명명하면해당 디렉토리에 가상환경 디렉토리가 생성된다.123pip3 inst">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+    <title> Python - 독립실행환경 virtualenv 만들기 - Park Doyeon </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">Park Doyeon</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/resume">
+                            
+                            
+                                Resume
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+      </header>
+
+      <div id="post-categories"><div>
+    <a class="categories-link" href="/Dev-Env/">Dev-Env</a><a class="categories-link" href="/Docker/">Docker</a><a class="categories-link" href="/ELK/">ELK</a><a class="categories-link" href="/Python/">Python</a><a class="categories-link" href="/SQL/">SQL</a><a class="categories-link" href="/Web/">Web</a><a class="categories-link" href="/csharp/">csharp</a><a class="categories-link" href="/docker/">docker</a><a class="categories-link" href="/web/">web</a>
+</div>
+      </div>
+
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          Python - 독립실행환경 virtualenv 만들기
+        
+      </h1>
+
+      <time class="post-time">
+          Apr 18 2019
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <p>virtaulenv를 통해 활상화된 가상환경 아래에서 개발하면,<br>파이썬 실행환경을 독립적으로 관리할 수 있는 것은 물론이고, 모듈관리를 체계적으로 할 수 있다.</p>
+<p>pip 인스톨을 통해 virtualenv를 설치하고,<br>해당 프로젝트 경로에서 virtualenv 명령어를 통해 가상환경 이름을 명명하면<br>해당 디렉토리에 가상환경 디렉토리가 생성된다.<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pip3 install virtualenv</span><br><span class="line"><span class="built_in">cd</span> [프로젝트 폴더]</span><br><span class="line">virtualenv venv</span><br></pre></td></tr></table></figure></p>
+<h1 id="가상환경-활성화하기"><a href="#가상환경-활성화하기" class="headerlink" title="가상환경 활성화하기"></a>가상환경 활성화하기</h1><p>윈도우와 리눅스 활성화 방식이 조금씩 다르다. 위에가 윈도우고 아래가 리눅스 실행 명령어이다.<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">venv/scripts/activate</span><br><span class="line"><span class="built_in">source</span> venv/bin/activate</span><br></pre></td></tr></table></figure></p>
+<h1 id="비활성화-하기"><a href="#비활성화-하기" class="headerlink" title="비활성화 하기"></a>비활성화 하기</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">deactivate</span><br></pre></td></tr></table></figure>
+<h1 id="패키지-정리-파일-만들기"><a href="#패키지-정리-파일-만들기" class="headerlink" title="패키지 정리 파일 만들기"></a>패키지 정리 파일 만들기</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip freeze &gt; requirement.txt</span><br></pre></td></tr></table></figure>
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/Python/">Python</a>
+          
+            <a href="/tags/venv/">venv</a>
+          
+            <a href="/tags/pip/">pip</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+    
+      <a class="next" href="/2019/04/07/Dev-Env/2019-04-07-git-large-file/">
+        <span class="next-text nav-default">Git - 실수로 용량이 큰 파일을 커밋했을 때</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2019
+    <span class="footer-author">Park Doyeon.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/parkdoyeon">Me</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/highlight.pack.js?v=1.1"></script>
+<script>
+hljs.initHighlightingOnLoad();
+document.addEventListener('DOMContentLoaded', (event) => {
+  document.querySelectorAll('td.code').forEach((block) => {
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+  </body>
+</html>

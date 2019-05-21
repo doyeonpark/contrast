@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.8.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="c# - .NET Standard에서 Linq to sql 파일 생성하기">
+
+
+
+
+  <meta name="keywords" content="csharp,dotnet,">
+
+
+
+
+
+  <link rel="alternate" href="/default" title="Park Doyeon">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="https://parkdoyeon.github.io/2019/02/18/Csharp/2019-02-18-net-standard/">
+
+
+<meta name="description" content="참고원문 https://weblog.west-wind.com/posts/2017/Jun/22/MultiTargeting-and-Porting-a-NET-Library-to-NET-Core-20 .Net Standard로 프로젝트를 생성하면 .Net Core와 .Net Framework에서 사용될 수 있는 특성들을 함께 적용할 수 있다. 닷넷 스탠다드 프로젝">
+<meta name="keywords" content="csharp,dotnet">
+<meta property="og:type" content="article">
+<meta property="og:title" content="c# - .NET Standard에서 Linq to sql 파일 생성하기">
+<meta property="og:url" content="https://parkdoyeon.github.io/2019/02/18/Csharp/2019-02-18-net-standard/index.html">
+<meta property="og:site_name" content="Park Doyeon">
+<meta property="og:description" content="참고원문 https://weblog.west-wind.com/posts/2017/Jun/22/MultiTargeting-and-Porting-a-NET-Library-to-NET-Core-20 .Net Standard로 프로젝트를 생성하면 .Net Core와 .Net Framework에서 사용될 수 있는 특성들을 함께 적용할 수 있다. 닷넷 스탠다드 프로젝">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-05-21T16:05:19.747Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="c# - .NET Standard에서 Linq to sql 파일 생성하기">
+<meta name="twitter:description" content="참고원문 https://weblog.west-wind.com/posts/2017/Jun/22/MultiTargeting-and-Porting-a-NET-Library-to-NET-Core-20 .Net Standard로 프로젝트를 생성하면 .Net Core와 .Net Framework에서 사용될 수 있는 특성들을 함께 적용할 수 있다. 닷넷 스탠다드 프로젝">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+    <title> c# - .NET Standard에서 Linq to sql 파일 생성하기 - Park Doyeon </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">Park Doyeon</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/resume">
+                            
+                            
+                                Resume
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+      </header>
+
+      <div id="post-categories"><div>
+    <a class="categories-link" href="/Dev-Env/">Dev-Env</a><a class="categories-link" href="/Docker/">Docker</a><a class="categories-link" href="/ELK/">ELK</a><a class="categories-link" href="/Python/">Python</a><a class="categories-link" href="/SQL/">SQL</a><a class="categories-link" href="/Web/">Web</a><a class="categories-link" href="/csharp/">csharp</a><a class="categories-link" href="/docker/">docker</a><a class="categories-link" href="/web/">web</a>
+</div>
+      </div>
+
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          c# - .NET Standard에서 Linq to sql 파일 생성하기
+        
+      </h1>
+
+      <time class="post-time">
+          Feb 18 2019
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <p>참고원문 <a href="https://weblog.west-wind.com/posts/2017/Jun/22/MultiTargeting-and-Porting-a-NET-Library-to-NET-Core-20" target="_blank" rel="noopener">https://weblog.west-wind.com/posts/2017/Jun/22/MultiTargeting-and-Porting-a-NET-Library-to-NET-Core-20</a></p>
+<p>.Net Standard로 프로젝트를 생성하면 .Net Core와 .Net Framework에서 사용될 수 있는 특성들을 함께 적용할 수 있다.</p>
+<p>닷넷 스탠다드 프로젝트를 생성하면 Linq to Sql class가 추가가 안되는데, 이 때 타겟 프레임워크를 csproj의 targetframework 태그를 수정하면 된다.<br>(properties에서 표시되는 ui로는 .net framwork로 타겟 프레임워크를 변경할 수 없다.)</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">TargetFrameworks</span>&gt;</span>net45;net40;netstandard2.0<span class="tag">&lt;/<span class="name">TargetFrameworks</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>복수의 타깃을 지정하고 싶으면 세미콜론으로 구분하면 된다.<br>타깃별 설정을 지정하고 싶다면 조건식을 사용할수도 있다.<br>위의 링크에서 가져온 개략적인 사용법을 담은 전체 설정파일</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- common NuGet package refs that affect all projects --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">ItemGroup</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">TargetFrameworks</span>&gt;</span>net45;net40;netstandard2.0<span class="tag">&lt;/<span class="name">TargetFrameworks</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">PackageReference</span> <span class="attr">Include</span>=<span class="string">"Newtonsoft.Json"</span> <span class="attr">Version</span>=<span class="string">"10.0.2"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ItemGroup</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- .NET Standard 2.0 references, compilation flags and build options --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">PropertyGroup</span> <span class="attr">Condition</span>=<span class="string">" '$(TargetFramework)' == 'netstandard2.0'"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">DefineConstants</span>&gt;</span>NETCORE;NETSTANDARD;NETSTANDARD2_0<span class="tag">&lt;/<span class="name">DefineConstants</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">PropertyGroup</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">ItemGroup</span> <span class="attr">Condition</span>=<span class="string">" '$(TargetFramework)' == 'netstandard2.0'"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">PackageReference</span> <span class="attr">Include</span>=<span class="string">"System.Data.SqlClient"</span> <span class="attr">Version</span>=<span class="string">"4.4.0-preview1-25305-02"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ItemGroup</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- .NET 4.5 references, compilation flags and build options --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">ItemGroup</span> <span class="attr">Condition</span>=<span class="string">" '$(TargetFramework)' == 'net45' "</span>&gt;</span>		</span><br><span class="line">	<span class="tag">&lt;<span class="name">Reference</span> <span class="attr">Include</span>=<span class="string">"mscorlib"</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">Reference</span> <span class="attr">Include</span>=<span class="string">"System"</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">Reference</span> <span class="attr">Include</span>=<span class="string">"System.Core"</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">Reference</span> <span class="attr">Include</span>=<span class="string">"Microsoft.CSharp"</span> /&gt;</span>		</span><br><span class="line">	<span class="tag">&lt;<span class="name">Reference</span> <span class="attr">Include</span>=<span class="string">"System.Data"</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">Reference</span> <span class="attr">Include</span>=<span class="string">"System.Web"</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">Reference</span> <span class="attr">Include</span>=<span class="string">"System.Drawing"</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">Reference</span> <span class="attr">Include</span>=<span class="string">"System.Security"</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">Reference</span> <span class="attr">Include</span>=<span class="string">"System.Xml"</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">Reference</span> <span class="attr">Include</span>=<span class="string">"System.Configuration"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ItemGroup</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">PropertyGroup</span> <span class="attr">Condition</span>=<span class="string">" '$(TargetFramework)' == 'net45'"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">DefineConstants</span>&gt;</span>NET45;NETFULL<span class="tag">&lt;/<span class="name">DefineConstants</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">PropertyGroup</span>&gt;</span></span><br></pre></td></tr></table></figure>
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/csharp/">csharp</a>
+          
+            <a href="/tags/dotnet/">dotnet</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2019/02/20/Csharp/2019-02-20-differences/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">c# - .NET Standard에서 Linq to sql 파일 생성하기</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2019/02/13/Web/2019-02-13-facebook-share/">
+        <span class="next-text nav-default">Facebook - 공유하기 스크립트 만들기</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2019
+    <span class="footer-author">Park Doyeon.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/parkdoyeon">Me</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/highlight.pack.js?v=1.1"></script>
+<script>
+hljs.initHighlightingOnLoad();
+document.addEventListener('DOMContentLoaded', (event) => {
+  document.querySelectorAll('td.code').forEach((block) => {
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+  </body>
+</html>
