@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.8.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="PWA - 사파리 브라우저의 동영상 리퀘스트방식">
+
+
+
+
+  <meta name="keywords" content="safari,pwa,">
+
+
+
+
+
+  <link rel="alternate" href="/default" title="Park Doyeon">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="https://parkdoyeon.github.io/2019/02/12/Web/2019-02-12-safari-pwa.1/">
+
+
+<meta name="description" content="pwa에 mp4 동영상 캐싱이 안돼서 구글링을 하다 스택오버플로우와 모질라의 설명을 종합해보니 아래와 같다. 사파리는 영상 로드시 byte-range 리퀘스트를 지원한다.byte-range리퀘스트는 처음에 영상을 로드할때 헤드에 range에 1024바이트 확인한다는 요청을 한다. (해당 리퀘스트가 지원되지 않는 서버 영상은 재생되지 않을수도 있다.) 서버는">
+<meta name="keywords" content="safari,pwa">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PWA - 사파리 브라우저의 동영상 리퀘스트방식">
+<meta property="og:url" content="https://parkdoyeon.github.io/2019/02/12/Web/2019-02-12-safari-pwa.1/index.html">
+<meta property="og:site_name" content="Park Doyeon">
+<meta property="og:description" content="pwa에 mp4 동영상 캐싱이 안돼서 구글링을 하다 스택오버플로우와 모질라의 설명을 종합해보니 아래와 같다. 사파리는 영상 로드시 byte-range 리퀘스트를 지원한다.byte-range리퀘스트는 처음에 영상을 로드할때 헤드에 range에 1024바이트 확인한다는 요청을 한다. (해당 리퀘스트가 지원되지 않는 서버 영상은 재생되지 않을수도 있다.) 서버는">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-05-19T16:28:51.454Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="PWA - 사파리 브라우저의 동영상 리퀘스트방식">
+<meta name="twitter:description" content="pwa에 mp4 동영상 캐싱이 안돼서 구글링을 하다 스택오버플로우와 모질라의 설명을 종합해보니 아래와 같다. 사파리는 영상 로드시 byte-range 리퀘스트를 지원한다.byte-range리퀘스트는 처음에 영상을 로드할때 헤드에 range에 1024바이트 확인한다는 요청을 한다. (해당 리퀘스트가 지원되지 않는 서버 영상은 재생되지 않을수도 있다.) 서버는">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+    <title> PWA - 사파리 브라우저의 동영상 리퀘스트방식 - Park Doyeon </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">Park Doyeon</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/resume">
+                            
+                            
+                                Resume
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+      </header>
+
+      <div id="post-categories"><div>
+    <a class="categories-link" href="/Dev-Env/">Dev-Env</a><a class="categories-link" href="/ELK/">ELK</a><a class="categories-link" href="/SQL/">SQL</a><a class="categories-link" href="/csharp/">csharp</a><a class="categories-link" href="/docker/">docker</a><a class="categories-link" href="/web/">web</a>
+</div>
+      </div>
+
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          PWA - 사파리 브라우저의 동영상 리퀘스트방식
+        
+      </h1>
+
+      <time class="post-time">
+          Feb 12 2019
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <p>pwa에 mp4 동영상 캐싱이 안돼서 구글링을 하다 스택오버플로우와 모질라의 설명을 종합해보니 아래와 같다.</p>
+<p>사파리는 영상 로드시 byte-range 리퀘스트를 지원한다.<br>byte-range리퀘스트는 처음에 영상을 로드할때 헤드에 range에 1024바이트 확인한다는 요청을 한다. (해당 리퀘스트가 지원되지 않는 서버 영상은 재생되지 않을수도 있다.) 서버는 성공적인 range 리스폰스이면 206코드를 던지면서 전체 리소스 사이즈가 어떤지를 보낸다.<br>사파리 브라우저는 이를 바탕으로 각 파일의 바이트 길이를 계산한다. 여기서 요청한 것보다 데이터가 크면 이후의 리퀘스트를 중단한다.</p>
+<p>safari의 mp4영상지원 설명: <a href="https://stackoverflow.com/questions/52087208/pwa-cached-video-will-not-play-in-mobile-safari-11-4" target="_blank" rel="noopener">https://stackoverflow.com/questions/52087208/pwa-cached-video-will-not-play-in-mobile-safari-11-4</a></p>
+<p>byte-range 설명: <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Range_requests" target="_blank" rel="noopener">https://developer.mozilla.org/en-US/docs/Web/HTTP/Range_requests</a></p>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/safari/">safari</a>
+          
+            <a href="/tags/pwa/">pwa</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2019/02/13/Web/2019-02-13-facebook-share/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">Facebook - 공유하기 스크립트 만들기</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2019/02/12/SQL/2019-02-12-idinsert/">
+        <span class="next-text nav-default">id값 인서트하기</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2019
+    <span class="footer-author">Park Doyeon.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/parkdoyeon">Me</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+<!--<script type="text/javascript" src="/js/src/highlight.pack.js?v=1.1"></script>
+<script>
+hljs.initHighlightingOnLoad();
+document.addEventListener('DOMContentLoaded', (event) => {
+  document.querySelectorAll('td.code').forEach((block) => {
+    hljs.highlightBlock(block);
+  });
+});
+</script>-->
+  </body>
+</html>

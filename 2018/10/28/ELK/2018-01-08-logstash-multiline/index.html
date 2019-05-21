@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.8.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="Logstash - 멀티라인 세팅하기">
+
+
+
+
+  <meta name="keywords" content="logstash,filebeat,elk,logger,">
+
+
+
+
+
+  <link rel="alternate" href="/default" title="Park Doyeon">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="https://parkdoyeon.github.io/2018/10/28/ELK/2018-01-08-logstash-multiline/">
+
+
+<meta name="description" content="hostseditValue type is uriDefault value is [//127.0.0.1]Sets the host(s) of the remote instance. If given an array it will load balance requests across the hosts specified in the hosts parameter. Reme">
+<meta name="keywords" content="logstash,filebeat,elk,logger">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Logstash - 멀티라인 세팅하기">
+<meta property="og:url" content="https://parkdoyeon.github.io/2018/10/28/ELK/2018-01-08-logstash-multiline/index.html">
+<meta property="og:site_name" content="Park Doyeon">
+<meta property="og:description" content="hostseditValue type is uriDefault value is [//127.0.0.1]Sets the host(s) of the remote instance. If given an array it will load balance requests across the hosts specified in the hosts parameter. Reme">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-05-19T16:20:35.423Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Logstash - 멀티라인 세팅하기">
+<meta name="twitter:description" content="hostseditValue type is uriDefault value is [//127.0.0.1]Sets the host(s) of the remote instance. If given an array it will load balance requests across the hosts specified in the hosts parameter. Reme">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+    <title> Logstash - 멀티라인 세팅하기 - Park Doyeon </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">Park Doyeon</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/resume">
+                            
+                            
+                                Resume
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+      </header>
+
+      <div id="post-categories"><div>
+    <a class="categories-link" href="/Dev-Env/">Dev-Env</a><a class="categories-link" href="/ELK/">ELK</a><a class="categories-link" href="/SQL/">SQL</a><a class="categories-link" href="/csharp/">csharp</a><a class="categories-link" href="/docker/">docker</a><a class="categories-link" href="/web/">web</a>
+</div>
+      </div>
+
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          Logstash - 멀티라인 세팅하기
+        
+      </h1>
+
+      <time class="post-time">
+          Oct 28 2018
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <p>hostsedit<br>Value type is uri<br>Default value is [//127.0.0.1]<br>Sets the host(s) of the remote instance. If given an array it will load balance requests across the hosts specified in the hosts parameter. Remember the http protocol uses the http address (eg. 9200, not 9300). “127.0.0.1” [“127.0.0.1:9200”,”127.0.0.2:9200”] [“<a href="http://127.0.0.1&quot;]" target="_blank" rel="noopener">http://127.0.0.1&quot;]</a> [“<a href="https://127.0.0.1:9200&quot;]" target="_blank" rel="noopener">https://127.0.0.1:9200&quot;]</a> [“<a href="https://127.0.0.1:9200/mypath&quot;]" target="_blank" rel="noopener">https://127.0.0.1:9200/mypath&quot;]</a> (If using a proxy on a subpath) It is important to exclude dedicated master nodes from the hosts list to prevent LS from sending bulk requests to the master nodes. So this parameter should only reference either data or client nodes in Elasticsearch.</p>
+<p>Any special characters present in the URLs here MUST be URL escaped! This means # should be put in as %23 for instance.</p>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/logstash/">logstash</a>
+          
+            <a href="/tags/filebeat/">filebeat</a>
+          
+            <a href="/tags/elk/">elk</a>
+          
+            <a href="/tags/logger/">logger</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2018/11/06/Csharp/2018-11-06-csharp-basic/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">c# 기본서 - 빌드환경과 GC, 힙과 스택</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2018/10/28/ELK/2018-10-28-logstash-pipeline/">
+        <span class="next-text nav-default">Logstash - 파이프라인 만들기</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2019
+    <span class="footer-author">Park Doyeon.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/parkdoyeon">Me</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+<!--<script type="text/javascript" src="/js/src/highlight.pack.js?v=1.1"></script>
+<script>
+hljs.initHighlightingOnLoad();
+document.addEventListener('DOMContentLoaded', (event) => {
+  document.querySelectorAll('td.code').forEach((block) => {
+    hljs.highlightBlock(block);
+  });
+});
+</script>-->
+  </body>
+</html>

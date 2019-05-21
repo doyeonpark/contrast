@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.8.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="effective c# - 3. 제네릭 활용">
+
+
+
+
+  <meta name="keywords" content="c#,effectivec#,">
+
+
+
+
+
+  <link rel="alternate" href="/default" title="Park Doyeon">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="https://parkdoyeon.github.io/2019/01/03/Csharp/2019-01-03-effectivecsharp-3/">
+
+
+<meta name="description" content="반드시 필요한 제약조건만 설정하라 제너릭 타입을 활용할때 타입 조건을 넣고싶다면 제약조건 예약어 where를 사용하는 것이 좋다 그러나 기본값을 할당하는데 있어서 default()와 new()는 분명한 차이가 있으므로, 제약조건에 new()를 넣을땐 이용자가 구현에 어려움을 겪을수도 있다는 것을 생각해야한다.  런타입에 타입을 확인하여 최적의 알고리즘을 사">
+<meta name="keywords" content="c#,effectivec#">
+<meta property="og:type" content="article">
+<meta property="og:title" content="effective c# - 3. 제네릭 활용">
+<meta property="og:url" content="https://parkdoyeon.github.io/2019/01/03/Csharp/2019-01-03-effectivecsharp-3/index.html">
+<meta property="og:site_name" content="Park Doyeon">
+<meta property="og:description" content="반드시 필요한 제약조건만 설정하라 제너릭 타입을 활용할때 타입 조건을 넣고싶다면 제약조건 예약어 where를 사용하는 것이 좋다 그러나 기본값을 할당하는데 있어서 default()와 new()는 분명한 차이가 있으므로, 제약조건에 new()를 넣을땐 이용자가 구현에 어려움을 겪을수도 있다는 것을 생각해야한다.  런타입에 타입을 확인하여 최적의 알고리즘을 사">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-05-19T15:51:03.847Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="effective c# - 3. 제네릭 활용">
+<meta name="twitter:description" content="반드시 필요한 제약조건만 설정하라 제너릭 타입을 활용할때 타입 조건을 넣고싶다면 제약조건 예약어 where를 사용하는 것이 좋다 그러나 기본값을 할당하는데 있어서 default()와 new()는 분명한 차이가 있으므로, 제약조건에 new()를 넣을땐 이용자가 구현에 어려움을 겪을수도 있다는 것을 생각해야한다.  런타입에 타입을 확인하여 최적의 알고리즘을 사">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+    <title> effective c# - 3. 제네릭 활용 - Park Doyeon </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">Park Doyeon</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/resume">
+                            
+                            
+                                Resume
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+      </header>
+
+      <div id="post-categories"><div>
+    <a class="categories-link" href="/Dev-Env/">Dev-Env</a><a class="categories-link" href="/ELK/">ELK</a><a class="categories-link" href="/SQL/">SQL</a><a class="categories-link" href="/csharp/">csharp</a><a class="categories-link" href="/docker/">docker</a><a class="categories-link" href="/web/">web</a>
+</div>
+      </div>
+
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          effective c# - 3. 제네릭 활용
+        
+      </h1>
+
+      <time class="post-time">
+          Jan 3 2019
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <h3 id="반드시-필요한-제약조건만-설정하라"><a href="#반드시-필요한-제약조건만-설정하라" class="headerlink" title="반드시 필요한 제약조건만 설정하라"></a>반드시 필요한 제약조건만 설정하라</h3><ul>
+<li>제너릭 타입을 활용할때 타입 조건을 넣고싶다면 제약조건 예약어 <a href="parkdoyeon.github.io/csharp/2018-12-05-csharp-2.0-Generic">where</a>를 사용하는 것이 좋다</li>
+<li>그러나 기본값을 할당하는데 있어서 default()와 new()는 분명한 차이가 있으므로, 제약조건에 new()를 넣을땐 이용자가 구현에 어려움을 겪을수도 있다는 것을 생각해야한다.</li>
+</ul>
+<h3 id="런타입에-타입을-확인하여-최적의-알고리즘을-사용하라"><a href="#런타입에-타입을-확인하여-최적의-알고리즘을-사용하라" class="headerlink" title="런타입에 타입을 확인하여 최적의 알고리즘을 사용하라"></a>런타입에 타입을 확인하여 최적의 알고리즘을 사용하라</h3><ul>
+<li>제약조건을 사용하지 않고 제너릭 타입을 사용하게되면 런타임에 타입확인이 이뤄진다.</li>
+<li>이때, 런타임 환경을 최대한 고려하여 최적화된 타입별 생성자/메소드 오버로드등을 작성하는 것이 좋다.</li>
+</ul>
+<h3 id="IComparable와-IComparer를-이용하여-객체의-선후관계를-정의하라"><a href="#IComparable와-IComparer를-이용하여-객체의-선후관계를-정의하라" class="headerlink" title="IComparable와 IComparer를 이용하여 객체의 선후관계를 정의하라"></a>IComparable<t>와 IComparer<t>를 이용하여 객체의 선후관계를 정의하라</t></t></h3><ul>
+<li>ICompareable<t>는 현재 객체의 비교대상을 지정해 리턴하고, IComparer<t>는 T타입의 모든 객체의 비교 함수를 정의한다. <a href="https://stackoverflow.com/questions/9316918/what-is-the-difference-between-iequalitycomparert-and-iequatablet" target="_blank" rel="noopener">참조</a><ul>
+<li><strong>IComparable</strong> - Defines an interface for an object with a CompareTo() method that takes another object of the same type and compares <strong>the current object</strong> to the passed one. It internalizes the comparison to the object, allowing for a more inline comparison operation, and is useful when there’s only one logical way, or an overwhelmingly common default way, to compare objects of a type.</li>
+<li><strong>IComparer</strong> - Defines an interface with a Compare() method that <strong>takes two objects of another type</strong> (which don’t have to implement IComparable) and compares them. This externalizes the comparison, and is useful when there are many feasible ways to compare two objects of a type, or when the type doesn’t implement IComparable (or the IComparable implementation compares a different way than what you want) and you don’t have control over that type’s source.</li>
+</ul>
+</t></t></li>
+<li>이때 제네릭 타입이 구현안된 IComparable, ICompar er도 하위 호환(.NET 2.0 이전버전)을 위해 구현하면 좋다.</li>
+</ul>
+<h3 id="타입-매개변수가-IDisposable을-구현한-경우를-대비하여-제네릭-클래스를-작성하라"><a href="#타입-매개변수가-IDisposable을-구현한-경우를-대비하여-제네릭-클래스를-작성하라" class="headerlink" title="타입 매개변수가 IDisposable을 구현한 경우를 대비하여 제네릭 클래스를 작성하라"></a>타입 매개변수가 IDisposable을 구현한 경우를 대비하여 제네릭 클래스를 작성하라</h3><ul>
+<li>타입 매개변수가 IDisposable을 구현했을때 using(a as IDisposable) 구문을 사용하여 dispose 호출이 가능하다<ul>
+<li>만약 a가 IDisposable을 구현하지 않았다면 null이 리턴되고 dispose 호출을 하지 않기때문에, 깔끔한 코드 작성이 된다.<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">GetThingsDone</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        T driver = <span class="keyword">new</span> T();</span><br><span class="line">        <span class="keyword">using</span>(driver <span class="keyword">as</span> IDisposable)</span><br><span class="line">        &#123;</span><br><span class="line">            driver.DoWork();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="공변성과-반공변성을-지원하라-고민해볼-것"><a href="#공변성과-반공변성을-지원하라-고민해볼-것" class="headerlink" title="공변성과 반공변성을 지원하라 (고민해볼 것)"></a>공변성과 반공변성을 지원하라 (고민해볼 것)</h3><h3 id="타입-매개변수에-대해-메서드-제약-조건을-서정하려면-델리게이트를-사용하라"><a href="#타입-매개변수에-대해-메서드-제약-조건을-서정하려면-델리게이트를-사용하라" class="headerlink" title="타입 매개변수에 대해 메서드 제약 조건을 서정하려면 델리게이트를 사용하라"></a>타입 매개변수에 대해 메서드 제약 조건을 서정하려면 델리게이트를 사용하라</h3><ul>
+<li><p>특정 메서드를 구현하기위해서 인터페이스를 설정하기보다, 해당 메서드를 호출부에서 구현하는 것이 더 편리할때가 있다.</p>
+<ul>
+<li>가령</li>
+<li><p>특정 매개변수를 받는 생성자 시퀀스 함수를 호출할 때, 타입 제약조건으로 ‘매개변수가 있는’ 생성자를 설정할 순 없다. 여기서 델리게이트를 사용하면 제약을 둘 수 있다. </p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    List&lt;Point&gt; values = <span class="keyword">new</span> List&lt;Point&gt;(</span><br><span class="line">        Utilities.Zip(xValues, yValues, (x, y) -&gt; <span class="keyword">new</span> Point(x, y))</span><br><span class="line">    )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>인터페이스 구현시 다양한 타입이 전달되면 타입별로 오버라이드를 해야할 수 있다.</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="베이스-클래스나-인터페이스에-대해서-제네릭을-특화하지-말라"><a href="#베이스-클래스나-인터페이스에-대해서-제네릭을-특화하지-말라" class="headerlink" title="베이스 클래스나 인터페이스에 대해서 제네릭을 특화하지 말라"></a>베이스 클래스나 인터페이스에 대해서 제네릭을 특화하지 말라</h3><ul>
+<li>오버로드된 메서드가 여러개인 경우, 컴파일러가 이 중 하나를 어떻게 선택하는지 정확히 알고있어야 한다.</li>
+<li>잘못된 오버라이드 함수가 선택되었을때 메서드 내에서 타입확인을 하여 런타임에러를 방지할 수 있겠지만,<ul>
+<li>제네릭은 본래 런타임에 타입확인을 수행하지 않기 위해 만들어졌다.</li>
+<li>박싱/언박싱을 통한 런타임 오버헤드도 문제가 될 수 있다.</li>
+</ul>
+</li>
+</ul>
+<h3 id="타입-매개변수로-인스턴스-필드를-만들-필요가-없다면-제네릭-메서드를-정의하라"><a href="#타입-매개변수로-인스턴스-필드를-만들-필요가-없다면-제네릭-메서드를-정의하라" class="headerlink" title="타입 매개변수로 인스턴스 필드를 만들 필요가 없다면 제네릭 메서드를 정의하라"></a>타입 매개변수로 인스턴스 필드를 만들 필요가 없다면 제네릭 메서드를 정의하라</h3><ul>
+<li>제너릭’클래스’의 경우 호출시마다 타입을 명시적으로 지정해야한다.<ul>
+<li>이렇게하면 우선 귀찮은 문제가 있고</li>
+<li>해당 클래스마다 제네릭 클래스가 구현되었는지 확인해봐야한다.</li>
+</ul>
+</li>
+<li>반면 일반 클래스내에서 오버로딩을 통해 제네릭 함수를 구현하면<ul>
+<li>캐스팅을 통한 문제(박싱/언박싱 오버헤드, 런타임 에러)가 발생하지 않는다</li>
+</ul>
+</li>
+</ul>
+<h3 id="제네릭-인터페이스와-논제네릭-인터페이스를-함께-구현하라"><a href="#제네릭-인터페이스와-논제네릭-인터페이스를-함께-구현하라" class="headerlink" title="제네릭 인터페이스와 논제네릭 인터페이스를 함께 구현하라"></a>제네릭 인터페이스와 논제네릭 인터페이스를 함께 구현하라</h3><ul>
+<li>버전문제!</li>
+</ul>
+<h3 id="인터페이스는-간략히-정의하고-기능의-확장은-확장메서드를-사용하라"><a href="#인터페이스는-간략히-정의하고-기능의-확장은-확장메서드를-사용하라" class="headerlink" title="인터페이스는 간략히 정의하고 기능의 확장은 확장메서드를 사용하라"></a>인터페이스는 간략히 정의하고 기능의 확장은 확장메서드를 사용하라</h3><ul>
+<li>인터페이스를 통해 기능추가를 하면 기존에 인터페이스를 구현하고 있는 클래스를 수정해야한다.</li>
+<li>반면에 확장메서드를 사용하면<ul>
+<li>모든 구현부의 모든 클래스에서 호출이 가능하고</li>
+<li>이용자에게 메소드의 구현방식에대한 가이드가 된다</li>
+</ul>
+</li>
+<li>물론 동일한 이름의 확장메서드 명이 이미 구현이 되어있는경우 확장메서드가 호출되는 문제가 있을 수 있지만, 이경우 이름을 바꾸거나 완벽하게 동일한 기능을 하도록 작성하여 피할 수 있다.</li>
+</ul>
+<h3 id="확장-메서드를-이용하여-구체화된-제네릭-타입을-개선하라"><a href="#확장-메서드를-이용하여-구체화된-제네릭-타입을-개선하라" class="headerlink" title="확장 메서드를 이용하여 구체화된 제네릭 타입을 개선하라"></a>확장 메서드를 이용하여 구체화된 제네릭 타입을 개선하라</h3><ul>
+<li>확장메서드를 사용하지 않으면 구체화된 제네릭타입을 상속해서 새로운 타입을 만들어야 하는데,<ul>
+<li>이렇게 하면 상속타입에 대한 제약이 발생한다.</li>
+<li>가령 이터레이터 확장메서드를 통해 메서드 구현을 하면될것을 List타입을 상속받아 클래스 내에서 구현하면 다른 이터레이터 형태의 메서드 구현이 어려워진다.</li>
+</ul>
+</li>
+</ul>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/c/">c#</a>
+          
+            <a href="/tags/effectivec/">effectivec#</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2019/01/24/Csharp/2019-01-24-effectivecsharp-4/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">effective c# - 4. LINQ 활용</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2018/12/18/Csharp/2018-12-31-effectivecsharp-2/">
+        <span class="next-text nav-default">effective c# - 2. 리소스 관리</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2019
+    <span class="footer-author">Park Doyeon.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/parkdoyeon">Me</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+<!--<script type="text/javascript" src="/js/src/highlight.pack.js?v=1.1"></script>
+<script>
+hljs.initHighlightingOnLoad();
+document.addEventListener('DOMContentLoaded', (event) => {
+  document.querySelectorAll('td.code').forEach((block) => {
+    hljs.highlightBlock(block);
+  });
+});
+</script>-->
+  </body>
+</html>

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.8.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="iOS App을 In House로 배포하기">
+
+
+
+
+  <meta name="keywords" content="swift,deploy,fastlane,">
+
+
+
+
+
+  <link rel="alternate" href="/default" title="Park Doyeon">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="https://parkdoyeon.github.io/2018/06/17/Web/2018-06-17-iosdistribution/">
+
+
+<meta name="description" content="사내 구성원들끼리 현재 서비스중인 게임의 동접자 수를 확인하는 모니터링앱을 iOS 버전으로 개발했다. 스토어에 올리는 과정은 정보가 많았지만, 나처럼 특정 구성원들을 대상으로 앱을 배포해야하는 경우 어떻게 해야하는지 정리된 글을 찾기가 어려웠다. 적고나니 꽤 간단하지만, 누군가는 이런 시행착오를 겪지 않길 바라며 그 과정들을 기록해놓기로 했다. URL 다운">
+<meta name="keywords" content="swift,deploy,fastlane">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS App을 In House로 배포하기">
+<meta property="og:url" content="https://parkdoyeon.github.io/2018/06/17/Web/2018-06-17-iosdistribution/index.html">
+<meta property="og:site_name" content="Park Doyeon">
+<meta property="og:description" content="사내 구성원들끼리 현재 서비스중인 게임의 동접자 수를 확인하는 모니터링앱을 iOS 버전으로 개발했다. 스토어에 올리는 과정은 정보가 많았지만, 나처럼 특정 구성원들을 대상으로 앱을 배포해야하는 경우 어떻게 해야하는지 정리된 글을 찾기가 어려웠다. 적고나니 꽤 간단하지만, 누군가는 이런 시행착오를 겪지 않길 바라며 그 과정들을 기록해놓기로 했다. URL 다운">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-05-19T15:51:03.848Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS App을 In House로 배포하기">
+<meta name="twitter:description" content="사내 구성원들끼리 현재 서비스중인 게임의 동접자 수를 확인하는 모니터링앱을 iOS 버전으로 개발했다. 스토어에 올리는 과정은 정보가 많았지만, 나처럼 특정 구성원들을 대상으로 앱을 배포해야하는 경우 어떻게 해야하는지 정리된 글을 찾기가 어려웠다. 적고나니 꽤 간단하지만, 누군가는 이런 시행착오를 겪지 않길 바라며 그 과정들을 기록해놓기로 했다. URL 다운">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+    <title> iOS App을 In House로 배포하기 - Park Doyeon </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">Park Doyeon</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/resume">
+                            
+                            
+                                Resume
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+      </header>
+
+      <div id="post-categories"><div>
+    <a class="categories-link" href="/Dev-Env/">Dev-Env</a><a class="categories-link" href="/ELK/">ELK</a><a class="categories-link" href="/SQL/">SQL</a><a class="categories-link" href="/csharp/">csharp</a><a class="categories-link" href="/docker/">docker</a><a class="categories-link" href="/web/">web</a>
+</div>
+      </div>
+
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          iOS App을 In House로 배포하기
+        
+      </h1>
+
+      <time class="post-time">
+          Jun 17 2018
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <p>사내 구성원들끼리 현재 서비스중인 게임의 동접자 수를 확인하는 모니터링앱을 iOS 버전으로 개발했다. 스토어에 올리는 과정은 정보가 많았지만, 나처럼 특정 구성원들을 대상으로 앱을 배포해야하는 경우 어떻게 해야하는지 정리된 글을 찾기가 어려웠다. 적고나니 꽤 간단하지만, 누군가는 이런 시행착오를 겪지 않길 바라며 그 과정들을 기록해놓기로 했다.</p>
+<h3 id="URL-다운로드-링크와-fastlane이라는-옵션"><a href="#URL-다운로드-링크와-fastlane이라는-옵션" class="headerlink" title="URL 다운로드 링크와 fastlane이라는 옵션"></a><strong>URL 다운로드 링크와 fastlane이라는 옵션</strong></h3><p>처음에 배포할때 가장 먼저 떠오른 방법은 사내망에서만 접근되는 웹페이지를 통해 URL 다운로드링크 배포하는 것이었고, 두번째는 <a href="https://fastlane.tools/" target="_blank" rel="noopener">Fastlane</a> beta를 통해 특정 대상을 지정해서 배포하는 방법이었다. 구글에서 제공하는 <a href="https://fastlane.tools/" target="_blank" rel="noopener">Fastlane</a>은 빌드부터 아카이빙, ipa추출, 자동 업데이트까지 원큐로 해준다. 거기에 인증서를 git으로 관리하는 ‘match’까지 제공한다. 여러모로 활용하고싶은 기능들이 많았는데, 나의 상황에는 적절치 못했다. 예를들어,</p>
+<ol>
+<li>배포 대상이 수시로 변동될 경우(cf: 사내 구성원의 퇴사와 입사) 계속해서 배포 이메일을 관리해줘야했으며,</li>
+<li>애플스토어 개발자계정 관리를 다른팀에서 하고 있는 상태였기 때문에, match를 사용하게될 경우 인증서 삭제/갱신 과정에서 같은 인증서를 사용하는 앱간에 또 다른 인증서 헬을 겪을 가능성이 농후했다.</li>
+</ol>
+<p>때문에 아쉽지만 <a href="https://fastlane.tools/" target="_blank" rel="noopener">Fastlane</a>을 실제 사내 앱 배포에 활용하기는 어려웠고, url 배포를 하기로 했다. 지금부터의 가이드는 <strong>xcode archiving을 통한 ipa파일 생성이 완료된 상태</strong>에서 URL배포를 위해 할 일이다.</p>
+<h3 id="How-To"><a href="#How-To" class="headerlink" title="How-To"></a><strong>How-To</strong></h3><h4 id="배포를-위한-설정파일-만들기"><a href="#배포를-위한-설정파일-만들기" class="headerlink" title="배포를 위한 설정파일 만들기"></a><strong>배포를 위한 설정파일 만들기</strong></h4><ol>
+<li>프로젝트에 ipa파일 추가</li>
+<li>.plist, .ipa MIME type 추가하기<ul>
+<li>IIS의 경우 IIS관리자에 서비스 인스턴스&gt;MIME 타입변경을 통해 할 수 있다</li>
+<li>IIS의 경우 .ipa <code>application/octet-stream</code> 으로, .plist <code>text/xml</code>으로 하면된다.</li>
+<li>Mac OS에서 배포하는 경우에도 추가해줘야하며, 같은 확장자라도 타입이 다를수도 있다.</li>
+</ul>
+</li>
+<li>app.plist 파일을 만든다<ul>
+<li>archiving할때 설정 잘 해주면 xcode에서 생성해주기도 하지만 굳이 빌드하지 않고 직접만들어도 된다.</li>
+<li>어차피 html파일에 <code>href</code>로 링크 붙일거라 파일명은 상관없고 plist확장자만 갖고있으면 된다.</li>
+</ul>
+</li>
+<li>아래의 코드는 plist파일 최소의 스펙이다.<ul>
+<li>참고로 다운로드중일 때 백색 이미지 말고 별개의 이미지를 설정할수도 있다. 이건 in house 배포 검색하면 나올것이다.</li>
+<li>배포와 상관없는 key값이 더 추가되면 문제가 생긴다는 글을 보기도 했다. 애플은 버전별 변동이 잦아서 상이하므로 아무튼 주의.</li>
+<li>특히 Metadata가 빠지거나 잘못되어있으면 별다른 피드백 없이 그냥 다운로드가 되지 않으므로 반드시 xcode 프로젝트의 info.plist와 일치시켜 넣도록 하자.<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">    <span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line">    <span class="meta">&lt;!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">plist</span> <span class="attr">version</span>=<span class="string">"1.0"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">key</span>&gt;</span>items<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">array</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">key</span>&gt;</span>assets<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">array</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">key</span>&gt;</span>kind<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">string</span>&gt;</span>software-package<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">key</span>&gt;</span>url<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">string</span>&gt;</span>https://company.url/folder/app.ipa<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">dict</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">array</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">key</span>&gt;</span>metadata<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">key</span>&gt;</span>bundle-identifier<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">string</span>&gt;</span>com.company.app<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">key</span>&gt;</span>bundle-version<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">string</span>&gt;</span>1.0<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">key</span>&gt;</span>kind<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">string</span>&gt;</span>software<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">key</span>&gt;</span>title<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">string</span>&gt;</span>Monitor<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">dict</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">dict</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">array</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dict</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">plist</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ol>
+<h4 id="HTML-링크-붙이기"><a href="#HTML-링크-붙이기" class="headerlink" title="HTML 링크 붙이기"></a><strong>HTML 링크 붙이기</strong></h4><ol>
+<li>배포를 위한 설정파일이 준비되면, Url은 ipa 파일이 있는 경로를 추가해주면 된다.<ul>
+<li>“<a href="https://localhost/directorypath/ipa&quot;와" target="_blank" rel="noopener">https://localhost/directorypath/ipa&quot;와</a> 같은 형식이면 된다.</li>
+<li><strong>애플 정책상 ipa파일과 plist파일 모두 https를 반드시 사용해야한다.</strong></li>
+<li>없다면 그냥 드롭박스나 구글드라이브로 배포해야한다.</li>
+</ul>
+</li>
+<li>Html파일에 아래와같이 해당 링크를 추가하면 끝~!<ul>
+<li>FYI: 다운로드가 제대로 안되는 상태에서 아래 링크를 아이폰 내 사파리앱에서 들어가면 itunes랑 연결하겠냐는 질문이 나오는 것으로 보아 아이튠즈랑 통신하는 과정이 있는 듯 하다.</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"itms-services://?action=download-manifest&amp;url=https://company.url/folder/app.plist"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span> <span class="attr">type</span>=<span class="string">"button"</span> <span class="attr">class</span>=<span class="string">"btn btn-default"</span> <span class="attr">id</span>=<span class="string">"iosDownload"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br></pre></td></tr></table></figure>
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/swift/">swift</a>
+          
+            <a href="/tags/deploy/">deploy</a>
+          
+            <a href="/tags/fastlane/">fastlane</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2018/08/11/ELK/2018-08-11-kafka-install/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">kafka - 설치하기</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2019
+    <span class="footer-author">Park Doyeon.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/parkdoyeon">Me</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+<!--<script type="text/javascript" src="/js/src/highlight.pack.js?v=1.1"></script>
+<script>
+hljs.initHighlightingOnLoad();
+document.addEventListener('DOMContentLoaded', (event) => {
+  document.querySelectorAll('td.code').forEach((block) => {
+    hljs.highlightBlock(block);
+  });
+});
+</script>-->
+  </body>
+</html>

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.8.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="Linux - 리눅스 용량, 메모리 정보 확인하기">
+
+
+
+
+  <meta name="keywords" content="linux,disk,">
+
+
+
+
+
+  <link rel="alternate" href="/default" title="Park Doyeon">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="https://parkdoyeon.github.io/2019/03/26/Dev-Env/2019-03-26-linux-disk/">
+
+
+<meta name="description" content="리눅스 환경에서 도커로 ELK 스택 서비스를 운영 사용하다보면 로그관리때문에 메모리나 디스크정보 확인을 할 일이 많은데,자주 사용하게 되는 기능들 위주로 정리해보았다. 메모리 전체 메모리 정보 확인하기 1cat /proc/meminfo | grep MemTotal  사용중인 메모리 확인하기 1free   CPU 확인하기1cat /proc/cpuinfo |">
+<meta name="keywords" content="linux,disk">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux - 리눅스 용량, 메모리 정보 확인하기">
+<meta property="og:url" content="https://parkdoyeon.github.io/2019/03/26/Dev-Env/2019-03-26-linux-disk/index.html">
+<meta property="og:site_name" content="Park Doyeon">
+<meta property="og:description" content="리눅스 환경에서 도커로 ELK 스택 서비스를 운영 사용하다보면 로그관리때문에 메모리나 디스크정보 확인을 할 일이 많은데,자주 사용하게 되는 기능들 위주로 정리해보았다. 메모리 전체 메모리 정보 확인하기 1cat /proc/meminfo | grep MemTotal  사용중인 메모리 확인하기 1free   CPU 확인하기1cat /proc/cpuinfo |">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-05-19T16:31:38.611Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux - 리눅스 용량, 메모리 정보 확인하기">
+<meta name="twitter:description" content="리눅스 환경에서 도커로 ELK 스택 서비스를 운영 사용하다보면 로그관리때문에 메모리나 디스크정보 확인을 할 일이 많은데,자주 사용하게 되는 기능들 위주로 정리해보았다. 메모리 전체 메모리 정보 확인하기 1cat /proc/meminfo | grep MemTotal  사용중인 메모리 확인하기 1free   CPU 확인하기1cat /proc/cpuinfo |">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+    <title> Linux - 리눅스 용량, 메모리 정보 확인하기 - Park Doyeon </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">Park Doyeon</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/resume">
+                            
+                            
+                                Resume
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+      </header>
+
+      <div id="post-categories"><div>
+    <a class="categories-link" href="/Dev-Env/">Dev-Env</a><a class="categories-link" href="/ELK/">ELK</a><a class="categories-link" href="/SQL/">SQL</a><a class="categories-link" href="/csharp/">csharp</a><a class="categories-link" href="/docker/">docker</a><a class="categories-link" href="/web/">web</a>
+</div>
+      </div>
+
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          Linux - 리눅스 용량, 메모리 정보 확인하기
+        
+      </h1>
+
+      <time class="post-time">
+          Mar 26 2019
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <p>리눅스 환경에서 도커로 ELK 스택 서비스를 운영 사용하다보면 로그관리때문에 메모리나 디스크정보 확인을 할 일이 많은데,<br>자주 사용하게 되는 기능들 위주로 정리해보았다.</p>
+<h1 id="메모리"><a href="#메모리" class="headerlink" title="메모리"></a>메모리</h1><ul>
+<li><p>전체 메모리 정보 확인하기</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /proc/meminfo | grep MemTotal</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>사용중인 메모리 확인하기</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">free</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h1 id="CPU-확인하기"><a href="#CPU-확인하기" class="headerlink" title="CPU 확인하기"></a>CPU 확인하기</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /proc/cpuinfo | more</span><br></pre></td></tr></table></figure>
+<h1 id="디스크"><a href="#디스크" class="headerlink" title="디스크"></a>디스크</h1><ul>
+<li><p>전체 디스크, 파티션 용량 확인하기</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df -h</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>디렉토리 기준 용량 확인하기</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">du -hsx * | sort -rh | head -10</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li>: 경로위치, 생략시 현재 폴더<br>du -h : 용량을 읽기좋은 포멧으로 정리 ex)1K, 200M, 3G ..<br>du -s : 요약<br>du -x : 디렉토리 하위 스킵<br>sort -r : 비교 결과 역순<br>sort -h : 읽기좋은 포멧 형식으로 비교<br>head -10 : 상위 10개까지 보여주기</li>
+</ul>
+<p>참고 페이지<br><a href="https://www.cyberciti.biz/faq/how-do-i-find-the-largest-filesdirectories-on-a-linuxunixbsd-filesystem/" target="_blank" rel="noopener">https://www.cyberciti.biz/faq/how-do-i-find-the-largest-filesdirectories-on-a-linuxunixbsd-filesystem/</a></p>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/linux/">linux</a>
+          
+            <a href="/tags/disk/">disk</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2019/03/29/Docker/2019-03-29-docker-compose-network/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">docker-compose - docker-compose up에서 네트워크 생성이 되지 않을 때</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2019/03/14/SQL/2019-04-22-addpk/">
+        <span class="next-text nav-default">기존 테이블에 PK키 추가하기</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2019
+    <span class="footer-author">Park Doyeon.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/parkdoyeon">Me</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+<!--<script type="text/javascript" src="/js/src/highlight.pack.js?v=1.1"></script>
+<script>
+hljs.initHighlightingOnLoad();
+document.addEventListener('DOMContentLoaded', (event) => {
+  document.querySelectorAll('td.code').forEach((block) => {
+    hljs.highlightBlock(block);
+  });
+});
+</script>-->
+  </body>
+</html>

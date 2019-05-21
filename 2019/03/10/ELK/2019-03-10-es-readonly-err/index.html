@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.8.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="ElasticSearch - 403 index read-only 에러가 발생했을 때">
+
+
+
+
+  <meta name="keywords" content="elasticsearch,err,">
+
+
+
+
+
+  <link rel="alternate" href="/default" title="Park Doyeon">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="https://parkdoyeon.github.io/2019/03/10/ELK/2019-03-10-es-readonly-err/">
+
+
+<meta name="description" content="어느날 ElasticSearch index에 데이터가 제대로 들어오지 않는 것같아서 logstash의 log를 열어보니 다음과 같은 로그가 여러개 발생해 있었다. 1logstash.outputs.elasticsearch] retrying failed action with response code: 403 (&amp;#123;&quot;type&quot;=&amp;gt;&quot;cluster_bl">
+<meta name="keywords" content="elasticsearch,err">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ElasticSearch - 403 index read-only 에러가 발생했을 때">
+<meta property="og:url" content="https://parkdoyeon.github.io/2019/03/10/ELK/2019-03-10-es-readonly-err/index.html">
+<meta property="og:site_name" content="Park Doyeon">
+<meta property="og:description" content="어느날 ElasticSearch index에 데이터가 제대로 들어오지 않는 것같아서 logstash의 log를 열어보니 다음과 같은 로그가 여러개 발생해 있었다. 1logstash.outputs.elasticsearch] retrying failed action with response code: 403 (&amp;#123;&quot;type&quot;=&amp;gt;&quot;cluster_bl">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-05-19T15:51:03.843Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ElasticSearch - 403 index read-only 에러가 발생했을 때">
+<meta name="twitter:description" content="어느날 ElasticSearch index에 데이터가 제대로 들어오지 않는 것같아서 logstash의 log를 열어보니 다음과 같은 로그가 여러개 발생해 있었다. 1logstash.outputs.elasticsearch] retrying failed action with response code: 403 (&amp;#123;&quot;type&quot;=&amp;gt;&quot;cluster_bl">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+    <title> ElasticSearch - 403 index read-only 에러가 발생했을 때 - Park Doyeon </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">Park Doyeon</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/resume">
+                            
+                            
+                                Resume
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+      </header>
+
+      <div id="post-categories"><div>
+    <a class="categories-link" href="/Dev-Env/">Dev-Env</a><a class="categories-link" href="/ELK/">ELK</a><a class="categories-link" href="/SQL/">SQL</a><a class="categories-link" href="/csharp/">csharp</a><a class="categories-link" href="/docker/">docker</a><a class="categories-link" href="/web/">web</a>
+</div>
+      </div>
+
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          ElasticSearch - 403 index read-only 에러가 발생했을 때
+        
+      </h1>
+
+      <time class="post-time">
+          Mar 10 2019
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <p>어느날 ElasticSearch index에 데이터가 제대로 들어오지 않는 것같아서 logstash의 log를 열어보니 다음과 같은 로그가 여러개 발생해 있었다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">logstash.outputs.elasticsearch] retrying failed action with response code: 403 (&#123;<span class="string">"type"</span>=&gt;<span class="string">"cluster_block_exception"</span>, <span class="string">"reason"</span>=&gt;<span class="string">"blocked by: [FORBIDDEN/12/index read-only / allow delete (api)]</span></span><br></pre></td></tr></table></figure>
+<p>그래서 찾아보니 이런 내용의 글이 있었다.</p>
+<p>(원문 페이지: <a href="https://discuss.elastic.co/t/forbidden-12-index-read-only-allow-delete-api/110282" target="_blank" rel="noopener">https://discuss.elastic.co/t/forbidden-12-index-read-only-allow-delete-api/110282</a>)</p>
+<p>Edit: i think my problem is low storage. just check your storage first.</p>
+<p>when it’s low, kibana auto changes its config to read-only mode. to deal with it, go to your dev tools console and run below command:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">PUT .kibana/_settings</span><br><span class="line">&#123;</span><br><span class="line">    &quot;index&quot;: &#123;</span><br><span class="line">        &quot;blocks&quot;: &#123;</span><br><span class="line">        &quot;read_only_allow_delete&quot;: &quot;false&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>즉, ES에 용량대비 데이터가 지나치가 많이 쌓이면 키바나에서 데이터를 read-only모드로 바꾼다는 내용이다.<br>실제로 쿼리를 날리니까 문제는 해결됐다. 원문을 잘 읽어보면 ‘.kibana’ 인덱스 자체를 날리고 해결했다는 사람도 있는데,<br>대시보드 세팅이 매우 많이 진행 되었기 때문에 그럴순 없었다. (문제를 해결하는 적절한 방법 같지도 않다.)</p>
+<p>찜찜한 마음에 더 찾아보니,<br>kibana가 설치가 되어있지 않은 ES에서도 디스크 용량이 가득차면 ES내부 옵션에서 read-only로 바뀐다고한다.<br>이럴땐 .kibana 인덱스 말고 전체(_all) 혹은 특정 인덱스 대상으로 아래와 같이 쿼리를 날리면 해결된다.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">PUT _all/_settings</span><br><span class="line">&#123;</span><br><span class="line">    &quot;index&quot;: &#123;</span><br><span class="line">        &quot;blocks&quot;: &#123;</span><br><span class="line">        &quot;read_only_allow_delete&quot;: &quot;false&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>kibana 내부 옵션만으로도 데이터 전달이 되지 않는 것을 보면, ES의 insert과정에서 키바나 설정과 동기화되는 요소가 있는 것 같다.</p>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/elasticsearch/">elasticsearch</a>
+          
+            <a href="/tags/err/">err</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2019/03/14/SQL/2019-03-14-insertselect/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">insert into select 사용하기</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2019/02/27/Dev-Env/2019-02-27-gitignore/">
+        <span class="next-text nav-default">Git - gitignore 즉시 적용하기</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2019
+    <span class="footer-author">Park Doyeon.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/parkdoyeon">Me</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+<!--<script type="text/javascript" src="/js/src/highlight.pack.js?v=1.1"></script>
+<script>
+hljs.initHighlightingOnLoad();
+document.addEventListener('DOMContentLoaded', (event) => {
+  document.querySelectorAll('td.code').forEach((block) => {
+    hljs.highlightBlock(block);
+  });
+});
+</script>-->
+  </body>
+</html>

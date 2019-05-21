@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.8.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="c# 기본서 - c# 4.0: dynamic">
+
+
+
+
+  <meta name="keywords" content="c#,c#4.0,dynamic,reflection,">
+
+
+
+
+
+  <link rel="alternate" href="/default" title="Park Doyeon">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="https://parkdoyeon.github.io/2018/12/07/Csharp/2018-12-07-csharp-4.0-dynamic/">
+
+
+<meta name="description" content="4.0 주요변화 이전까지는 닷넷 1.0~3.5용으로 빌드되는 모든 어셈블리가 GAC(Global Assembly Cache)에 추가되는 경우 단일하게 %windir%\assembly였지만 4.0부터는%windir%\Microsoft.NET\assembly로 변경되었다. 같은동작을 하는 어셈블리를 .NET 2.0, .NET 4.0으로 각각 빌드해서 제공해야한">
+<meta name="keywords" content="c#,c#4.0,dynamic,reflection">
+<meta property="og:type" content="article">
+<meta property="og:title" content="c# 기본서 - c# 4.0: dynamic">
+<meta property="og:url" content="https://parkdoyeon.github.io/2018/12/07/Csharp/2018-12-07-csharp-4.0-dynamic/index.html">
+<meta property="og:site_name" content="Park Doyeon">
+<meta property="og:description" content="4.0 주요변화 이전까지는 닷넷 1.0~3.5용으로 빌드되는 모든 어셈블리가 GAC(Global Assembly Cache)에 추가되는 경우 단일하게 %windir%\assembly였지만 4.0부터는%windir%\Microsoft.NET\assembly로 변경되었다. 같은동작을 하는 어셈블리를 .NET 2.0, .NET 4.0으로 각각 빌드해서 제공해야한">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-05-19T15:51:03.846Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="c# 기본서 - c# 4.0: dynamic">
+<meta name="twitter:description" content="4.0 주요변화 이전까지는 닷넷 1.0~3.5용으로 빌드되는 모든 어셈블리가 GAC(Global Assembly Cache)에 추가되는 경우 단일하게 %windir%\assembly였지만 4.0부터는%windir%\Microsoft.NET\assembly로 변경되었다. 같은동작을 하는 어셈블리를 .NET 2.0, .NET 4.0으로 각각 빌드해서 제공해야한">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+    <title> c# 기본서 - c# 4.0: dynamic - Park Doyeon </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">Park Doyeon</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/resume">
+                            
+                            
+                                Resume
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+      </header>
+
+      <div id="post-categories"><div>
+    <a class="categories-link" href="/Dev-Env/">Dev-Env</a><a class="categories-link" href="/ELK/">ELK</a><a class="categories-link" href="/SQL/">SQL</a><a class="categories-link" href="/csharp/">csharp</a><a class="categories-link" href="/docker/">docker</a><a class="categories-link" href="/web/">web</a>
+</div>
+      </div>
+
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          c# 기본서 - c# 4.0: dynamic
+        
+      </h1>
+
+      <time class="post-time">
+          Dec 7 2018
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <h3 id="4-0-주요변화"><a href="#4-0-주요변화" class="headerlink" title="4.0 주요변화"></a>4.0 주요변화</h3><ul>
+<li>이전까지는 닷넷 1.0~3.5용으로 빌드되는 모든 어셈블리가 GAC(Global Assembly Cache)에 추가되는 경우 단일하게 <code>%windir%\assembly</code>였지만</li>
+<li>4.0부터는<code>%windir%\Microsoft.NET\assembly</code>로 변경되었다.</li>
+<li>같은동작을 하는 어셈블리를 .NET 2.0, .NET 4.0으로 각각 빌드해서 제공해야한다.</li>
+</ul>
+<h3 id="선택적-매개변스와-명명된-인자"><a href="#선택적-매개변스와-명명된-인자" class="headerlink" title="선택적 매개변스와 명명된 인자"></a>선택적 매개변스와 명명된 인자</h3><ul>
+<li><p>파라미터 값이 없을때 초기값을 주고싶다면 다음과 같이 기재하면 된다.</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public void Output(string name, int age = 0)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>이때 ref, out 예약어는 함께 사용할 수 없고</li>
+<li>선택 매개변수가 시작되면 필수 매개변수를 사용할 수 없으며</li>
+<li>선택 매개변수가 시작되어도 params 유형의 매개변수를 정의할 수 있다.</li>
+</ul>
+</li>
+<li>주의할 점은 선택적 매개변수에 전달되는 인자 역시 차례대로 대응되며, 중간에 생략될 수 없다는 점이다.<ul>
+<li>이는 다음과같이 명명을 통해 해결할 수 있다.<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Output(age: 26, name: &quot;박도연&quot;)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="dynamic-예약어"><a href="#dynamic-예약어" class="headerlink" title="dynamic 예약어"></a>dynamic 예약어</h3><ul>
+<li>4.0부터 python이나 ruby같은 동적언어와도 연동이 쉽도록 dynamic 예약어를 추가했다.</li>
+<li>c#은 정적언어이기 때문에 <strong>컴파일 시점</strong>에 초깃값과 대응되는 타입으로 치환하지만,</li>
+<li>dynamic 예약어는 그렇게 하지않고 <strong>실행시점</strong>에 치환을 한다.</li>
+<li>Object 타입으로 선언해도 동작하지만, dynamic을 쓰는게 가독성측면에서 낫다. 결국 간편표기의 한 방법이다.</li>
+</ul>
+<h3 id="dynamic을-통한-리플렉션-개선"><a href="#dynamic을-통한-리플렉션-개선" class="headerlink" title="dynamic을 통한 리플렉션 개선"></a>dynamic을 통한 리플렉션 개선</h3><ul>
+<li>*12/5일자 글에 리플렉션에 대한 설명이 있다</li>
+<li>기존에 리플렉션을 사용하려면 메소드 정보를 호출한 다음 invoke 메소드를 통해 인자를 넘겨줘야하는데,</li>
+<li>dynamic 예약어를 사용하면 아래정도의 코드로 간단하게 해결가능하다  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dynamic txt = &quot;test func&quot;</span><br><span class="line">bool result = txt.Contains(&quot;test&quot;);</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="덕타이핑"><a href="#덕타이핑" class="headerlink" title="덕타이핑"></a>덕타이핑</h3><ul>
+<li>공통되는 상속없이 이름만 동일한 메서드나 속성을 호출하는 경우 맥락에 따라 적절한 객체를 실행시켜준다.  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">int DuckTypingCall(dynamic target, dynamic item) &#123;</span><br><span class="line">    return target.IndexOf(item);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">string txt = &quot;test func&quot;</span><br><span class="line">List&lt;int&gt; list = new List&lt;int&gt;();</span><br><span class="line"></span><br><span class="line">DuckTypingCall(txt, &quot;text&quot;); // 0</span><br><span class="line">DuckTypingCall(list, 3); // 2</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/c/">c#</a>
+          
+            <a href="/tags/c-4-0/">c#4.0</a>
+          
+            <a href="/tags/dynamic/">dynamic</a>
+          
+            <a href="/tags/reflection/">reflection</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2018/12/07/Csharp/2018-12-11-csharp-7.0-tupleandreserved/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">c# 기본서 - c# 7.0: 예약어와 ValueTask/ValueTuple</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2018/12/06/Csharp/2018-12-06-csharp-3.0-LINQ/">
+        <span class="next-text nav-default">c# 기본서 - c# 3.0: LINQ</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2019
+    <span class="footer-author">Park Doyeon.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/parkdoyeon">Me</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+<!--<script type="text/javascript" src="/js/src/highlight.pack.js?v=1.1"></script>
+<script>
+hljs.initHighlightingOnLoad();
+document.addEventListener('DOMContentLoaded', (event) => {
+  document.querySelectorAll('td.code').forEach((block) => {
+    hljs.highlightBlock(block);
+  });
+});
+</script>-->
+  </body>
+</html>

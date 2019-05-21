@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.8.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="ElasticSearch - mapping 데이터 타입 설정하기">
+
+
+
+
+  <meta name="keywords" content="elasticsearch,mapping,">
+
+
+
+
+
+  <link rel="alternate" href="/default" title="Park Doyeon">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="https://parkdoyeon.github.io/2019/02/27/ELK/2019-02-27-es-mapping/">
+
+
+<meta name="description" content="ES는 인덱스를 자동생성된 방식 그대로 사용하기를 권장하지 않는다. 키바나를 올바르게 활용하기 위해서는 템플릿을 통해 인덱스의 데이터 타입 가공이 필요하다.  가령 키바나에서 1초 이상의 요청시간이 필요한 로그(time:&amp;gt;1000)를 검색하고 싶다면 해당 데이터의 타입은 string이 아닌 integer여야한다.자동생성되는 매핑타입은 일반적으로 str">
+<meta name="keywords" content="elasticsearch,mapping">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ElasticSearch - mapping 데이터 타입 설정하기">
+<meta property="og:url" content="https://parkdoyeon.github.io/2019/02/27/ELK/2019-02-27-es-mapping/index.html">
+<meta property="og:site_name" content="Park Doyeon">
+<meta property="og:description" content="ES는 인덱스를 자동생성된 방식 그대로 사용하기를 권장하지 않는다. 키바나를 올바르게 활용하기 위해서는 템플릿을 통해 인덱스의 데이터 타입 가공이 필요하다.  가령 키바나에서 1초 이상의 요청시간이 필요한 로그(time:&amp;gt;1000)를 검색하고 싶다면 해당 데이터의 타입은 string이 아닌 integer여야한다.자동생성되는 매핑타입은 일반적으로 str">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-05-19T15:51:03.843Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ElasticSearch - mapping 데이터 타입 설정하기">
+<meta name="twitter:description" content="ES는 인덱스를 자동생성된 방식 그대로 사용하기를 권장하지 않는다. 키바나를 올바르게 활용하기 위해서는 템플릿을 통해 인덱스의 데이터 타입 가공이 필요하다.  가령 키바나에서 1초 이상의 요청시간이 필요한 로그(time:&amp;gt;1000)를 검색하고 싶다면 해당 데이터의 타입은 string이 아닌 integer여야한다.자동생성되는 매핑타입은 일반적으로 str">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+    <title> ElasticSearch - mapping 데이터 타입 설정하기 - Park Doyeon </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">Park Doyeon</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/resume">
+                            
+                            
+                                Resume
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+      </header>
+
+      <div id="post-categories"><div>
+    <a class="categories-link" href="/Dev-Env/">Dev-Env</a><a class="categories-link" href="/ELK/">ELK</a><a class="categories-link" href="/SQL/">SQL</a><a class="categories-link" href="/csharp/">csharp</a><a class="categories-link" href="/docker/">docker</a><a class="categories-link" href="/web/">web</a>
+</div>
+      </div>
+
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          ElasticSearch - mapping 데이터 타입 설정하기
+        
+      </h1>
+
+      <time class="post-time">
+          Feb 27 2019
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <p>ES는 인덱스를 자동생성된 방식 그대로 사용하기를 권장하지 않는다. 키바나를 올바르게 활용하기 위해서는 템플릿을 통해 인덱스의 데이터 타입 가공이 필요하다. </p>
+<p>가령 키바나에서 1초 이상의 요청시간이 필요한 로그(time:&gt;1000)를 검색하고 싶다면 해당 데이터의 타입은 string이 아닌 integer여야한다.<br>자동생성되는 매핑타입은 일반적으로 string keyword 이므로, 템플릿 추가를 통해 인덱스 생성 전에 integer로 타입 지정하도록 설정할 수 있다. </p>
+<p>내가 변경하고자 두 필드는 time_taken과 logdate인데, 이 데이터의 자동으로 생성된 매핑은 아래와 같다.</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"mapping"</span>: &#123;</span><br><span class="line">    <span class="attr">"doc"</span>: &#123;</span><br><span class="line">      <span class="attr">"properties"</span>: &#123;</span><br><span class="line">        //다른 데이터들 생략</span><br><span class="line">        "logdate": &#123;</span><br><span class="line">          "type": "text",</span><br><span class="line">          "fields": &#123;</span><br><span class="line">            "keyword": &#123;</span><br><span class="line">              "type": "keyword",</span><br><span class="line">              "ignore_above": 256</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        "time_taken": &#123;</span><br><span class="line">          "type": "text",</span><br><span class="line">          "fields": &#123;</span><br><span class="line">            "keyword": &#123;</span><br><span class="line">              "type": "keyword",</span><br><span class="line">              "ignore_above": 256</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>text타입인 위 데이터를 본래의 자료타입과 맞게 integer와 date로 동록하도록 템플릿을 생성하자.</p>
+<p>참고로 “yyyy-MM-dd hh:mm:ss”형식인 ISO standard(8601) 시간표기랑 조금 다른 iis 로그(yy-MM-dd hh:mm:ss.SSSS)”는 년도를 2개까지만 입력하므로, 필드 타입이 없으면 에러가 나기때문에 별도로 형식을 지정해줬다.<br>또 소숫점이 없는 경우 insert 에러가 발생할 수 있으므로, malformed 이벤트가 발생해도 인서트가 되도록 “ignore_malformed”옵션을 true로 지정해줬다.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;index_patterns&quot;: &quot;kr-*&quot;,</span><br><span class="line">  &quot;mappings&quot;: &#123;</span><br><span class="line">    &quot;doc&quot;: &#123;</span><br><span class="line">      &quot;properties&quot;: &#123;</span><br><span class="line">        &quot;time_taken&quot;: &#123;</span><br><span class="line">          &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;logdate&quot;: &#123;</span><br><span class="line">          &quot;type&quot;: &quot;date&quot;,</span><br><span class="line">          &quot;fields&quot;: &quot;yy-MM-dd HH:mm:ss.SSS&quot;,</span><br><span class="line">          &quot;ignore_malformed&quot;: true</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>GET 요청을 통해 등록된 템플릿 내용들을 확인할 수 있다. 내가 직접 등록해놓은 것 말고도 여러가지가 있다.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET /_template</span><br></pre></td></tr></table></figure></p>
+<p>참고로 템플릿이 등록되면 기존의 매핑이 변경되지 않는다. 새롭게 생성되는 인덱스부터 적용된다.</p>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/elasticsearch/">elasticsearch</a>
+          
+            <a href="/tags/mapping/">mapping</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2019/02/27/Dev-Env/2019-02-27-gitignore/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">Git - gitignore 즉시 적용하기</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2019/02/13/Web/2019-02-13-facebook-share/">
+        <span class="next-text nav-default">Facebook - 공유하기 스크립트 만들기</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2019
+    <span class="footer-author">Park Doyeon.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/parkdoyeon">Me</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+<!--<script type="text/javascript" src="/js/src/highlight.pack.js?v=1.1"></script>
+<script>
+hljs.initHighlightingOnLoad();
+document.addEventListener('DOMContentLoaded', (event) => {
+  document.querySelectorAll('td.code').forEach((block) => {
+    hljs.highlightBlock(block);
+  });
+});
+</script>-->
+  </body>
+</html>

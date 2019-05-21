@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.8.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="c# 기본서 - c# 7.0: 예약어와 ValueTask/ValueTuple">
+
+
+
+
+  <meta name="keywords" content="c#,ref,out,lambda,when,is,c#7.0,tuple,ValueTask,switch/case,">
+
+
+
+
+
+  <link rel="alternate" href="/default" title="Park Doyeon">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="https://parkdoyeon.github.io/2018/12/07/Csharp/2018-12-11-csharp-7.0-tupleandreserved/">
+
+
+<meta name="description" content="7.0 주요변화 c# 7.0출시시 닷넷 버전은 4.6.2였다, 현재 7.0에 대응되는 프레임워크는 4.7이다. ValueTuple 타입이 추가되었다. 그러나 4.6.2 닷넷 프레임워크에는 없으므로 nuget패키지를 통해 System.ValueTuple을 직접 설치해야한다   System.Threading.Tasks.ValueTask가 추가되었는데, 마찬가지">
+<meta name="keywords" content="c#,ref,out,lambda,when,is,c#7.0,tuple,ValueTask,switch&#x2F;case">
+<meta property="og:type" content="article">
+<meta property="og:title" content="c# 기본서 - c# 7.0: 예약어와 ValueTask&#x2F;ValueTuple">
+<meta property="og:url" content="https://parkdoyeon.github.io/2018/12/07/Csharp/2018-12-11-csharp-7.0-tupleandreserved/index.html">
+<meta property="og:site_name" content="Park Doyeon">
+<meta property="og:description" content="7.0 주요변화 c# 7.0출시시 닷넷 버전은 4.6.2였다, 현재 7.0에 대응되는 프레임워크는 4.7이다. ValueTuple 타입이 추가되었다. 그러나 4.6.2 닷넷 프레임워크에는 없으므로 nuget패키지를 통해 System.ValueTuple을 직접 설치해야한다   System.Threading.Tasks.ValueTask가 추가되었는데, 마찬가지">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-05-19T15:51:03.847Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="c# 기본서 - c# 7.0: 예약어와 ValueTask&#x2F;ValueTuple">
+<meta name="twitter:description" content="7.0 주요변화 c# 7.0출시시 닷넷 버전은 4.6.2였다, 현재 7.0에 대응되는 프레임워크는 4.7이다. ValueTuple 타입이 추가되었다. 그러나 4.6.2 닷넷 프레임워크에는 없으므로 nuget패키지를 통해 System.ValueTuple을 직접 설치해야한다   System.Threading.Tasks.ValueTask가 추가되었는데, 마찬가지">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+    <title> c# 기본서 - c# 7.0: 예약어와 ValueTask/ValueTuple - Park Doyeon </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">Park Doyeon</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/resume">
+                            
+                            
+                                Resume
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+      </header>
+
+      <div id="post-categories"><div>
+    <a class="categories-link" href="/Dev-Env/">Dev-Env</a><a class="categories-link" href="/ELK/">ELK</a><a class="categories-link" href="/SQL/">SQL</a><a class="categories-link" href="/csharp/">csharp</a><a class="categories-link" href="/docker/">docker</a><a class="categories-link" href="/web/">web</a>
+</div>
+      </div>
+
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          c# 기본서 - c# 7.0: 예약어와 ValueTask/ValueTuple
+        
+      </h1>
+
+      <time class="post-time">
+          Dec 7 2018
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <h3 id="7-0-주요변화"><a href="#7-0-주요변화" class="headerlink" title="7.0 주요변화"></a>7.0 주요변화</h3><ul>
+<li>c# 7.0출시시 닷넷 버전은 4.6.2였다, 현재 7.0에 대응되는 프레임워크는 4.7이다.</li>
+<li><code>ValueTuple</code> 타입이 추가되었다.<ul>
+<li>그러나 4.6.2 닷넷 프레임워크에는 없으므로 nuget패키지를 통해 <code>System.ValueTuple</code>을 직접 설치해야한다</li>
+</ul>
+</li>
+<li><code>System.Threading.Tasks.ValueTask</code>가 추가되었는데, 마찬가지로 지원하지 않으므로 <code>System.Threading.Tasks.Extensions.dll</code>을 참조추가해야한다.</li>
+</ul>
+<h3 id="out-매개변수-쉽게-사용하기"><a href="#out-매개변수-쉽게-사용하기" class="headerlink" title="out 매개변수 쉽게 사용하기"></a>out 매개변수 쉽게 사용하기</h3><ul>
+<li>기본에는 out매개변수 사용을 위해서는 따로 선언을 해줬어야했지만, 이제는 타입을 함께 입력해주면 선언이 필요없다.  <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span>.TryParse(<span class="string">"5"</span>, <span class="keyword">out</span> <span class="keyword">int</span> result);</span><br><span class="line"><span class="keyword">int</span>.TryParse(<span class="string">"6"</span>, <span class="keyword">out</span> <span class="keyword">int</span> result); <span class="comment">//컴파일시 6.0코드로 변환 하기때문에 같은 변수명으로 입력하면 컴파일 에러발생!</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="반환값-로컬변수에-ref-사용"><a href="#반환값-로컬변수에-ref-사용" class="headerlink" title="반환값/로컬변수에 ref 사용"></a>반환값/로컬변수에 ref 사용</h3><ul>
+<li>메서드를 통해 배열의 특정 요소만 반환하는 등의 사용이 가능하다</li>
+<li><p>가독성 문제가 있지만 메서드의 값 설정과 할당이 동시에 가능해진다.</p>
+  <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">MyMetrix</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">int</span>[,] _matrix = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">100</span>, <span class="number">100</span>]</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">ref</span> <span class="keyword">int</span> <span class="title">Put</span>(<span class="params"><span class="keyword">int</span> c, <span class="keyword">int</span> r</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">ref</span> _matrix[c, r];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">&#123;</span><br><span class="line">    MyMetrix m = <span class="keyword">new</span> MyMetrix();</span><br><span class="line">    <span class="keyword">int</span> result = Matrix.Put(<span class="number">1</span>, <span class="number">1</span>) = <span class="number">1</span>;</span><br><span class="line">    Console.WriteLine(result) <span class="comment">//1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>주의할 점은 메서드 내부에서 선언한 지역변수와 같은 경우 실행 후 호출측으로 넘어갈 때 스택이 해제되어 return ref으로 반환된 인스턴스가 남아있을거라는 보장이 없다.</p>
+</li>
+<li>또한, ref 예약어를 지정한 지역변수는 다시 다른 변수를 가리키도록 변경할 수 없다.</li>
+</ul>
+<h3 id="ValueTuple-도입-이유-dynamic-System-Tuple의-한계"><a href="#ValueTuple-도입-이유-dynamic-System-Tuple의-한계" class="headerlink" title="ValueTuple 도입 이유: dynamic, System.Tuple의 한계"></a>ValueTuple 도입 이유: dynamic, System.Tuple의 한계</h3><ul>
+<li><p>튜플은 기본적으로 여러개의 요소를 반환해야하지만 일일히 클래스를 만들기가 번거로울 때 사용된다.</p>
+<ul>
+<li>물론 아래와같이 c# 3.0의 익명 타입과 4.0의  dynamic 예약어를 이용할수도 있지만, 런타임시 리스크가 있다.<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="keyword">dynamic</span> result = ParseInteger(<span class="string">"20"</span>); <span class="comment">//dynamic</span></span><br><span class="line">    Console.WriteLine(result.Parsed);</span><br><span class="line">    Console.WriteLine(result.Number);</span><br><span class="line">    <span class="comment">//정적 형식검사가 안돼 나중이 필드 이름이 바뀌어도 컴파일시 문제를 알아낼 수 없는 문제가 있다.</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">dynamic</span> <span class="title">ParseInteger</span>(<span class="params"><span class="keyword">string</span> text</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> number = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">try</span></span><br><span class="line">    &#123;</span><br><span class="line">        number = Int32.Parse(text);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> &#123; Number = number, Parsed = <span class="literal">true</span> &#125;; <span class="comment">//익명 타입</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">catch</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> &#123; Number = number, Parsed = <span class="literal">false</span> &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>System.Tuple을 이용해 문제를 해결할수도 있지만</p>
+<ul>
+<li>변수 이름이 무조건 Item1, 2.. 와같이 정해지며</li>
+<li>파이썬과같은 언어랑 비교했을 때 상대적으로 복잡하다.<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    Tuple&lt;<span class="keyword">bool</span>, <span class="keyword">int</span>&gt; result = pg.ParseInteger(<span class="string">"40"</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">Tuple&lt;<span class="keyword">bool</span>, <span class="keyword">int</span>&gt; <span class="title">ParseInteger</span>(<span class="params"><span class="keyword">string</span> text</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> number = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">bool</span> result = <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">try</span></span><br><span class="line">    &#123;</span><br><span class="line">        number = Int32.Parse(text);</span><br><span class="line">        result = <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">catch</span> &#123; &#125;</span><br><span class="line">    <span class="keyword">return</span> Tuple.create(result, number);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="ValueTuple의-도입"><a href="#ValueTuple의-도입" class="headerlink" title="ValueTuple의 도입"></a>ValueTuple의 도입</h3><ol>
+<li>Return 타입에 직접 이름을 지정하거나, 호출하는 측에서 강제로 이름을 지정할수도 있다.</li>
+<li>item1, item2 .. 과같은 방식의 호출도 가능하다.</li>
+<li>out 매개변수 처리에서 지원했던 생략기호도 반환값 분해 구문에 사용할 수 있다.</li>
+</ol>
+<ul>
+<li>모든 튜플은 제너릭 타입으로 변경해서 처리한다<ul>
+<li>닷넷 4에서 제공하는 System.Tuple은 class 타입으로 정의된 반면</li>
+<li>4.7의 ValueTuple은 struct로 정의되어있다는 차이가 있다.</li>
+</ul>
+</li>
+<li>Deconstruct라는 특별한 이름을 지정한 메서드를 정의해서 out 파라미터를 받아 직접 튜플을 구현할수도 있다.  <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="keyword">var</span> result = pg.ParseInteger(<span class="string">"40"</span>);</span><br><span class="line">    Console.WriteLine(result.Parsed);</span><br><span class="line">    Console.WriteLine(result.Number);</span><br><span class="line"></span><br><span class="line">    (<span class="keyword">bool</span> success, <span class="keyword">int</span> n) caller = pg.ParseInteger(<span class="string">"40"</span>);</span><br><span class="line">    Console.WriteLine(caller.success);</span><br><span class="line">    Console.WriteLine(caller.n);</span><br><span class="line"></span><br><span class="line">    (<span class="keyword">bool</span> ret, <span class="keyword">int</span> num) = pg.ParseInteger(<span class="string">"40"</span>);</span><br><span class="line">    Console.WriteLine(ret);</span><br><span class="line">    Console.WriteLine(num);</span><br><span class="line"></span><br><span class="line">    (<span class="keyword">var</span> _, <span class="keyword">var</span> _) = pg.ParseInteger(<span class="string">"40"</span>); <span class="comment">//2개값 모두 생략</span></span><br><span class="line">    (<span class="keyword">var</span> _, <span class="keyword">var</span> n) = pg.ParseInteger(<span class="string">"40"</span>); <span class="comment">//마지막 값만 n으로 받음</span></span><br><span class="line">&#125;</span><br><span class="line">(<span class="keyword">bool</span> Parsed, <span class="keyword">int</span> Number) ParseInteger(<span class="keyword">string</span> text) <span class="comment">//Return 타입에 이름 지정</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//생략</span></span><br><span class="line">    <span class="keyword">return</span> (result, number)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="lambda-메서드-정의-확대"><a href="#lambda-메서드-정의-확대" class="headerlink" title="lambda 메서드 정의 확대"></a>lambda 메서드 정의 확대</h3><ul>
+<li>아래의 메서드에대한 lambda 정의가 7.0부터 가능해졌다.<ul>
+<li>생성자/소멸자</li>
+<li>이벤트 클래스의 add/remove</li>
+<li>속성/인덱서의 set</li>
+</ul>
+</li>
+</ul>
+<h3 id="지역함수"><a href="#지역함수" class="headerlink" title="지역함수"></a>지역함수</h3><ul>
+<li>메서드 내에서만 활용할 수 있는 지역함수 문법이 추가되었다.</li>
+<li>익명함수 표기도 가능하며, 단일식이면 람다로도 표현가능하다.</li>
+<li>표기는 자유롭지만, c# 컴파일러는 internal 접근자를 가진 메서드로 정의해 타입 내에 자동으로 추가한다.</li>
+</ul>
+<h3 id="ValueTask-async메서드-반환타입으로-사용자-정의-Task타입을-반환할-수-있게됨"><a href="#ValueTask-async메서드-반환타입으로-사용자-정의-Task타입을-반환할-수-있게됨" class="headerlink" title="ValueTask: async메서드 반환타입으로 사용자 정의 Task타입을 반환할 수 있게됨"></a>ValueTask<t>: async메서드 반환타입으로 사용자 정의 Task타입을 반환할 수 있게됨</t></h3><ul>
+<li>async 예약어가 붙는 메서드는 반환타입이 void, Task, Task<t> 중에 하나여야한다</t></li>
+<li>문제는 메서드 내에서 await호출이 되지 않아 비동기 처리가 필요 없을때도 Task 객체가 생성되어 성능상 불이익이 발생한다.</li>
+<li>여기서 반환 타입을 ValueTask<t>형식으로 바꿔주면 비동기 처리를 하지 않을 경우에는 Task 객체 생성이 일어나지 않는다.  <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">string</span> _filecontents = <span class="keyword">string</span>.Empty;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">async</span> Task&lt;(<span class="keyword">string</span>, <span class="keyword">int</span>)&gt; FileReadAsync(<span class="keyword">string</span> filePath)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">string</span>.IsNullOrEmpty(_filecontents) == <span class="literal">false</span>)</span><br><span class="line">            <span class="keyword">return</span> (_filecontents, Thread.CurrentThread.ManagedThreadId);</span><br><span class="line">    </span><br><span class="line">    _filecontents = <span class="keyword">await</span> ReadAllTextAsync(filePath);</span><br><span class="line">    <span class="keyword">return</span> (_filecontents, Thread.CurrentThread.ManagedThreadId);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</t></li>
+</ul>
+<h3 id="자유로운-throw-사용"><a href="#자유로운-throw-사용" class="headerlink" title="자유로운 throw 사용"></a>자유로운 throw 사용</h3><ul>
+<li>throw는 식(expression)이 아닌 문(statement)에 해당한다.</li>
+<li>즉 ‘항’의 개념이 아니므로 삼항연산자에 사용되려면 메서드를 별개로 만들어 우회해서 사용해야 했었다.</li>
+<li>7.0부터는 직접 사용이 가능하며,<ul>
+<li>그렇다해서 모든 구문이 사용한것은 아니고 사용이 안되는 맥락에서는 컴파일 에러를 발생시킨다.</li>
+</ul>
+</li>
+</ul>
+<h3 id="리터럴의-가독성-상승을-위한-표현방식-개선"><a href="#리터럴의-가독성-상승을-위한-표현방식-개선" class="headerlink" title="리터럴의 가독성 상승을 위한 표현방식 개선"></a>리터럴의 가독성 상승을 위한 표현방식 개선</h3><ul>
+<li>7.0부터 숫자 내의 임의의 위치에 밑줄을 추가할 수 있다.<ul>
+<li>10,000,000 와 같은 표현을 위해 int number = 10_000_000 형식으로 표기 가능하다.</li>
+</ul>
+</li>
+<li>숫자뿐만이 아니라 16진수 표현도 가능하다.</li>
+</ul>
+<h3 id="패턴-매칭-상수-null-참조타입-값타입-var-등…-is-연산"><a href="#패턴-매칭-상수-null-참조타입-값타입-var-등…-is-연산" class="headerlink" title="패턴 매칭(상수, null, 참조타입, 값타입, var 등…): is 연산"></a>패턴 매칭(상수, null, 참조타입, 값타입, var 등…): is 연산</h3><ul>
+<li>is는 as와 기본적으로 동일한 기능을 수행한다.</li>
+<li>차이점은 as는 변수에 캐스팅 결과가 담기지만,</li>
+<li><p>is는 구문자체로는 True/False를 반환하고, 비교 타입 뒤에 변수명을 입력하면 해당 변수에 캐스팅된 값이 할당된다는 차이점이 있다.</p>
+  <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">object</span> obj = <span class="keyword">new</span> List&lt;<span class="keyword">string</span>&gt;();</span><br><span class="line"><span class="keyword">if</span>(obj <span class="keyword">is</span> List&lt;<span class="keyword">string</span>&gt; list)</span><br><span class="line">    list.ForEach(e =&gt; Console.WriteLine(e));</span><br><span class="line"></span><br><span class="line"><span class="keyword">object</span>[] <span class="keyword">object</span> = <span class="keyword">new</span> <span class="keyword">object</span>[] &#123; <span class="number">100</span>, <span class="literal">null</span>, DateTime.Now, <span class="keyword">new</span> ArrayList() &#125;;</span><br><span class="line"><span class="keyword">foreach</span>(<span class="keyword">object</span> item <span class="keyword">in</span> objList)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (item <span class="keyword">is</span> <span class="number">100</span>) &#123;</span><br><span class="line">        <span class="comment">//item 사용</span></span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (item <span class="keyword">is</span> <span class="literal">null</span>) &#123; </span><br><span class="line">        <span class="comment">//item 사용</span></span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (item <span class="keyword">is</span> DateTime dt) &#123;</span><br><span class="line">        <span class="comment">//dt 사용</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>var도 가능하지만 사실상 의미가 없다.</p>
+<ul>
+<li>단 var 타입뒤에 변수명 반드시 써줘야하며, 이것도 의미가 없으면 언더바(_)로 입력하면된다.</li>
+</ul>
+</li>
+</ul>
+<h3 id="패턴-매칭-switch-case-연산"><a href="#패턴-매칭-switch-case-연산" class="headerlink" title="패턴 매칭: switch/case 연산"></a>패턴 매칭: switch/case 연산</h3><ul>
+<li>case 예약어 다음에 “[타입] [변수명]”을 넣으면 is 예약어처럼 사용 가능하다</li>
+<li>case 구문 뒤에 when 예약어를 추가하면 조건을 한번 더 검사할 수 있다. 예외필터의 when과 사용법이 동일하다.</li>
+<li>튜플타입과 같은 복잡한 인자를 받을 때 var와 when 구문을 사용하면 훨씬 간결하게 사용할 수 있다.  <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Action&lt;(<span class="keyword">int</span>, <span class="keyword">int</span>)&gt; detectZeroOr = (arg) =&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">switch</span> (arg)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="keyword">var</span> r when r.Equals(<span class="number">0</span>, <span class="number">0</span>):</span><br><span class="line">        <span class="keyword">case</span> <span class="keyword">var</span> r1 when r1.Item == <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">case</span> <span class="keyword">var</span> r2 when r2.Item == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    Console.WriteLine(<span class="string">"both nonzero"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/c/">c#</a>
+          
+            <a href="/tags/ref/">ref</a>
+          
+            <a href="/tags/out/">out</a>
+          
+            <a href="/tags/lambda/">lambda</a>
+          
+            <a href="/tags/when/">when</a>
+          
+            <a href="/tags/is/">is</a>
+          
+            <a href="/tags/c-7-0/">c#7.0</a>
+          
+            <a href="/tags/tuple/">tuple</a>
+          
+            <a href="/tags/ValueTask/">ValueTask</a>
+          
+            <a href="/tags/switch-case/">switch/case</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2018/12/07/Csharp/2018-12-07-csharp-6.0-syntheticsugar/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">c# 기본서 - c# 6.0: 간편표기법</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2018/12/07/Csharp/2018-12-07-csharp-4.0-dynamic/">
+        <span class="next-text nav-default">c# 기본서 - c# 4.0: dynamic</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2019
+    <span class="footer-author">Park Doyeon.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/parkdoyeon">Me</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+<!--<script type="text/javascript" src="/js/src/highlight.pack.js?v=1.1"></script>
+<script>
+hljs.initHighlightingOnLoad();
+document.addEventListener('DOMContentLoaded', (event) => {
+  document.querySelectorAll('td.code').forEach((block) => {
+    hljs.highlightBlock(block);
+  });
+});
+</script>-->
+  </body>
+</html>

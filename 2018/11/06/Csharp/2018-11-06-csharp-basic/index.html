@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.8.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="c# 기본서 - 빌드환경과 GC, 힙과 스택">
+
+
+
+
+  <meta name="keywords" content="c#,build,GC,Stack,Heap,Attribute,예약어,dll,자원수거,">
+
+
+
+
+
+  <link rel="alternate" href="/default" title="Park Doyeon">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="https://parkdoyeon.github.io/2018/11/06/Csharp/2018-11-06-csharp-basic/">
+
+
+<meta name="description" content="전처리기 지시문 #if #endif 잔처리기를 사용하면 컴파일시 적용되는 구문을 분기처리할 수 있다. DEBUG와 TRACE상수의 경우 빌드 옵션에서 세팅할수 있고, 별도로 세팅을 하고싶으면 아래대로 하면 된다   Project Properties -&amp;gt; Build Select Release Mode in the Conditional compilatio">
+<meta name="keywords" content="c#,build,GC,Stack,Heap,Attribute,예약어,dll,자원수거">
+<meta property="og:type" content="article">
+<meta property="og:title" content="c# 기본서 - 빌드환경과 GC, 힙과 스택">
+<meta property="og:url" content="https://parkdoyeon.github.io/2018/11/06/Csharp/2018-11-06-csharp-basic/index.html">
+<meta property="og:site_name" content="Park Doyeon">
+<meta property="og:description" content="전처리기 지시문 #if #endif 잔처리기를 사용하면 컴파일시 적용되는 구문을 분기처리할 수 있다. DEBUG와 TRACE상수의 경우 빌드 옵션에서 세팅할수 있고, 별도로 세팅을 하고싶으면 아래대로 하면 된다   Project Properties -&amp;gt; Build Select Release Mode in the Conditional compilatio">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-05-19T15:51:03.845Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="c# 기본서 - 빌드환경과 GC, 힙과 스택">
+<meta name="twitter:description" content="전처리기 지시문 #if #endif 잔처리기를 사용하면 컴파일시 적용되는 구문을 분기처리할 수 있다. DEBUG와 TRACE상수의 경우 빌드 옵션에서 세팅할수 있고, 별도로 세팅을 하고싶으면 아래대로 하면 된다   Project Properties -&amp;gt; Build Select Release Mode in the Conditional compilatio">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+    <title> c# 기본서 - 빌드환경과 GC, 힙과 스택 - Park Doyeon </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">Park Doyeon</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/resume">
+                            
+                            
+                                Resume
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+      </header>
+
+      <div id="post-categories"><div>
+    <a class="categories-link" href="/Dev-Env/">Dev-Env</a><a class="categories-link" href="/ELK/">ELK</a><a class="categories-link" href="/SQL/">SQL</a><a class="categories-link" href="/csharp/">csharp</a><a class="categories-link" href="/docker/">docker</a><a class="categories-link" href="/web/">web</a>
+</div>
+      </div>
+
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          c# 기본서 - 빌드환경과 GC, 힙과 스택
+        
+      </h1>
+
+      <time class="post-time">
+          Nov 6 2018
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <h3 id="전처리기-지시문-if-endif"><a href="#전처리기-지시문-if-endif" class="headerlink" title="전처리기 지시문 #if #endif"></a>전처리기 지시문 #if #endif</h3><ul>
+<li>잔처리기를 사용하면 컴파일시 적용되는 구문을 분기처리할 수 있다.</li>
+<li>DEBUG와 TRACE상수의 경우 빌드 옵션에서 세팅할수 있고, 별도로 세팅을 하고싶으면 <a href="https://stackoverflow.com/questions/507704/will-if-release-work-like-if-debug-does-in-c" target="_blank" rel="noopener">아래대로 하면</a> 된다</li>
+</ul>
+<ol>
+<li>Project Properties -&gt; Build</li>
+<li>Select Release Mode</li>
+<li>in the Conditional compilation symbols textbox enter: RELEASE</li>
+</ol>
+<ul>
+<li>이 밖에도 #warning, #error, #line, #region, #endregion, #pragma 등이 있다.</li>
+</ul>
+<h3 id="Attribute"><a href="#Attribute" class="headerlink" title="[Attribute]"></a>[Attribute]</h3><ul>
+<li>개발자로하여금 컴파일 후에도 EXE/DLL파일에 남길 수 있는 주석처럼 사용되는 코드</li>
+<li>라고는 하는데 우리팀은 캐싱이나 인증 로직을 조건처럼 구현할때 사용했다.</li>
+<li>직접 특성(Attribute)을 만들수도있는데, System.Attribute를 상속받으면 된다</li>
+<li>특성을 적용받는 타겟을 옵션으로 줄 수도 있다.</li>
+<li>참조: [Conditional(“DEBUG”)] 이렇게 입력하면 전처리기지시문처럼 해당 함수를 DEBUG때만 빌드하게 할 수 있다.</li>
+</ul>
+<h3 id="예약어-checked-unchecked"><a href="#예약어-checked-unchecked" class="headerlink" title="예약어 checked, unchecked"></a>예약어 checked, unchecked</h3><ul>
+<li>산술 범위가 넘어가면서 중요한 수치가 되는 값들이 증발하는 경우(overflow/underflow)를 막기위해 사용된다</li>
+<li>checked 블록을 만들고 연산을 수행하면 예외를던지고</li>
+<li>checked옵션을 전체 적용하고 unchecked블록을 생성하면 해당 블록 내에서 over/underflow가 일어나도 예외가 나타나지 않는다</li>
+</ul>
+<h3 id="가변-매개변수-params"><a href="#가변-매개변수-params" class="headerlink" title="가변 매개변수 params"></a>가변 매개변수 params</h3><ul>
+<li>파라미터가 여러개가 될수도 있을 때 아래와같이 표기하면 다양하게 값을 넣을 수 있다.<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">static int Add(params int[] args)</span><br><span class="line">&#123;</span><br><span class="line">    //연산</span><br><span class="line">&#125;</span><br><span class="line">static void DoSomething(params object[] args)</span><br><span class="line">&#123;</span><br><span class="line">    //연산</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="빌드-구성요소-dll-app-config"><a href="#빌드-구성요소-dll-app-config" class="headerlink" title="빌드 구성요소: dll, app.config"></a>빌드 구성요소: dll, app.config</h3><ul>
+<li>dll파일을 위한 함수는 public으로 만든다</li>
+<li>한 dll에 여러 프로세스가 접근할 수 있다</li>
+<li>그러나 프로세스별로 동일 dll의 다른 버전을 요구할수도 있다. 이때는 공개키토큰이나 어셈블리 서명방식을 통해 구분할 수 있다.</li>
+<li>app.config는 개발자 코드 실행전 단계인 CLR환경 초기화에사 어떤 값을 전달해야할때 사용되는 변수/설정사항 등을 선언해놓는 곳이다</li>
+<li>app.config를 통해 프레임워크를 설정할 수 있다. 닷넷프레임워크는 4.0이후부터 업데이트시 파일이 대체되므로 구버전을 설치한 경우 이전 버전들이 남아있다.</li>
+<li>MS는 타입과 타입이 정의된 어셈블리를 느낌표로 구분한다<ul>
+<li>ex) mscorlib.dll에 구현된 System.Object의 경우 -&gt; mscorlib!System.Object</li>
+</ul>
+</li>
+</ul>
+<h3 id="릴리즈와-디버깅모드"><a href="#릴리즈와-디버깅모드" class="headerlink" title="릴리즈와 디버깅모드"></a>릴리즈와 디버깅모드</h3><ul>
+<li>Release의경우 코드최적화를 하기때문에 StackTrace로 남는 내용이 정확하게 보여지지 않을 수 있다.</li>
+<li>Trace는 Debug와 달리 릴리즈모드에도 실행된다. 즉 추적을 위한 네임스페이스이다.</li>
+</ul>
+<h3 id="플랫폼-선택-AnyCPU-x86-x64"><a href="#플랫폼-선택-AnyCPU-x86-x64" class="headerlink" title="플랫폼 선택 (AnyCPU, x86, x64)"></a>플랫폼 선택 (AnyCPU, x86, x64)</h3><ul>
+<li>일단 AnyCPU를 사용할것을 권장.</li>
+<li>x86은 어느윈도우든 32비트exe로 실행되고</li>
+<li>x64는 64비트 윈도우에서 64비트exe로만 실행된다. 32비트 윈도우에선 실행 되지 않는다.</li>
+<li>AnyCPU인 경우는 각 비트에 맞게 실행된다. 다만 오직 AnyCpu에서만 옵션을 통해 32비트 기본사용을 선택할 수 있다.</li>
+<li>32비트 기본사용 옵션이 필요한 이유는 32비트exe인 dll이 매우 많기 때문. 가령 ActiveX </li>
+</ul>
+<h3 id="예외처리와-자원수거"><a href="#예외처리와-자원수거" class="headerlink" title="예외처리와 자원수거"></a>예외처리와 자원수거</h3><ul>
+<li>finally가 필요한 이유는 예외가 발생해도 db나 file은 자원수거는 해야하기떄문<ul>
+<li>자원수거를 자연스럽게 하는 또다른 방법은 using이 있다.</li>
+<li>개발자의 실수를 예방하고 방어적인 차원에서 해제코드를 넣는 것이 소멸자. 해제코드가 언제 실행될지는 모르기때문에 사용은 하지 말자.</li>
+</ul>
+</li>
+<li>throw는 단독으로 사용하는게 좋다. throw ex를 하면 예외시점부터의 스택이 호출된다.</li>
+</ul>
+<h3 id="스택"><a href="#스택" class="headerlink" title="스택"></a>스택</h3><ul>
+<li>힙과 스택 둘 다 데이터를 위한 메모리이다.</li>
+<li>스택은 스레드 생성이 되면 기본적으로 1mb용량으로 할당된다.</li>
+<li>스택은 메서드의 실행, 메서드 인자, 지역변수를 처리한다. 떄문에 재귀호출로인한 에러는 스택오버플로우이다.</li>
+<li>스택 에러발생시 메모리가 모두 소비되었기 때문에 StackTrace를 알려주는 메서드 호출이 불가하다</li>
+</ul>
+<h3 id="힙"><a href="#힙" class="headerlink" title="힙"></a>힙</h3><ul>
+<li>CLR에서는 기본적으로 관리힙을 가리킨다. GC의 할당, 해지를 관리한다</li>
+<li>new로 할당되는 모든 참조형 객체는 힙에 할당된다. 얘넨 모두 GC가 직접 관리한다.</li>
+<li>박싱 언박싱은 참조형데이터와 값데이터간의 이동을 의미하는데, 박싱이 일어날경우 값데이터를 참조형으로 변경하게 되므로 GC가 매우 바빠진다. 대표적인 예가 값데이터를 함수의 인자로 넣는 경우.</li>
+<li>대용량 객체 힙(Large Object Heap)이 있다. 가비지 수집마다 LOH를 이동시키는건 부담이 크므로 GC가 직접 관리하지 않는다.</li>
+</ul>
+<h3 id="GC"><a href="#GC" class="headerlink" title="GC"></a>GC</h3><ul>
+<li>CLR의 세대는 2세대가 끝이다.</li>
+</ul>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/c/">c#</a>
+          
+            <a href="/tags/build/">build</a>
+          
+            <a href="/tags/GC/">GC</a>
+          
+            <a href="/tags/Stack/">Stack</a>
+          
+            <a href="/tags/Heap/">Heap</a>
+          
+            <a href="/tags/Attribute/">Attribute</a>
+          
+            <a href="/tags/예약어/">예약어</a>
+          
+            <a href="/tags/dll/">dll</a>
+          
+            <a href="/tags/자원수거/">자원수거</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2018/11/14/Csharp/2018-11-14-csharp-basic/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">c# 기본서 - BCL: 시간계산, Collection, 문자열처리, 직렬화와 Stream</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2018/10/28/ELK/2018-01-08-logstash-multiline/">
+        <span class="next-text nav-default">Logstash - 멀티라인 세팅하기</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2019
+    <span class="footer-author">Park Doyeon.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/parkdoyeon">Me</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+<!--<script type="text/javascript" src="/js/src/highlight.pack.js?v=1.1"></script>
+<script>
+hljs.initHighlightingOnLoad();
+document.addEventListener('DOMContentLoaded', (event) => {
+  document.querySelectorAll('td.code').forEach((block) => {
+    hljs.highlightBlock(block);
+  });
+});
+</script>-->
+  </body>
+</html>

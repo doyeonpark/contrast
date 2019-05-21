@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.8.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="c# 기본서 - AppDomain과 리플렉션">
+
+
+
+
+  <meta name="keywords" content="c#,dll,bcl,AppDomain,Reflection,">
+
+
+
+
+
+  <link rel="alternate" href="/default" title="Park Doyeon">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="https://parkdoyeon.github.io/2018/12/03/Csharp/2018-12-03-csharp-else/">
+
+
+<meta name="description" content="응용프로그램 도메인(App Domain) 닷넷 응용프로그램은 EXE 프로세스로 실행되고 내부의 CLR에 의해 응용프로그램 도메인(App Domain)으로 나뉜다. 이는 내부적인 격리 공간으로, 별도의 통신방법을 설정하지 않는 한 서로 침범할 수 없으며, 하나의 App Domain이 불안정하게 종료가 되어도 영향을 끼치지 않는다.   App Domain 내부">
+<meta name="keywords" content="c#,dll,bcl,AppDomain,Reflection">
+<meta property="og:type" content="article">
+<meta property="og:title" content="c# 기본서 - AppDomain과 리플렉션">
+<meta property="og:url" content="https://parkdoyeon.github.io/2018/12/03/Csharp/2018-12-03-csharp-else/index.html">
+<meta property="og:site_name" content="Park Doyeon">
+<meta property="og:description" content="응용프로그램 도메인(App Domain) 닷넷 응용프로그램은 EXE 프로세스로 실행되고 내부의 CLR에 의해 응용프로그램 도메인(App Domain)으로 나뉜다. 이는 내부적인 격리 공간으로, 별도의 통신방법을 설정하지 않는 한 서로 침범할 수 없으며, 하나의 App Domain이 불안정하게 종료가 되어도 영향을 끼치지 않는다.   App Domain 내부">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-05-19T15:51:03.846Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="c# 기본서 - AppDomain과 리플렉션">
+<meta name="twitter:description" content="응용프로그램 도메인(App Domain) 닷넷 응용프로그램은 EXE 프로세스로 실행되고 내부의 CLR에 의해 응용프로그램 도메인(App Domain)으로 나뉜다. 이는 내부적인 격리 공간으로, 별도의 통신방법을 설정하지 않는 한 서로 침범할 수 없으며, 하나의 App Domain이 불안정하게 종료가 되어도 영향을 끼치지 않는다.   App Domain 내부">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+    <title> c# 기본서 - AppDomain과 리플렉션 - Park Doyeon </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">Park Doyeon</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/resume">
+                            
+                            
+                                Resume
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+      </header>
+
+      <div id="post-categories"><div>
+    <a class="categories-link" href="/Dev-Env/">Dev-Env</a><a class="categories-link" href="/ELK/">ELK</a><a class="categories-link" href="/SQL/">SQL</a><a class="categories-link" href="/csharp/">csharp</a><a class="categories-link" href="/docker/">docker</a><a class="categories-link" href="/web/">web</a>
+</div>
+      </div>
+
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          c# 기본서 - AppDomain과 리플렉션
+        
+      </h1>
+
+      <time class="post-time">
+          Dec 3 2018
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <h3 id="응용프로그램-도메인-App-Domain"><a href="#응용프로그램-도메인-App-Domain" class="headerlink" title="응용프로그램 도메인(App Domain)"></a>응용프로그램 도메인(App Domain)</h3><ul>
+<li>닷넷 응용프로그램은 EXE 프로세스로 실행되고 내부의 CLR에 의해 응용프로그램 도메인(App Domain)으로 나뉜다.<ul>
+<li>이는 내부적인 격리 공간으로, 별도의 통신방법을 설정하지 않는 한 서로 침범할 수 없으며,</li>
+<li>하나의 App Domain이 불안정하게 종료가 되어도 영향을 끼치지 않는다.</li>
+</ul>
+</li>
+<li>App Domain 내부에는 어셈블리들이 로드된다.<ul>
+<li>각 도메인들은 메인에서 AppDomain 클래스와 같은 reflection관련 클래스를 통해 이름과 목록을 조회하고, 직접 호출할 수 있다.</li>
+<li>심지어 직접 인스턴스를 생성할수도 있다.</li>
+<li>해제도 가능한데, Default AppDomain은 직접 해제가 불가능하고 프로세스가 종료될때만 해제된다.</li>
+</ul>
+</li>
+</ul>
+<h3 id="리플렉션-Reflection"><a href="#리플렉션-Reflection" class="headerlink" title="리플렉션(Reflection)"></a>리플렉션(Reflection)</h3><ul>
+<li>리플렉션을 이용한 메서드 접근은 메인스레드에서 실행하는 것과 동일하게 어셈블리의 클래스와 메서드 접근을 가능케 하며,</li>
+<li>컴파일 시점에서 다른 코드에 대한 정보가 없더라도 접근이 가능하도록 한다.</li>
+<li>OOP의 캡슐화 마저도 무시할 수 있는 위력을 갖는다.</li>
+<li>이러한 접근은 ‘느슨한 결합’이라고 하며, <ul>
+<li>속도 저하에대한 이슈가 있지만 기술로 뛰어넘는 추세이다.</li>
+</ul>
+</li>
+<li>때문에 프레임워크 제작에 유용하게 사용될 수 있다.</li>
+</ul>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/c/">c#</a>
+          
+            <a href="/tags/dll/">dll</a>
+          
+            <a href="/tags/bcl/">bcl</a>
+          
+            <a href="/tags/AppDomain/">AppDomain</a>
+          
+            <a href="/tags/Reflection/">Reflection</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2018/12/05/Csharp/2018-12-05-csharp-2.0-Generic/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">c# 기본서 - c# 2.0, Generic과 syntatic sugar</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2018/12/03/Csharp/2018-12-03-csharp-database/">
+        <span class="next-text nav-default">c# 기본서 - 데이터베이스</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2019
+    <span class="footer-author">Park Doyeon.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/parkdoyeon">Me</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+<!--<script type="text/javascript" src="/js/src/highlight.pack.js?v=1.1"></script>
+<script>
+hljs.initHighlightingOnLoad();
+document.addEventListener('DOMContentLoaded', (event) => {
+  document.querySelectorAll('td.code').forEach((block) => {
+    hljs.highlightBlock(block);
+  });
+});
+</script>-->
+  </body>
+</html>
