@@ -35,18 +35,18 @@
 <link rel="canonical" href="https://parkdoyeon.github.io/2019/02/12/SQL/2019-02-12-idinsert/">
 
 
-<meta name="description" content="인서트 전에 테이블 id 인서트 옵션을 on 해줘야한다 123SET IDENTITY_INSERT [table] ON;INSERT INTO [table](IDX, COL1, COL2) VALUES(1, 1, 2);SET IDENTITY_INSERT [table] OFF;">
+<meta name="description" content="인서트 전에 테이블 id 인서트 옵션을 on 해줘야한다 SET IDENTITY_INSERT [table] ON; INSERT INTO [table](IDX, COL1, COL2) VALUES(1, 1, 2); SET IDENTITY_INSERT [table] OFF;">
 <meta name="keywords" content="mssql,insert">
 <meta property="og:type" content="article">
 <meta property="og:title" content="id값 인서트하기">
 <meta property="og:url" content="https://parkdoyeon.github.io/2019/02/12/SQL/2019-02-12-idinsert/index.html">
 <meta property="og:site_name" content="Park Doyeon">
-<meta property="og:description" content="인서트 전에 테이블 id 인서트 옵션을 on 해줘야한다 123SET IDENTITY_INSERT [table] ON;INSERT INTO [table](IDX, COL1, COL2) VALUES(1, 1, 2);SET IDENTITY_INSERT [table] OFF;">
+<meta property="og:description" content="인서트 전에 테이블 id 인서트 옵션을 on 해줘야한다 SET IDENTITY_INSERT [table] ON; INSERT INTO [table](IDX, COL1, COL2) VALUES(1, 1, 2); SET IDENTITY_INSERT [table] OFF;">
 <meta property="og:locale" content="default">
 <meta property="og:updated_time" content="2019-05-19T15:51:03.844Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="id값 인서트하기">
-<meta name="twitter:description" content="인서트 전에 테이블 id 인서트 옵션을 on 해줘야한다 123SET IDENTITY_INSERT [table] ON;INSERT INTO [table](IDX, COL1, COL2) VALUES(1, 1, 2);SET IDENTITY_INSERT [table] OFF;">
+<meta name="twitter:description" content="인서트 전에 테이블 id 인서트 옵션을 on 해줘야한다 SET IDENTITY_INSERT [table] ON; INSERT INTO [table](IDX, COL1, COL2) VALUES(1, 1, 2); SET IDENTITY_INSERT [table] OFF;">
 
 
 <link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
@@ -115,7 +115,7 @@
       </header>
 
       <div id="post-categories"><div>
-    <a class="categories-link" href="/Dev-Env/">Dev-Env</a><a class="categories-link" href="/Docker/">Docker</a><a class="categories-link" href="/ELK/">ELK</a><a class="categories-link" href="/Python/">Python</a><a class="categories-link" href="/SQL/">SQL</a><a class="categories-link" href="/Web/">Web</a><a class="categories-link" href="/csharp/">csharp</a><a class="categories-link" href="/docker/">docker</a><a class="categories-link" href="/web/">web</a>
+    <a class="categories-link" href="/Dev-Env/">Dev-Env</a><a class="categories-link" href="/Docker/">Docker</a><a class="categories-link" href="/ELK/">ELK</a><a class="categories-link" href="/Python/">Python</a><a class="categories-link" href="/SQL/">SQL</a><a class="categories-link" href="/Web/">Web</a><a class="categories-link" href="/csharp/">csharp</a>
 </div>
       </div>
 
@@ -141,7 +141,11 @@
     
             <div class="post-content">
             <p>인서트 전에 테이블 id 인서트 옵션을 on 해줘야한다</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SET</span> IDENTITY_INSERT [<span class="keyword">table</span>] <span class="keyword">ON</span>;</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> [<span class="keyword">table</span>](IDX, COL1, COL2) <span class="keyword">VALUES</span>(<span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>);</span><br><span class="line"><span class="keyword">SET</span> IDENTITY_INSERT [<span class="keyword">table</span>] <span class="keyword">OFF</span>;</span><br></pre></td></tr></table></figure>
+<pre><code class="SQL">SET IDENTITY_INSERT [table] ON;
+INSERT INTO [table](IDX, COL1, COL2) VALUES(1, 1, 2);
+SET IDENTITY_INSERT [table] OFF;
+</code></pre>
+
             </div>
           
 
@@ -159,7 +163,7 @@
         
   <nav class="post-nav">
     
-      <a class="prev" href="/2019/02/12/Web/2019-02-12-safari-pwa.1/">
+      <a class="prev" href="/2019/02/12/Web/2019-02-12-safari-pwa/">
         <i class="iconfont icon-left"></i>
         <span class="prev-text nav-default">PWA - 사파리 브라우저의 동영상 리퀘스트방식</span>
         <span class="prev-text nav-mobile">Prev</span>
@@ -224,13 +228,15 @@
     <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
 <script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
 <script type="text/javascript" src="/js/src/highlight.pack.js?v=1.1"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.7.0/highlightjs-line-numbers.min.js"></script>
 <script>
-hljs.initHighlightingOnLoad();
 document.addEventListener('DOMContentLoaded', (event) => {
-  document.querySelectorAll('td.code').forEach((block) => {
+  document.querySelectorAll('figure.highlight').forEach((block) => {
     hljs.highlightBlock(block);
   });
 });
+hljs.initHighlightingOnLoad();
+hljs.initLineNumbersOnLoad();
 </script>
   </body>
 </html>

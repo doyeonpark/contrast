@@ -115,7 +115,7 @@
       </header>
 
       <div id="post-categories"><div>
-    <a class="categories-link" href="/Dev-Env/">Dev-Env</a><a class="categories-link" href="/Docker/">Docker</a><a class="categories-link" href="/ELK/">ELK</a><a class="categories-link" href="/Python/">Python</a><a class="categories-link" href="/SQL/">SQL</a><a class="categories-link" href="/Web/">Web</a><a class="categories-link" href="/csharp/">csharp</a><a class="categories-link" href="/docker/">docker</a><a class="categories-link" href="/web/">web</a>
+    <a class="categories-link" href="/Dev-Env/">Dev-Env</a><a class="categories-link" href="/Docker/">Docker</a><a class="categories-link" href="/ELK/">ELK</a><a class="categories-link" href="/Python/">Python</a><a class="categories-link" href="/SQL/">SQL</a><a class="categories-link" href="/Web/">Web</a><a class="categories-link" href="/csharp/">csharp</a>
 </div>
       </div>
 
@@ -149,20 +149,52 @@
 <li>두 요소를 반환하지 않는 형식의 메서드를 사용하면 메서드가 즉시 실행된다.</li>
 </ul>
 </telement></t></li>
-<li><p>select 예약어: Select 확장 메서드호출하는 또 다른 문법에 불과하다.</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var all = from person in people</span><br><span class="line">    select person;</span><br><span class="line">people.Select((elem) =&gt; elem );</span><br></pre></td></tr></table></figure>
+<li>select 예약어: Select 확장 메서드호출하는 또 다른 문법에 불과하다.<pre><code class="c#">  var all = from person in people
+      select person;
+  people.Select((elem) =&gt; elem );
+</code></pre>
 </li>
 <li><p>orderby: IComparable 인터페이스가 구현된 타입에 사용할 수 있다.</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var all = from person in people</span><br><span class="line">    orderby person.Age descending //디폴트가 ascending</span><br><span class="line">    select person;</span><br></pre></td></tr></table></figure>
+<pre><code class="c#">  var all = from person in people
+      orderby person.Age descending //디폴트가 ascending
+      select person;
+</code></pre>
 </li>
 <li><p>group … by: select … by와 의미적으로 같으므로 (실제 select … by는 없음) select가 올 수 없다.</p>
 <ul>
-<li>그렇기 때문에 select에서 가능한 형변환 작업이 가능하다.<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">var addrGroup = from person in people</span><br><span class="line">    group person by person.Address;</span><br><span class="line"></span><br><span class="line">//아래와 같이도 가능하다</span><br><span class="line">var changedGroup = from person in people</span><br><span class="line">    group new &#123; Name = person.Name, Age = person.Age &#125; by person.Address;</span><br><span class="line"></span><br><span class="line">foreach(var itemGroup in addrGroup) //컬렉션 요소 분류</span><br><span class="line">&#123;</span><br><span class="line">    Console.WriteLine(itemGroup.Key) </span><br><span class="line">    </span><br><span class="line">    foreach(var item in itemGroup) //컬렉션 반환</span><br><span class="line">        Console.WriteLine(item.Name);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<li><p>그렇기 때문에 select에서 가능한 형변환 작업이 가능하다.</p>
+<pre><code class="c#">var addrGroup = from person in people
+  group person by person.Address;
+
+//아래와 같이도 가능하다
+var changedGroup = from person in people
+  group new { Name = person.Name, Age = person.Age } by person.Address;
+
+foreach(var itemGroup in addrGroup) //컬렉션 요소 분류
+{
+  Console.WriteLine(itemGroup.Key) 
+
+  foreach(var item in itemGroup) //컬렉션 반환
+      Console.WriteLine(item.Name);
+}
+</code></pre>
 </li>
 </ul>
 </li>
 <li><p>join: 이런게 가능하다 정도만?</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">//만족하는 레코드만 삽입시키는 inner join의 유형</span><br><span class="line">//on ... equals ...가 사용됐다.</span><br><span class="line">var nameToLangList = from person in people</span><br><span class="line">    join language in languages on person.Name equals language.Name</span><br><span class="line"></span><br><span class="line">//누락시키지 않고 전부 삽입하는 outer join의 유형</span><br><span class="line">//빈값에 대한 후처리</span><br><span class="line">var nameToLangAllList = from person in people</span><br><span class="line">    join language in languages on person.Name equals language.Name into lang</span><br><span class="line">    from language in lang.DefaultIfEmpty(new MainLanguage())</span><br><span class="line">    select new &#123; Name=person.Name, Age=person.Age, Language=language.Language &#125;</span><br></pre></td></tr></table></figure></li>
+<pre><code class="c#">  //만족하는 레코드만 삽입시키는 inner join의 유형
+  //on ... equals ...가 사용됐다.
+  var nameToLangList = from person in people
+      join language in languages on person.Name equals language.Name
+
+  //누락시키지 않고 전부 삽입하는 outer join의 유형
+  //빈값에 대한 후처리
+  var nameToLangAllList = from person in people
+      join language in languages on person.Name equals language.Name into lang
+      from language in lang.DefaultIfEmpty(new MainLanguage())
+      select new { Name=person.Name, Age=person.Age, Language=language.Language }
+</code></pre>
+</li>
 </ul>
 
             </div>
@@ -249,13 +281,15 @@
     <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
 <script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
 <script type="text/javascript" src="/js/src/highlight.pack.js?v=1.1"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.7.0/highlightjs-line-numbers.min.js"></script>
 <script>
-hljs.initHighlightingOnLoad();
 document.addEventListener('DOMContentLoaded', (event) => {
-  document.querySelectorAll('td.code').forEach((block) => {
+  document.querySelectorAll('figure.highlight').forEach((block) => {
     hljs.highlightBlock(block);
   });
 });
+hljs.initHighlightingOnLoad();
+hljs.initLineNumbersOnLoad();
 </script>
   </body>
 </html>

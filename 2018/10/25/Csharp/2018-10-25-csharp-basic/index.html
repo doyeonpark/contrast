@@ -115,7 +115,7 @@
       </header>
 
       <div id="post-categories"><div>
-    <a class="categories-link" href="/Dev-Env/">Dev-Env</a><a class="categories-link" href="/Docker/">Docker</a><a class="categories-link" href="/ELK/">ELK</a><a class="categories-link" href="/Python/">Python</a><a class="categories-link" href="/SQL/">SQL</a><a class="categories-link" href="/Web/">Web</a><a class="categories-link" href="/csharp/">csharp</a><a class="categories-link" href="/docker/">docker</a><a class="categories-link" href="/web/">web</a>
+    <a class="categories-link" href="/Dev-Env/">Dev-Env</a><a class="categories-link" href="/Docker/">Docker</a><a class="categories-link" href="/ELK/">ELK</a><a class="categories-link" href="/Python/">Python</a><a class="categories-link" href="/SQL/">SQL</a><a class="categories-link" href="/Web/">Web</a><a class="categories-link" href="/csharp/">csharp</a>
 </div>
       </div>
 
@@ -148,11 +148,33 @@
 </ul>
 <h3 id="event"><a href="#event" class="headerlink" title="event"></a>event</h3><ul>
 <li>델리게이트 예약어로, 첫번째로 이벤트를 발생시킨 인자를, 두번째 인자로 해당 이벤트에대한 값을 제공받는다.</li>
-<li>델리게이트 만으로도 구현이 가능하지만, 이벤트 예약어로 구현하면 콜백함수를 구독/해지할 수 있도록 함수를 담아두는 클래스선언을 하지 않아도 된다.<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">class SomeClass</span><br><span class="line">&#123;</span><br><span class="line">    public event EventHandler CallbackGroup</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<li>델리게이트 만으로도 구현이 가능하지만, 이벤트 예약어로 구현하면 콜백함수를 구독/해지할 수 있도록 함수를 담아두는 클래스선언을 하지 않아도 된다.<pre><code class="c#">class SomeClass
+{
+  public event EventHandler CallbackGroup
+}
+</code></pre>
 </li>
 </ul>
 <h3 id="클래스를-배열처럼-사용하게-하는-Indexer"><a href="#클래스를-배열처럼-사용하게-하는-Indexer" class="headerlink" title="클래스를 배열처럼 사용하게 하는 Indexer"></a>클래스를 배열처럼 사용하게 하는 Indexer</h3><ul>
-<li>프로퍼티를 활용해서 클래스에 배열처럼 접근하도록 돕는 기능<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">class SomeClass</span><br><span class="line">&#123;</span><br><span class="line">    public int this[indexer]</span><br><span class="line">    &#123;</span><br><span class="line">        public get</span><br><span class="line">        &#123;</span><br><span class="line">            if(indexer == &quot;냐옹&quot;)</span><br><span class="line">                return &quot;고양이&quot;;</span><br><span class="line">            else</span><br><span class="line">                return &quot;강아지&quot;;</span><br><span class="line">        &#125;</span><br><span class="line">        public set;</span><br><span class="line">        &#123;</span><br><span class="line">            this[indexer] = value;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    public event EventHandler CallbackGroup</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<li>프로퍼티를 활용해서 클래스에 배열처럼 접근하도록 돕는 기능<pre><code class="c#">class SomeClass
+{
+  public int this[indexer]
+  {
+      public get
+      {
+          if(indexer == &quot;냐옹&quot;)
+              return &quot;고양이&quot;;
+          else
+              return &quot;강아지&quot;;
+      }
+      public set;
+      {
+          this[indexer] = value;
+      }
+  }
+  public event EventHandler CallbackGroup
+}
+</code></pre>
 </li>
 </ul>
 
@@ -181,9 +203,9 @@
         
   <nav class="post-nav">
     
-      <a class="prev" href="/2018/10/28/ELK/2018-01-08-logstash-multiline/">
+      <a class="prev" href="/2018/10/28/ELK/2018-10-28-logstash-pipeline/">
         <i class="iconfont icon-left"></i>
-        <span class="prev-text nav-default">Logstash - 멀티라인 세팅하기</span>
+        <span class="prev-text nav-default">Logstash - 파이프라인 만들기</span>
         <span class="prev-text nav-mobile">Prev</span>
       </a>
     
@@ -246,13 +268,15 @@
     <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
 <script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
 <script type="text/javascript" src="/js/src/highlight.pack.js?v=1.1"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.7.0/highlightjs-line-numbers.min.js"></script>
 <script>
-hljs.initHighlightingOnLoad();
 document.addEventListener('DOMContentLoaded', (event) => {
-  document.querySelectorAll('td.code').forEach((block) => {
+  document.querySelectorAll('figure.highlight').forEach((block) => {
     hljs.highlightBlock(block);
   });
 });
+hljs.initHighlightingOnLoad();
+hljs.initLineNumbersOnLoad();
 </script>
   </body>
 </html>

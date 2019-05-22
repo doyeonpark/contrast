@@ -35,18 +35,18 @@
 <link rel="canonical" href="https://parkdoyeon.github.io/2019/02/13/Web/2019-02-13-facebook-share/">
 
 
-<meta name="description" content="123456789101112131415(function (d, s, id) &amp;#123;    var js, fjs = d.getElementsByTagName(s)[0];    if (d.getElementById(id)) &amp;#123; return; &amp;#125;    js = d.createElement(s); js.id = id;    js.src = &apos;">
+<meta name="description" content="(function (d, s, id) {     var js, fjs = d.getElementsByTagName(s)[0];     if (d.getElementById(id)) { return; }     js = d.createElement(s); js.id = id;     js.src = &amp;#39;//connect.facebook.net/en_US">
 <meta name="keywords" content="web,facebook">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Facebook - 공유하기 스크립트 만들기">
 <meta property="og:url" content="https://parkdoyeon.github.io/2019/02/13/Web/2019-02-13-facebook-share/index.html">
 <meta property="og:site_name" content="Park Doyeon">
-<meta property="og:description" content="123456789101112131415(function (d, s, id) &amp;#123;    var js, fjs = d.getElementsByTagName(s)[0];    if (d.getElementById(id)) &amp;#123; return; &amp;#125;    js = d.createElement(s); js.id = id;    js.src = &apos;">
+<meta property="og:description" content="(function (d, s, id) {     var js, fjs = d.getElementsByTagName(s)[0];     if (d.getElementById(id)) { return; }     js = d.createElement(s); js.id = id;     js.src = &amp;#39;//connect.facebook.net/en_US">
 <meta property="og:locale" content="default">
 <meta property="og:updated_time" content="2019-05-21T16:15:37.863Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Facebook - 공유하기 스크립트 만들기">
-<meta name="twitter:description" content="123456789101112131415(function (d, s, id) &amp;#123;    var js, fjs = d.getElementsByTagName(s)[0];    if (d.getElementById(id)) &amp;#123; return; &amp;#125;    js = d.createElement(s); js.id = id;    js.src = &apos;">
+<meta name="twitter:description" content="(function (d, s, id) {     var js, fjs = d.getElementsByTagName(s)[0];     if (d.getElementById(id)) { return; }     js = d.createElement(s); js.id = id;     js.src = &amp;#39;//connect.facebook.net/en_US">
 
 
 <link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
@@ -115,7 +115,7 @@
       </header>
 
       <div id="post-categories"><div>
-    <a class="categories-link" href="/Dev-Env/">Dev-Env</a><a class="categories-link" href="/Docker/">Docker</a><a class="categories-link" href="/ELK/">ELK</a><a class="categories-link" href="/Python/">Python</a><a class="categories-link" href="/SQL/">SQL</a><a class="categories-link" href="/Web/">Web</a><a class="categories-link" href="/csharp/">csharp</a><a class="categories-link" href="/docker/">docker</a><a class="categories-link" href="/web/">web</a>
+    <a class="categories-link" href="/Dev-Env/">Dev-Env</a><a class="categories-link" href="/Docker/">Docker</a><a class="categories-link" href="/ELK/">ELK</a><a class="categories-link" href="/Python/">Python</a><a class="categories-link" href="/SQL/">SQL</a><a class="categories-link" href="/Web/">Web</a><a class="categories-link" href="/csharp/">csharp</a>
 </div>
       </div>
 
@@ -140,8 +140,28 @@
 
     
             <div class="post-content">
-            <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params">d, s, id</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> js, fjs = d.getElementsByTagName(s)[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">if</span> (d.getElementById(id)) &#123; <span class="keyword">return</span>; &#125;</span><br><span class="line">    js = d.createElement(s); js.id = id;</span><br><span class="line">    js.src = <span class="string">'//connect.facebook.net/en_US/sdk.js'</span>;</span><br><span class="line">    fjs.parentNode.insertBefore(js, fjs);</span><br><span class="line">&#125;(<span class="built_in">document</span>, <span class="string">'script'</span>, <span class="string">'facebook-jssdk'</span>));</span><br><span class="line"></span><br><span class="line"><span class="built_in">window</span>.fbAsyncInit = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    FB.init(&#123;</span><br><span class="line">        appId: <span class="string">'appid 고유 번호'</span>,</span><br><span class="line">        xfbml: <span class="literal">true</span>,</span><br><span class="line">        version: <span class="string">'버전'</span></span><br><span class="line">    &#125;);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>객체를 통해 쏴주면 된다.<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">FB.ui(&#123;</span><br><span class="line">    method: <span class="string">'feed'</span>,</span><br><span class="line">     link: <span class="string">'전달할 링크 url'</span></span><br><span class="line"> &#125;);</span><br></pre></td></tr></table></figure></p>
+            <pre><code class="javascript">(function (d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) { return; }
+    js = d.createElement(s); js.id = id;
+    js.src = &#39;//connect.facebook.net/en_US/sdk.js&#39;;
+    fjs.parentNode.insertBefore(js, fjs);
+}(document, &#39;script&#39;, &#39;facebook-jssdk&#39;));
+
+window.fbAsyncInit = function () {
+    FB.init({
+        appId: &#39;appid 고유 번호&#39;,
+        xfbml: true,
+        version: &#39;버전&#39;
+    });
+};
+</code></pre>
+<p>객체를 통해 쏴주면 된다.</p>
+<pre><code class="javascript">FB.ui({
+    method: &#39;feed&#39;,
+     link: &#39;전달할 링크 url&#39;
+ });
+</code></pre>
 
             </div>
           
@@ -167,7 +187,7 @@
       </a>
     
     
-      <a class="next" href="/2019/02/12/Web/2019-02-12-safari-pwa.1/">
+      <a class="next" href="/2019/02/12/Web/2019-02-12-safari-pwa/">
         <span class="next-text nav-default">PWA - 사파리 브라우저의 동영상 리퀘스트방식</span>
         <span class="prev-text nav-mobile">Next</span>
         <i class="iconfont icon-right"></i>
@@ -225,13 +245,15 @@
     <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
 <script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
 <script type="text/javascript" src="/js/src/highlight.pack.js?v=1.1"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.7.0/highlightjs-line-numbers.min.js"></script>
 <script>
-hljs.initHighlightingOnLoad();
 document.addEventListener('DOMContentLoaded', (event) => {
-  document.querySelectorAll('td.code').forEach((block) => {
+  document.querySelectorAll('figure.highlight').forEach((block) => {
     hljs.highlightBlock(block);
   });
 });
+hljs.initHighlightingOnLoad();
+hljs.initLineNumbersOnLoad();
 </script>
   </body>
 </html>

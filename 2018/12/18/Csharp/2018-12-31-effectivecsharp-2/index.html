@@ -115,7 +115,7 @@
       </header>
 
       <div id="post-categories"><div>
-    <a class="categories-link" href="/Dev-Env/">Dev-Env</a><a class="categories-link" href="/Docker/">Docker</a><a class="categories-link" href="/ELK/">ELK</a><a class="categories-link" href="/Python/">Python</a><a class="categories-link" href="/SQL/">SQL</a><a class="categories-link" href="/Web/">Web</a><a class="categories-link" href="/csharp/">csharp</a><a class="categories-link" href="/docker/">docker</a><a class="categories-link" href="/web/">web</a>
+    <a class="categories-link" href="/Dev-Env/">Dev-Env</a><a class="categories-link" href="/Docker/">Docker</a><a class="categories-link" href="/ELK/">ELK</a><a class="categories-link" href="/Python/">Python</a><a class="categories-link" href="/SQL/">SQL</a><a class="categories-link" href="/Web/">Web</a><a class="categories-link" href="/csharp/">csharp</a>
 </div>
       </div>
 
@@ -152,17 +152,18 @@
 <h3 id="할당구문보다-멤버-초기화-구문이-좋다"><a href="#할당구문보다-멤버-초기화-구문이-좋다" class="headerlink" title="할당구문보다 멤버 초기화 구문이 좋다."></a>할당구문보다 멤버 초기화 구문이 좋다.</h3><ul>
 <li>생성자에서 초기화 코드를 누락하는 경우가 많으므로 변수를 선언하는 곳에서 초기화를 해주는 것이 좋다.</li>
 <li>초기화를 하지 않으면 예외가 발생할 위험이 있기 때문이다.</li>
-<li><p>다만 초기화가 필요없는 경우가 있는데, 다음과 같다.</p>
-<ol>
-<li><p>null이나 0으로 초기화를 하는 경우</p>
-<ul>
+<li>다만 초기화가 필요없는 경우가 있는데, 다음과 같다.<ol>
+<li>null이나 0으로 초기화를 하는 경우<ul>
 <li>저수준에서 CPU 명령이 메모리블록을 0으로 설정하기때문.</li>
-<li>아래 코드는 동일한 0 초기화 구문이다.<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    MyValType myVal1;</span><br><span class="line">    MyValType myVal2 = <span class="keyword">new</span> MyValType();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<li>아래 코드는 동일한 0 초기화 구문이다.<pre><code class="c#">{
+   MyValType myVal1;
+   MyValType myVal2 = new MyValType();
+}
+</code></pre>
 </li>
 </ul>
 </li>
-<li><p>객체를 생성하는 방식이 다를경우 ex) list 객체의 size를 생성자마자 달리 설정하는 것</p>
-</li>
+<li>객체를 생성하는 방식이 다를경우 ex) list 객체의 size를 생성자마자 달리 설정하는 것</li>
 </ol>
 </li>
 </ul>
@@ -242,15 +243,15 @@
         
   <nav class="post-nav">
     
-      <a class="prev" href="/2018/12/18/Csharp/2018-12-18-effectivecsharp-1/">
+      <a class="prev" href="/2019/01/03/Csharp/2019-01-03-effectivecsharp-3/">
         <i class="iconfont icon-left"></i>
-        <span class="prev-text nav-default">effective c# - 1. 언어요소</span>
+        <span class="prev-text nav-default">effective c# - 3. 제네릭 활용</span>
         <span class="prev-text nav-mobile">Prev</span>
       </a>
     
     
-      <a class="next" href="/2018/12/07/Csharp/2018-12-11-csharp-7.1-tuple,async,is/">
-        <span class="next-text nav-default">c# 기본서 - c# 7.1: Tuple, ValueTuple, async, is</span>
+      <a class="next" href="/2018/12/18/Csharp/2018-12-18-effectivecsharp-1/">
+        <span class="next-text nav-default">effective c# - 1. 언어요소</span>
         <span class="prev-text nav-mobile">Next</span>
         <i class="iconfont icon-right"></i>
       </a>
@@ -307,13 +308,15 @@
     <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
 <script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
 <script type="text/javascript" src="/js/src/highlight.pack.js?v=1.1"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.7.0/highlightjs-line-numbers.min.js"></script>
 <script>
-hljs.initHighlightingOnLoad();
 document.addEventListener('DOMContentLoaded', (event) => {
-  document.querySelectorAll('td.code').forEach((block) => {
+  document.querySelectorAll('figure.highlight').forEach((block) => {
     hljs.highlightBlock(block);
   });
 });
+hljs.initHighlightingOnLoad();
+hljs.initLineNumbersOnLoad();
 </script>
   </body>
 </html>

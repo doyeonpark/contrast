@@ -115,7 +115,7 @@
       </header>
 
       <div id="post-categories"><div>
-    <a class="categories-link" href="/Dev-Env/">Dev-Env</a><a class="categories-link" href="/Docker/">Docker</a><a class="categories-link" href="/ELK/">ELK</a><a class="categories-link" href="/Python/">Python</a><a class="categories-link" href="/SQL/">SQL</a><a class="categories-link" href="/Web/">Web</a><a class="categories-link" href="/csharp/">csharp</a><a class="categories-link" href="/docker/">docker</a><a class="categories-link" href="/web/">web</a>
+    <a class="categories-link" href="/Dev-Env/">Dev-Env</a><a class="categories-link" href="/Docker/">Docker</a><a class="categories-link" href="/ELK/">ELK</a><a class="categories-link" href="/Python/">Python</a><a class="categories-link" href="/SQL/">SQL</a><a class="categories-link" href="/Web/">Web</a><a class="categories-link" href="/csharp/">csharp</a>
 </div>
       </div>
 
@@ -154,12 +154,37 @@
 <li>item1, item2 등의 형식의 변수명을 사용하지 않으려면 명시적으로 이름을 지정해줘야했지만</li>
 <li><p>7.1부터는 변수명을 타입 추론(타입을 확인해서 할당될 때 적용된 이름사용) 을 통해 알수있게됐다</p>
 <ul>
-<li>물론 추론이 불가능할 땐 item형식의 이름을 쓴다.<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    int age = 20;</span><br><span class="line">    string name = &quot;Kevin Arnold&quot;;</span><br><span class="line">    var t = (age, name);</span><br><span class="line">    Console.WriteLine($&quot;&#123;t.age&#125;, &#123;t.Name&#125;&quot;)</span><br><span class="line"></span><br><span class="line">    var person = new &#123; Age = 30, Name = &quot;Winnie Copper&quot;&#125;;</span><br><span class="line">    var t = (25, person.Name);</span><br><span class="line">    Console.WriteLine($&quot;&#123;t.Item1&#125;, &#123;t.Name&#125;&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<li><p>물론 추론이 불가능할 땐 item형식의 이름을 쓴다.</p>
+<pre><code class="c#">{
+    int age = 20;
+    string name = &quot;Kevin Arnold&quot;;
+    var t = (age, name);
+    Console.WriteLine($&quot;{t.age}, {t.Name}&quot;)
+
+    var person = new { Age = 30, Name = &quot;Winnie Copper&quot;};
+    var t = (25, person.Name);
+    Console.WriteLine($&quot;{t.Item1}, {t.Name}&quot;);
+}
+</code></pre>
 </li>
 </ul>
 </li>
 <li><p>이와 같은 변화는 LINQ에서 훨씬 간결한 표현을 할 수 있도록 한다.</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&#123;  </span><br><span class="line">    //익명 타입활용</span><br><span class="line">    var dateList = from person in people</span><br><span class="line">                    select &#123; Name = person.Name, Year = DateTime.Now.AddYears(-person.Age).Year</span><br><span class="line">    </span><br><span class="line">    //이전 버전에서 튜플 이름을 반드시 지정해주고싶을때</span><br><span class="line">    var dateList = from person in people</span><br><span class="line">                    select (Name: person.Name, Year: DateTime.Now.AddYears(-person.Age).Year);</span><br><span class="line"></span><br><span class="line">    //7.1에서 튜플 자동지정 활용</span><br><span class="line">    var dateList = from person in people</span><br><span class="line">                    select (person.Name, DateTime.Now.AddYears(-person.Age).Year);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="c#">  {  
+      //익명 타입활용
+      var dateList = from person in people
+                      select { Name = person.Name, Year = DateTime.Now.AddYears(-person.Age).Year
+
+      //이전 버전에서 튜플 이름을 반드시 지정해주고싶을때
+      var dateList = from person in people
+                      select (Name: person.Name, Year: DateTime.Now.AddYears(-person.Age).Year);
+
+      //7.1에서 튜플 자동지정 활용
+      var dateList = from person in people
+                      select (person.Name, DateTime.Now.AddYears(-person.Age).Year);
+
+  }
+</code></pre>
 </li>
 </ul>
 <h3 id="is의-제너릭-패턴매칭-허용"><a href="#is의-제너릭-패턴매칭-허용" class="headerlink" title="is의 제너릭 패턴매칭 허용"></a>is의 제너릭 패턴매칭 허용</h3><ul>
@@ -191,15 +216,15 @@
         
   <nav class="post-nav">
     
-      <a class="prev" href="/2018/12/18/Csharp/2018-12-31-effectivecsharp-2/">
+      <a class="prev" href="/2018/12/18/Csharp/2018-12-18-effectivecsharp-1/">
         <i class="iconfont icon-left"></i>
-        <span class="prev-text nav-default">effective c# - 2. 리소스 관리</span>
+        <span class="prev-text nav-default">effective c# - 1. 언어요소</span>
         <span class="prev-text nav-mobile">Prev</span>
       </a>
     
     
-      <a class="next" href="/2018/12/07/Csharp/2018-12-07-csharp-6.0-syntheticsugar/">
-        <span class="next-text nav-default">c# 기본서 - c# 6.0: 간편표기법</span>
+      <a class="next" href="/2018/12/07/Csharp/2018-12-11-csharp-7.0-tupleandreserved/">
+        <span class="next-text nav-default">c# 기본서 - c# 7.0: 예약어와 ValueTask/ValueTuple</span>
         <span class="prev-text nav-mobile">Next</span>
         <i class="iconfont icon-right"></i>
       </a>
@@ -256,13 +281,15 @@
     <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
 <script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
 <script type="text/javascript" src="/js/src/highlight.pack.js?v=1.1"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.7.0/highlightjs-line-numbers.min.js"></script>
 <script>
-hljs.initHighlightingOnLoad();
 document.addEventListener('DOMContentLoaded', (event) => {
-  document.querySelectorAll('td.code').forEach((block) => {
+  document.querySelectorAll('figure.highlight').forEach((block) => {
     hljs.highlightBlock(block);
   });
 });
+hljs.initHighlightingOnLoad();
+hljs.initLineNumbersOnLoad();
 </script>
   </body>
 </html>

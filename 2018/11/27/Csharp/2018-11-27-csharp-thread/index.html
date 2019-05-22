@@ -115,7 +115,7 @@
       </header>
 
       <div id="post-categories"><div>
-    <a class="categories-link" href="/Dev-Env/">Dev-Env</a><a class="categories-link" href="/Docker/">Docker</a><a class="categories-link" href="/ELK/">ELK</a><a class="categories-link" href="/Python/">Python</a><a class="categories-link" href="/SQL/">SQL</a><a class="categories-link" href="/Web/">Web</a><a class="categories-link" href="/csharp/">csharp</a><a class="categories-link" href="/docker/">docker</a><a class="categories-link" href="/web/">web</a>
+    <a class="categories-link" href="/Dev-Env/">Dev-Env</a><a class="categories-link" href="/Docker/">Docker</a><a class="categories-link" href="/ELK/">ELK</a><a class="categories-link" href="/Python/">Python</a><a class="categories-link" href="/SQL/">SQL</a><a class="categories-link" href="/Web/">Web</a><a class="categories-link" href="/csharp/">csharp</a>
 </div>
       </div>
 
@@ -146,7 +146,17 @@
 <li>초기에는 단일 CPU였기 떄문에 다중스레드는 1개의 CPU에서 조금씩 실행시간을 나누어 실행하는 형태였지만</li>
 <li>멀티 CPU/Core시대가 오면서 진정한 다중 스레드 실행이 가능해졌다</li>
 </ul>
-<h3 id="스레드-제대로-이해하기-System-Threading-Thread"><a href="#스레드-제대로-이해하기-System-Threading-Thread" class="headerlink" title="스레드 제대로 이해하기: System.Threading.Thread"></a>스레드 제대로 이해하기: System.Threading.Thread</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">static voic Main(string[] args) &#123;</span><br><span class="line">    Thread t = new Thread(threadFunc);</span><br><span class="line">    t.background = true;</span><br><span class="line">    t.start(); </span><br><span class="line">&#125;</span><br><span class="line">static void ThreadFunc() &#123;</span><br><span class="line">    Console.WriteLine(&quot;60초 후 종료&quot;);</span><br><span class="line">    Thread.Sleep(1000*60);</span><br><span class="line">    Console.WriteLine(&quot;종료&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="스레드-제대로-이해하기-System-Threading-Thread"><a href="#스레드-제대로-이해하기-System-Threading-Thread" class="headerlink" title="스레드 제대로 이해하기: System.Threading.Thread"></a>스레드 제대로 이해하기: System.Threading.Thread</h3><pre><code class="c#">static voic Main(string[] args) {
+    Thread t = new Thread(threadFunc);
+    t.background = true;
+    t.start(); 
+}
+static void ThreadFunc() {
+    Console.WriteLine(&quot;60초 후 종료&quot;);
+    Thread.Sleep(1000*60);
+    Console.WriteLine(&quot;종료&quot;);
+}
+</code></pre>
 <ul>
 <li>위의 코드를 보면 t는 배경 스레드이기때문에 메인스레드 실행과 무관하게 실행된다. 때문에 콘솔이 찍히지 않거나 아주 낮은확률로 첫번째 콘솔라인만 찍히게 된다.</li>
 <li>여기서 backgroud옵션을 제거하고 실행하면 전경스레드(foreground thread)에 속하게 되므로 스레드 실행 종료 후에 메인스레드가 종료된다.</li>
@@ -160,17 +170,37 @@
 </li>
 <li>코드상 여러개의 스레드를 동시의 실행시키면 그 실행순서는 담보할 수 없다.<ul>
 <li>이 경우 ‘공유 리소스 동기화’ 문제가 생긴다. </li>
-<li>이를 해소하기위한 BCL 제공 클래스가 Monitor이다.<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">static void ThreadFunc(object inst) &#123;</span><br><span class="line">    Program pg = inst as Program;</span><br><span class="line">    for(int i=0; i&lt;100000; i++) &#123;</span><br><span class="line">        Monitor.Enter(pg);</span><br><span class="line">        try &#123;</span><br><span class="line">            pg.number = pg.number + 1;</span><br><span class="line">        &#125; finally &#123;</span><br><span class="line">            Monitor.Exit(pg);</span><br><span class="line">            //Enter와 Exit 코드 사이에 위치한 모든 코드는 스레드 하나만 진입해서 실행할 수 있다. 즉, 해당 코드가 한 스레드에 의해 점유된 상태면 다른 스레드는 대기상태가 된다.</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<li>이를 해소하기위한 BCL 제공 클래스가 Monitor이다.<pre><code class="c#">static void ThreadFunc(object inst) {
+Program pg = inst as Program;
+for(int i=0; i&lt;100000; i++) {
+  Monitor.Enter(pg);
+  try {
+      pg.number = pg.number + 1;
+  } finally {
+      Monitor.Exit(pg);
+      //Enter와 Exit 코드 사이에 위치한 모든 코드는 스레드 하나만 진입해서 실행할 수 있다. 즉, 해당 코드가 한 스레드에 의해 점유된 상태면 다른 스레드는 대기상태가 된다.
+  }
+}
+}
+</code></pre>
 </li>
 </ul>
 </li>
 </ul>
 <h3 id="다중스레드에서의-공유-자원-관리-lock"><a href="#다중스레드에서의-공유-자원-관리-lock" class="headerlink" title="다중스레드에서의 공유 자원 관리: lock"></a>다중스레드에서의 공유 자원 관리: lock</h3><ul>
-<li><p>C#은 Monitor와 동일하지만 더 간결한 lock예약어를 제공한다. 다음과 같다.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">static void ThreadFunc(object inst) &#123;</span><br><span class="line">    Program pg = inst as Program;</span><br><span class="line">    for(int i=0; i&lt;100000; i++) &#123;</span><br><span class="line">        Monitor.Enter(pg);</span><br><span class="line">        lock(pg)</span><br><span class="line">        &#123;</span><br><span class="line">            pg.number = pg.number + 1;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<li>C#은 Monitor와 동일하지만 더 간결한 lock예약어를 제공한다. 다음과 같다.<pre><code class="c#">static void ThreadFunc(object inst) {
+  Program pg = inst as Program;
+  for(int i=0; i&lt;100000; i++) {
+      Monitor.Enter(pg);
+      lock(pg)
+      {
+          pg.number = pg.number + 1;
+      }
+  }
+}
+</code></pre>
 </li>
-<li><p>lock이나 Monitor를 사용하지 않는 객체 인스턴스 사용은 thread-safe하지 않다고 한다. MSDN은 BCL 도움말에서 타입별 메서드의 스레드 안정성을 명시하고 있다.</p>
-<ul>
+<li>lock이나 Monitor를 사용하지 않는 객체 인스턴스 사용은 thread-safe하지 않다고 한다. MSDN은 BCL 도움말에서 타입별 메서드의 스레드 안정성을 명시하고 있다.<ul>
 <li>가령 ArrayList타입의 정적멤버는 다중 스레드 접근에 안전하지만 인스턴스는 안전하지 않다고 명시한다.</li>
 <li>그럼 전부 thread safe하게 만들면 되지 않나 할 수 있지만 그럼 성능이 나지 않는다!</li>
 </ul>
@@ -178,11 +208,16 @@
 </ul>
 <h3 id="다중스레드에서의-공유-자원-관리-interlocked"><a href="#다중스레드에서의-공유-자원-관리-interlocked" class="headerlink" title="다중스레드에서의 공유 자원 관리: interlocked"></a>다중스레드에서의 공유 자원 관리: interlocked</h3><ul>
 <li>BCL은 다중 스레드에서의 공유자원을 사용하는 몇몇 패턴에 대해 정적메서드를 제공한다.</li>
-<li><p>가령 32/64비트 숫자 타입의 일부 연산은 interlocked를 통해 처리할 수 있다</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">class MyData &#123;</span><br><span class="line">    int number = 0;</span><br><span class="line">    public int Number &#123;get &#123;return number;&#125;&#125;</span><br><span class="line">    public void Increment() &#123;</span><br><span class="line">        Interlocked.Increment(ref number);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<li>가령 32/64비트 숫자 타입의 일부 연산은 interlocked를 통해 처리할 수 있다<pre><code class="c#">class MyData {
+  int number = 0;
+  public int Number {get {return number;}}
+  public void Increment() {
+      Interlocked.Increment(ref number);
+  }
+}
+</code></pre>
 </li>
-<li><p>위와 같은 연산을 원자적인 연산, 즉 쪼갤수 없는 단일한 연산이라고 할 수 있는데, 이는 프로그래밍적인 의미에서 비트 연산을 생각하면 된다.</p>
-</li>
+<li>위와 같은 연산을 원자적인 연산, 즉 쪼갤수 없는 단일한 연산이라고 할 수 있는데, 이는 프로그래밍적인 의미에서 비트 연산을 생각하면 된다.</li>
 <li>가령 32비트 운영체제에서 int64 변수에 5를 할당하면 아래와같이 연산을 한다.<ol>
 <li>하위 32비트에 0x00000000를 쓰고</li>
 <li>상위 32비트에 0x05000000를 쓴다 *16비트 연산의 경우 <a href="http://webcreate.tistory.com/entry/16%EB%B9%84%ED%8A%B8-32%EB%B9%84%ED%8A%B8-%EB%B9%84%ED%8A%B8%EC%97%B0%EC%82%B0-%EB%B0%A9%EB%B2%95" target="_blank" rel="noopener">참고</a></li>
@@ -191,13 +226,20 @@
 </ul>
 <h3 id="스레드-효율적으로-쓰기-System-Threading-ThreadPool"><a href="#스레드-효율적으로-쓰기-System-Threading-ThreadPool" class="headerlink" title="스레드 효율적으로 쓰기: System.Threading.ThreadPool"></a>스레드 효율적으로 쓰기: System.Threading.ThreadPool</h3><ul>
 <li>특정스레드를 연산만 하고 바로 종료하는 경우, 효율적으로 사용하기 위해서 ThreadPool이 제공된다</li>
-<li>ThreadPool을 사용해서 스레드를 실행하면 메서드를 실행한 스레드는 바로 종료되지 않고 일정시간 보관된다.<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">static void Main(string[] args) &#123;</span><br><span class="line">    MyData data = new MyData();</span><br><span class="line">    ThreadPool.QueueUserWorkItem(threadFunc, data);</span><br><span class="line">    ThreadPool.QueueUserWorkItem(threadFunc, data);</span><br><span class="line">    Thread.Sleep(1000);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<li>ThreadPool을 사용해서 스레드를 실행하면 메서드를 실행한 스레드는 바로 종료되지 않고 일정시간 보관된다.<pre><code class="c#">static void Main(string[] args) {
+  MyData data = new MyData();
+  ThreadPool.QueueUserWorkItem(threadFunc, data);
+  ThreadPool.QueueUserWorkItem(threadFunc, data);
+  Thread.Sleep(1000);
+}
+</code></pre>
 </li>
 </ul>
 <h3 id="스레드간-동기화-System-Threading-EventWaitHandle"><a href="#스레드간-동기화-System-Threading-EventWaitHandle" class="headerlink" title="스레드간 동기화: System.Threading.EventWaitHandle"></a>스레드간 동기화: System.Threading.EventWaitHandle</h3><ul>
 <li>EventWaitHandle은 Monitor처럼 스레드간 동기화 수단중 하나라고 보면 된다</li>
-<li>스레드간 non-signal <--> signal 상태별로 할 액션을 지정해주며 동기화 처리를 한다<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">static void Main(string[] args) &#123;</span><br><span class="line">    //</span><br><span class="line">    EventWaitHandle ewh = new EventWaitHandle (false, EventResetMode.ManualReset)</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></--></li>
+<li>스레드간 non-signal <--> signal 상태별로 할 액션을 지정해주며 동기화 처리를 한다<br><code>`</code> c#<br>static void Main(string[] args) {<br>  //<br>  EventWaitHandle ewh = new EventWaitHandle (false, EventResetMode.ManualReset)</--></li>
 </ul>
+<p>}<br><code>`</code></p>
 
             </div>
           
@@ -289,13 +331,15 @@
     <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
 <script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
 <script type="text/javascript" src="/js/src/highlight.pack.js?v=1.1"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.7.0/highlightjs-line-numbers.min.js"></script>
 <script>
-hljs.initHighlightingOnLoad();
 document.addEventListener('DOMContentLoaded', (event) => {
-  document.querySelectorAll('td.code').forEach((block) => {
+  document.querySelectorAll('figure.highlight').forEach((block) => {
     hljs.highlightBlock(block);
   });
 });
+hljs.initHighlightingOnLoad();
+hljs.initLineNumbersOnLoad();
 </script>
   </body>
 </html>

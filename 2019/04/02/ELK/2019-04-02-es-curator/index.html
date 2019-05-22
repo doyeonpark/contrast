@@ -115,7 +115,7 @@
       </header>
 
       <div id="post-categories"><div>
-    <a class="categories-link" href="/Dev-Env/">Dev-Env</a><a class="categories-link" href="/Docker/">Docker</a><a class="categories-link" href="/ELK/">ELK</a><a class="categories-link" href="/Python/">Python</a><a class="categories-link" href="/SQL/">SQL</a><a class="categories-link" href="/Web/">Web</a><a class="categories-link" href="/csharp/">csharp</a><a class="categories-link" href="/docker/">docker</a><a class="categories-link" href="/web/">web</a>
+    <a class="categories-link" href="/Dev-Env/">Dev-Env</a><a class="categories-link" href="/Docker/">Docker</a><a class="categories-link" href="/ELK/">ELK</a><a class="categories-link" href="/Python/">Python</a><a class="categories-link" href="/SQL/">SQL</a><a class="categories-link" href="/Web/">Web</a><a class="categories-link" href="/csharp/">csharp</a>
 </div>
       </div>
 
@@ -143,21 +143,71 @@
             <p>로그를 끊임없이 ES에 저장하다보면 디스크 용량이 부족한 문제가 발생한다.<br>수동으로 인덱스를 삭제하다보면 단순히 번거로울 뿐만이 아니라 삭제하지 않으려고 했던 인덱스도 삭제될 수 있기 때문에, 삭제 자동화는 ES 운영에 반드시 필요하다.<br>curator는 elasticsearch의 인덱스를 관리를 위한 어플리케이션으로, ES와 격리된 환경에서 http 통신으로 동작이 가능하다.</p>
 <p>여기에는 인덱스 삭제만 나와있지만, 샤드의 삭제나 엘라스틱서치의 스냅샷 삭제, 샤드 라우팅 변경도 가능하다.<br>나의 경우 curator를 세팅할 서버는 폐쇄된 환경이었기 때문에,<br>로컬에서 curator 공식사이트의 dockerfile을 받아 이미지를 빌드한 다음,<br>이미지를 파일로 압축해 서버에 세팅하고 cronjob을 통해 매일 인덱스 삭제작업을 진행하도록 했다.</p>
 <h4 id="docker-image-빌드"><a href="#docker-image-빌드" class="headerlink" title="docker image 빌드"></a>docker image 빌드</h4><p>github에 올라와있는 dockerfile을 다운받아 빌드한다 <a href="https://github.com/elastic/curator" target="_blank" rel="noopener">https://github.com/elastic/curator</a></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build .</span><br></pre></td></tr></table></figure>
-<h4 id="큐레이터-기본-설정파일-생성하기-curator-yml"><a href="#큐레이터-기본-설정파일-생성하기-curator-yml" class="headerlink" title="큐레이터 기본 설정파일 생성하기: curator.yml"></a>큐레이터 기본 설정파일 생성하기: curator.yml</h4><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">client:</span></span><br><span class="line"><span class="attr">  hosts:</span></span><br><span class="line"><span class="bullet">   -</span> <span class="string">elasticsearch</span></span><br><span class="line"><span class="attr">  port:</span> <span class="number">9200</span></span><br><span class="line"><span class="attr">  url_prefix:</span></span><br><span class="line"><span class="attr">  use_ssl:</span> <span class="literal">False</span></span><br><span class="line"><span class="attr">  certificate:</span></span><br><span class="line"><span class="attr">  client_cert:</span></span><br><span class="line"><span class="attr">  client_key:</span></span><br><span class="line"><span class="attr">  ssl_no_validate:</span> <span class="literal">False</span></span><br><span class="line"><span class="attr">  http_auth:</span></span><br><span class="line"><span class="attr">  timeout:</span> <span class="number">30</span></span><br><span class="line"><span class="attr">  master_only:</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="attr">logging:</span></span><br><span class="line"><span class="attr">  loglevel:</span> <span class="string">INFO</span></span><br><span class="line"><span class="attr">  logfile:</span> <span class="string">/volume/curator.log</span> <span class="comment">#로그 디렉토리 설정, 어플리케이션 수행 </span></span><br><span class="line"><span class="attr">  logformat:</span> <span class="string">default</span></span><br><span class="line"><span class="attr">  blacklist:</span> <span class="string">['elasticsearch',</span> <span class="string">'urllib3'</span><span class="string">]</span></span><br></pre></td></tr></table></figure>
-<h4 id="인덱스-삭제-규칙파일-생성하기-delete-indices-yml"><a href="#인덱스-삭제-규칙파일-생성하기-delete-indices-yml" class="headerlink" title="인덱스 삭제 규칙파일 생성하기: delete-indices.yml"></a>인덱스 삭제 규칙파일 생성하기: delete-indices.yml</h4><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">actions:</span></span><br><span class="line">  <span class="number">1</span><span class="string">:</span></span><br><span class="line"><span class="attr">    action:</span> <span class="string">delete_indices</span></span><br><span class="line"><span class="attr">    options:</span></span><br><span class="line"><span class="attr">      ignore_empty_list:</span> <span class="literal">True</span></span><br><span class="line"><span class="attr">      disable_action:</span> <span class="literal">False</span></span><br><span class="line"><span class="attr">    filters:</span></span><br><span class="line"><span class="attr">     - filtertype:</span> <span class="string">pattern</span></span><br><span class="line"><span class="attr">       kind:</span> <span class="string">prefix</span></span><br><span class="line"><span class="attr">       value:</span> <span class="string">kr-*-</span></span><br><span class="line"><span class="attr">     - filtertype:</span> <span class="string">age</span></span><br><span class="line"><span class="attr">       source:</span> <span class="string">name</span></span><br><span class="line"><span class="attr">       direction:</span> <span class="string">older</span></span><br><span class="line"><span class="attr">       timestring:</span> <span class="string">'%Y.%m.%d'</span></span><br><span class="line"><span class="attr">       unit:</span> <span class="string">days</span></span><br><span class="line"><span class="attr">       unit_count:</span> <span class="number">8</span> <span class="comment">#생성한지 8일이 된 데이터는 삭제한다</span></span><br></pre></td></tr></table></figure>
+<pre><code class="bash">docker build .
+</code></pre>
+<h4 id="큐레이터-기본-설정파일-생성하기-curator-yml"><a href="#큐레이터-기본-설정파일-생성하기-curator-yml" class="headerlink" title="큐레이터 기본 설정파일 생성하기: curator.yml"></a>큐레이터 기본 설정파일 생성하기: curator.yml</h4><pre><code class="yml">client:
+  hosts:
+   - elasticsearch
+  port: 9200
+  url_prefix:
+  use_ssl: False
+  certificate:
+  client_cert:
+  client_key:
+  ssl_no_validate: False
+  http_auth:
+  timeout: 30
+  master_only: False
+
+logging:
+  loglevel: INFO
+  logfile: /volume/curator.log #로그 디렉토리 설정, 어플리케이션 수행 
+  logformat: default
+  blacklist: [&#39;elasticsearch&#39;, &#39;urllib3&#39;]
+</code></pre>
+<h4 id="인덱스-삭제-규칙파일-생성하기-delete-indices-yml"><a href="#인덱스-삭제-규칙파일-생성하기-delete-indices-yml" class="headerlink" title="인덱스 삭제 규칙파일 생성하기: delete-indices.yml"></a>인덱스 삭제 규칙파일 생성하기: delete-indices.yml</h4><pre><code class="yml">actions:
+  1:
+    action: delete_indices
+    options:
+      ignore_empty_list: True
+      disable_action: False
+    filters:
+     - filtertype: pattern
+       kind: prefix
+       value: kr-*-
+     - filtertype: age
+       source: name
+       direction: older
+       timestring: &#39;%Y.%m.%d&#39;
+       unit: days
+       unit_count: 8 #생성한지 8일이 된 데이터는 삭제한다
+</code></pre>
 <h4 id="도커-컴포즈-설정"><a href="#도커-컴포즈-설정" class="headerlink" title="도커 컴포즈 설정"></a>도커 컴포즈 설정</h4><p>빌드된 이미지의 entrypoint는 아무 옵션 없이 단순히 어플리케이션을 실행하는 ‘curator/curator’이다.<br>때문에 설정파일이나 규칙들을 정의해주고싶다면 아래와 같이 entrypoint override를 해야한다.<br>또한, 어떤 인덱스가 삭제될지 확인하고싶다면 dry run 옵션을 통해 위의 curator.yml에 지정한 log파일에서 리스트확인이 가능하다.<br>최초 실행시 반드시 dry run을 통해 curator.log에 삭제 대상이 되는 인덱스들을 확인하자.</p>
-<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">'3.3'</span></span><br><span class="line"></span><br><span class="line"><span class="attr">  services:</span></span><br><span class="line"><span class="attr">    curator:</span></span><br><span class="line"><span class="attr">      image:</span> <span class="attr">curator:5.6</span></span><br><span class="line"><span class="attr">      container_name:</span> <span class="string">curator</span></span><br><span class="line"><span class="attr">      user:</span> <span class="string">$USER</span></span><br><span class="line"><span class="attr">      volumes:</span></span><br><span class="line"><span class="bullet">        -</span> <span class="string">/data/volume/curator:/volume</span></span><br><span class="line">  <span class="comment"># 테스트시 주석 해제 후 실행</span></span><br><span class="line">  <span class="comment">#    entrypoint: ["curator/curator", "--config", "/volume/config/curator.yml", "--dry-run", "/volume/config/delete-indices.yml"]</span></span><br><span class="line"><span class="attr">      entrypoint:</span> <span class="string">["curator/curator",</span> <span class="string">"--config"</span><span class="string">,</span> <span class="string">"/volume/config/curator.yml"</span><span class="string">,</span> <span class="string">"/volume/config/delete-indices.yml"</span><span class="string">]</span></span><br><span class="line"><span class="attr">      network_mode:</span> <span class="string">esmaster</span> <span class="comment">#엘라스틱 서치가 있는 네트워크와 맞춰주기</span></span><br></pre></td></tr></table></figure>
+<pre><code class="yml">version: &#39;3.3&#39;
+
+  services:
+    curator:
+      image: curator:5.6
+      container_name: curator
+      user: $USER
+      volumes:
+        - /data/volume/curator:/volume
+  # 테스트시 주석 해제 후 실행
+  #    entrypoint: [&quot;curator/curator&quot;, &quot;--config&quot;, &quot;/volume/config/curator.yml&quot;, &quot;--dry-run&quot;, &quot;/volume/config/delete-indices.yml&quot;]
+      entrypoint: [&quot;curator/curator&quot;, &quot;--config&quot;, &quot;/volume/config/curator.yml&quot;, &quot;/volume/config/delete-indices.yml&quot;]
+      network_mode: esmaster #엘라스틱 서치가 있는 네트워크와 맞춰주기
+</code></pre>
 <h4 id="큐레이터로-도커컴포즈-실행하기"><a href="#큐레이터로-도커컴포즈-실행하기" class="headerlink" title="큐레이터로 도커컴포즈 실행하기"></a>큐레이터로 도커컴포즈 실행하기</h4><p>도커 컨테이너는 규칙 실행후 exit code 0을 반환하며 종료된다.<br>정기적으로 실행되도록 설정하려면 리눅스 cronjob 등록을 해줘야한다.</p>
 <ol>
-<li><p>도커 컴포즈 실행 스크립트 만들기</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="built_in">cd</span> /path/to/docker-compose</span><br><span class="line">docker-compose up</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>크론탭 에디터 열기</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">crontab -e</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>규칙 추가<br>매일 17시에 실행되고, cronjob 작업 수행 이력이 crontab.log에 남는다.</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0 17 * * * /data/volume/curator-run.sh &gt; /data/crontab.log 2&gt;&amp;1</span><br></pre></td></tr></table></figure>
+<li>도커 컴포즈 실행 스크립트 만들기<br><code>`</code> bash<br>#!/bin/bash<br>cd /path/to/docker-compose<br>docker-compose up</li>
+</ol>
+<pre><code>
+2. 크론탭 에디터 열기
+``` bash
+crontab -e
+</code></pre><ol start="3">
+<li>규칙 추가<br>매일 17시에 실행되고, cronjob 작업 수행 이력이 crontab.log에 남는다.<pre><code class="bash">0 17 * * * /data/volume/curator-run.sh &gt; /data/crontab.log 2&gt;&amp;1
+</code></pre>
 </li>
 </ol>
 <p>완료후 반영은 wq를 통해 하면 된다.</p>
@@ -248,13 +298,15 @@
     <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
 <script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
 <script type="text/javascript" src="/js/src/highlight.pack.js?v=1.1"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.7.0/highlightjs-line-numbers.min.js"></script>
 <script>
-hljs.initHighlightingOnLoad();
 document.addEventListener('DOMContentLoaded', (event) => {
-  document.querySelectorAll('td.code').forEach((block) => {
+  document.querySelectorAll('figure.highlight').forEach((block) => {
     hljs.highlightBlock(block);
   });
 });
+hljs.initHighlightingOnLoad();
+hljs.initLineNumbersOnLoad();
 </script>
   </body>
 </html>

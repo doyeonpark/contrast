@@ -35,18 +35,18 @@
 <link rel="canonical" href="https://parkdoyeon.github.io/2019/03/26/Dev-Env/2019-03-26-linux-disk/">
 
 
-<meta name="description" content="리눅스 환경에서 도커로 ELK 스택 서비스를 운영 사용하다보면 로그관리때문에 메모리나 디스크정보 확인을 할 일이 많은데,자주 사용하게 되는 기능들 위주로 정리해보았다. 메모리 전체 메모리 정보 확인하기 1cat /proc/meminfo | grep MemTotal  사용중인 메모리 확인하기 1free   CPU 확인하기1cat /proc/cpuinfo |">
+<meta name="description" content="리눅스 환경에서 도커로 ELK 스택 서비스를 운영 사용하다보면 로그관리때문에 메모리나 디스크정보 확인을 할 일이 많은데,자주 사용하게 되는 기능들 위주로 정리해보았다. 메모리 전체 메모리 정보 확인하기cat /proc/meminfo | grep MemTotal   사용중인 메모리 확인하기free    CPU 확인하기cat /proc/cpuinfo | mor">
 <meta name="keywords" content="linux,disk">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Linux - 리눅스 용량, 메모리 정보 확인하기">
 <meta property="og:url" content="https://parkdoyeon.github.io/2019/03/26/Dev-Env/2019-03-26-linux-disk/index.html">
 <meta property="og:site_name" content="Park Doyeon">
-<meta property="og:description" content="리눅스 환경에서 도커로 ELK 스택 서비스를 운영 사용하다보면 로그관리때문에 메모리나 디스크정보 확인을 할 일이 많은데,자주 사용하게 되는 기능들 위주로 정리해보았다. 메모리 전체 메모리 정보 확인하기 1cat /proc/meminfo | grep MemTotal  사용중인 메모리 확인하기 1free   CPU 확인하기1cat /proc/cpuinfo |">
+<meta property="og:description" content="리눅스 환경에서 도커로 ELK 스택 서비스를 운영 사용하다보면 로그관리때문에 메모리나 디스크정보 확인을 할 일이 많은데,자주 사용하게 되는 기능들 위주로 정리해보았다. 메모리 전체 메모리 정보 확인하기cat /proc/meminfo | grep MemTotal   사용중인 메모리 확인하기free    CPU 확인하기cat /proc/cpuinfo | mor">
 <meta property="og:locale" content="default">
 <meta property="og:updated_time" content="2019-05-19T16:31:38.611Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Linux - 리눅스 용량, 메모리 정보 확인하기">
-<meta name="twitter:description" content="리눅스 환경에서 도커로 ELK 스택 서비스를 운영 사용하다보면 로그관리때문에 메모리나 디스크정보 확인을 할 일이 많은데,자주 사용하게 되는 기능들 위주로 정리해보았다. 메모리 전체 메모리 정보 확인하기 1cat /proc/meminfo | grep MemTotal  사용중인 메모리 확인하기 1free   CPU 확인하기1cat /proc/cpuinfo |">
+<meta name="twitter:description" content="리눅스 환경에서 도커로 ELK 스택 서비스를 운영 사용하다보면 로그관리때문에 메모리나 디스크정보 확인을 할 일이 많은데,자주 사용하게 되는 기능들 위주로 정리해보았다. 메모리 전체 메모리 정보 확인하기cat /proc/meminfo | grep MemTotal   사용중인 메모리 확인하기free    CPU 확인하기cat /proc/cpuinfo | mor">
 
 
 <link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
@@ -115,7 +115,7 @@
       </header>
 
       <div id="post-categories"><div>
-    <a class="categories-link" href="/Dev-Env/">Dev-Env</a><a class="categories-link" href="/Docker/">Docker</a><a class="categories-link" href="/ELK/">ELK</a><a class="categories-link" href="/Python/">Python</a><a class="categories-link" href="/SQL/">SQL</a><a class="categories-link" href="/Web/">Web</a><a class="categories-link" href="/csharp/">csharp</a><a class="categories-link" href="/docker/">docker</a><a class="categories-link" href="/web/">web</a>
+    <a class="categories-link" href="/Dev-Env/">Dev-Env</a><a class="categories-link" href="/Docker/">Docker</a><a class="categories-link" href="/ELK/">ELK</a><a class="categories-link" href="/Python/">Python</a><a class="categories-link" href="/SQL/">SQL</a><a class="categories-link" href="/Web/">Web</a><a class="categories-link" href="/csharp/">csharp</a>
 </div>
       </div>
 
@@ -142,20 +142,21 @@
             <div class="post-content">
             <p>리눅스 환경에서 도커로 ELK 스택 서비스를 운영 사용하다보면 로그관리때문에 메모리나 디스크정보 확인을 할 일이 많은데,<br>자주 사용하게 되는 기능들 위주로 정리해보았다.</p>
 <h1 id="메모리"><a href="#메모리" class="headerlink" title="메모리"></a>메모리</h1><ul>
-<li><p>전체 메모리 정보 확인하기</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /proc/meminfo | grep MemTotal</span><br></pre></td></tr></table></figure>
+<li>전체 메모리 정보 확인하기<pre><code class="bash">cat /proc/meminfo | grep MemTotal
+</code></pre>
 </li>
-<li><p>사용중인 메모리 확인하기</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">free</span><br></pre></td></tr></table></figure>
+<li>사용중인 메모리 확인하기<pre><code class="bash">free
+</code></pre>
 </li>
 </ul>
-<h1 id="CPU-확인하기"><a href="#CPU-확인하기" class="headerlink" title="CPU 확인하기"></a>CPU 확인하기</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /proc/cpuinfo | more</span><br></pre></td></tr></table></figure>
+<h1 id="CPU-확인하기"><a href="#CPU-확인하기" class="headerlink" title="CPU 확인하기"></a>CPU 확인하기</h1><pre><code class="bash">cat /proc/cpuinfo | more
+</code></pre>
 <h1 id="디스크"><a href="#디스크" class="headerlink" title="디스크"></a>디스크</h1><ul>
-<li><p>전체 디스크, 파티션 용량 확인하기</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df -h</span><br></pre></td></tr></table></figure>
+<li>전체 디스크, 파티션 용량 확인하기<pre><code class="bash">df -h
+</code></pre>
 </li>
-<li><p>디렉토리 기준 용량 확인하기</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">du -hsx * | sort -rh | head -10</span><br></pre></td></tr></table></figure>
+<li>디렉토리 기준 용량 확인하기<pre><code class="bash">du -hsx * | sort -rh | head -10
+</code></pre>
 </li>
 </ul>
 <ul>
@@ -245,13 +246,15 @@
     <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
 <script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
 <script type="text/javascript" src="/js/src/highlight.pack.js?v=1.1"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.7.0/highlightjs-line-numbers.min.js"></script>
 <script>
-hljs.initHighlightingOnLoad();
 document.addEventListener('DOMContentLoaded', (event) => {
-  document.querySelectorAll('td.code').forEach((block) => {
+  document.querySelectorAll('figure.highlight').forEach((block) => {
     hljs.highlightBlock(block);
   });
 });
+hljs.initHighlightingOnLoad();
+hljs.initLineNumbersOnLoad();
 </script>
   </body>
 </html>

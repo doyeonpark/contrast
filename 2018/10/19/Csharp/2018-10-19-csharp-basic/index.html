@@ -35,18 +35,18 @@
 <link rel="canonical" href="https://parkdoyeon.github.io/2018/10/19/Csharp/2018-10-19-csharp-basic/">
 
 
-<meta name="description" content="Tight Coupling, Loose Coupling 강력한 결합: 클래스간의 호출관계와같이 코드 변화가 어려운경우 느슨한 결합: 강력한 결합의 문제점을 보완하기 위한 결합, 인터페이스를 수단으로 활용.12345678class Switch&amp;#123;    //IPower를 상속하는 모든 인스턴스를 인자로 받을 수 있다.    public void powe">
+<meta name="description" content="Tight Coupling, Loose Coupling 강력한 결합: 클래스간의 호출관계와같이 코드 변화가 어려운경우 느슨한 결합: 강력한 결합의 문제점을 보완하기 위한 결합, 인터페이스를 수단으로 활용.class Switch {   //IPower를 상속하는 모든 인스턴스를 인자로 받을 수 있다.   public void powerOn(IPower mac">
 <meta name="keywords" content="c#,객체지향,기본,struct,ref,out,coupling,enum">
 <meta property="og:type" content="article">
 <meta property="og:title" content="c# 기본서 - 구조체, 예약어, Enum">
 <meta property="og:url" content="https://parkdoyeon.github.io/2018/10/19/Csharp/2018-10-19-csharp-basic/index.html">
 <meta property="og:site_name" content="Park Doyeon">
-<meta property="og:description" content="Tight Coupling, Loose Coupling 강력한 결합: 클래스간의 호출관계와같이 코드 변화가 어려운경우 느슨한 결합: 강력한 결합의 문제점을 보완하기 위한 결합, 인터페이스를 수단으로 활용.12345678class Switch&amp;#123;    //IPower를 상속하는 모든 인스턴스를 인자로 받을 수 있다.    public void powe">
+<meta property="og:description" content="Tight Coupling, Loose Coupling 강력한 결합: 클래스간의 호출관계와같이 코드 변화가 어려운경우 느슨한 결합: 강력한 결합의 문제점을 보완하기 위한 결합, 인터페이스를 수단으로 활용.class Switch {   //IPower를 상속하는 모든 인스턴스를 인자로 받을 수 있다.   public void powerOn(IPower mac">
 <meta property="og:locale" content="default">
 <meta property="og:updated_time" content="2019-05-19T15:51:03.844Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="c# 기본서 - 구조체, 예약어, Enum">
-<meta name="twitter:description" content="Tight Coupling, Loose Coupling 강력한 결합: 클래스간의 호출관계와같이 코드 변화가 어려운경우 느슨한 결합: 강력한 결합의 문제점을 보완하기 위한 결합, 인터페이스를 수단으로 활용.12345678class Switch&amp;#123;    //IPower를 상속하는 모든 인스턴스를 인자로 받을 수 있다.    public void powe">
+<meta name="twitter:description" content="Tight Coupling, Loose Coupling 강력한 결합: 클래스간의 호출관계와같이 코드 변화가 어려운경우 느슨한 결합: 강력한 결합의 문제점을 보완하기 위한 결합, 인터페이스를 수단으로 활용.class Switch {   //IPower를 상속하는 모든 인스턴스를 인자로 받을 수 있다.   public void powerOn(IPower mac">
 
 
 <link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
@@ -115,7 +115,7 @@
       </header>
 
       <div id="post-categories"><div>
-    <a class="categories-link" href="/Dev-Env/">Dev-Env</a><a class="categories-link" href="/Docker/">Docker</a><a class="categories-link" href="/ELK/">ELK</a><a class="categories-link" href="/Python/">Python</a><a class="categories-link" href="/SQL/">SQL</a><a class="categories-link" href="/Web/">Web</a><a class="categories-link" href="/csharp/">csharp</a><a class="categories-link" href="/docker/">docker</a><a class="categories-link" href="/web/">web</a>
+    <a class="categories-link" href="/Dev-Env/">Dev-Env</a><a class="categories-link" href="/Docker/">Docker</a><a class="categories-link" href="/ELK/">ELK</a><a class="categories-link" href="/Python/">Python</a><a class="categories-link" href="/SQL/">SQL</a><a class="categories-link" href="/Web/">Web</a><a class="categories-link" href="/csharp/">csharp</a>
 </div>
       </div>
 
@@ -142,7 +142,15 @@
             <div class="post-content">
             <h3 id="Tight-Coupling-Loose-Coupling"><a href="#Tight-Coupling-Loose-Coupling" class="headerlink" title="Tight Coupling, Loose Coupling"></a>Tight Coupling, Loose Coupling</h3><ul>
 <li>강력한 결합: 클래스간의 호출관계와같이 코드 변화가 어려운경우</li>
-<li>느슨한 결합: 강력한 결합의 문제점을 보완하기 위한 결합, 인터페이스를 수단으로 활용.<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">class Switch</span><br><span class="line">&#123;</span><br><span class="line">    //IPower를 상속하는 모든 인스턴스를 인자로 받을 수 있다.</span><br><span class="line">    public void powerOn(IPower machine) </span><br><span class="line">    &#123;</span><br><span class="line">        machine.TrunOn();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<li>느슨한 결합: 강력한 결합의 문제점을 보완하기 위한 결합, 인터페이스를 수단으로 활용.<pre><code class="c#">class Switch
+{
+  //IPower를 상속하는 모든 인스턴스를 인자로 받을 수 있다.
+  public void powerOn(IPower machine) 
+  {
+      machine.TrunOn();
+  }
+}
+</code></pre>
 </li>
 </ul>
 <h3 id="구조체"><a href="#구조체" class="headerlink" title="구조체"></a>구조체</h3><ul>
@@ -152,7 +160,11 @@
 </ul>
 <h3 id="파라미터에-사용되는-예약어-ref과-out"><a href="#파라미터에-사용되는-예약어-ref과-out" class="headerlink" title="파라미터에 사용되는 예약어 ref과 out"></a>파라미터에 사용되는 예약어 ref과 out</h3><ul>
 <li>ref: 주소에 의한 전달로, 변수의 값이 위치한 주소를 직접 전달한다(얕은복사). 참조형 타입도 마찬가지로 ref없이 전달될때는 참조값이 또 다른 스택 메모리에 복사되어 전달되지만, ref이 있으면 스택 주소값이 직접 전달된다.</li>
-<li>out: 리턴하는 값이 여러개가 될때 사용하면 유용함. 초기화 될 수도 없으며 초기화해도 쓸일이 없음. TryParse가 대표적인 사용예<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if(int.TryParse(&quot;1234567&quot;, out n) == true)</span><br><span class="line">&#123;</span><br><span class="line">    Console.WriteLine(n); //1234567 </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<li>out: 리턴하는 값이 여러개가 될때 사용하면 유용함. 초기화 될 수도 없으며 초기화해도 쓸일이 없음. TryParse가 대표적인 사용예<pre><code class="c#">if(int.TryParse(&quot;1234567&quot;, out n) == true)
+{
+  Console.WriteLine(n); //1234567 
+}
+</code></pre>
 </li>
 </ul>
 <h3 id="Enum"><a href="#Enum" class="headerlink" title="Enum"></a>Enum</h3><ul>
@@ -256,13 +268,15 @@
     <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
 <script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
 <script type="text/javascript" src="/js/src/highlight.pack.js?v=1.1"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.7.0/highlightjs-line-numbers.min.js"></script>
 <script>
-hljs.initHighlightingOnLoad();
 document.addEventListener('DOMContentLoaded', (event) => {
-  document.querySelectorAll('td.code').forEach((block) => {
+  document.querySelectorAll('figure.highlight').forEach((block) => {
     hljs.highlightBlock(block);
   });
 });
+hljs.initHighlightingOnLoad();
+hljs.initLineNumbersOnLoad();
 </script>
   </body>
 </html>

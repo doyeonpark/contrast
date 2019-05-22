@@ -115,7 +115,7 @@
       </header>
 
       <div id="post-categories"><div>
-    <a class="categories-link" href="/Dev-Env/">Dev-Env</a><a class="categories-link" href="/Docker/">Docker</a><a class="categories-link" href="/ELK/">ELK</a><a class="categories-link" href="/Python/">Python</a><a class="categories-link" href="/SQL/">SQL</a><a class="categories-link" href="/Web/">Web</a><a class="categories-link" href="/csharp/">csharp</a><a class="categories-link" href="/docker/">docker</a><a class="categories-link" href="/web/">web</a>
+    <a class="categories-link" href="/Dev-Env/">Dev-Env</a><a class="categories-link" href="/Docker/">Docker</a><a class="categories-link" href="/ELK/">ELK</a><a class="categories-link" href="/Python/">Python</a><a class="categories-link" href="/SQL/">SQL</a><a class="categories-link" href="/Web/">Web</a><a class="categories-link" href="/csharp/">csharp</a>
 </div>
       </div>
 
@@ -147,7 +147,17 @@
 <li>인서트하는 pk 컬럼(AccountNo)이 있어서 인서트 row마다 값을 임의로 지정해줘야 할때. (table_2 인덱스 넘버에서 1씩 추가 하는 것으로지정)</li>
 </ol>
 <p>이때 서브쿼리처럼 조회 쿼리를 생성해서 insert할 수 있다.</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> [table_2]</span><br><span class="line">    (AccountNo,</span><br><span class="line">    Coupon,</span><br><span class="line">    RegDate)</span><br><span class="line">    (<span class="keyword">SELECT</span></span><br><span class="line">        (<span class="keyword">SELECT</span> <span class="keyword">MAX</span>(Seq) <span class="keyword">FROM</span> [table_2])+(ROW_NUMBER() <span class="keyword">OVER</span>(<span class="keyword">Order</span> <span class="keyword">BY</span> @@<span class="keyword">identity</span>)),</span><br><span class="line">        Coupon,</span><br><span class="line">        <span class="string">'2019-03-04'</span></span><br><span class="line">    <span class="keyword">FROM</span> table_1)</span><br></pre></td></tr></table></figure>
+<pre><code class="SQL">INSERT INTO [table_2]
+    (AccountNo,
+    Coupon,
+    RegDate)
+    (SELECT
+        (SELECT MAX(Seq) FROM [table_2])+(ROW_NUMBER() OVER(Order BY @@identity)),
+        Coupon,
+        &#39;2019-03-04&#39;
+    FROM table_1)
+</code></pre>
+
             </div>
           
 
@@ -230,13 +240,15 @@
     <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
 <script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
 <script type="text/javascript" src="/js/src/highlight.pack.js?v=1.1"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.7.0/highlightjs-line-numbers.min.js"></script>
 <script>
-hljs.initHighlightingOnLoad();
 document.addEventListener('DOMContentLoaded', (event) => {
-  document.querySelectorAll('td.code').forEach((block) => {
+  document.querySelectorAll('figure.highlight').forEach((block) => {
     hljs.highlightBlock(block);
   });
 });
+hljs.initHighlightingOnLoad();
+hljs.initLineNumbersOnLoad();
 </script>
   </body>
 </html>

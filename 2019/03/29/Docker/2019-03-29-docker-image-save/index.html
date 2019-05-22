@@ -43,7 +43,7 @@
 <meta property="og:site_name" content="Park Doyeon">
 <meta property="og:description" content="도커의 장점을 폐쇄된 네트워크 환경에서 활용하기란 쉽지가 않다.그나마 도커를 사용하니까 폐쇄된 리눅스 환경에서 이만큼의 편의를 가질수 있기도 하고.암튼 매번 업데이트마다 자꾸 여러명의 결재를 거쳐야하는 네트워크인가를 통해 서버를 열기가 껄그러워서, 이미지를 파일로 만들어서 사용하게되었다. 용량때문에 ftp서버 통해서 옮기는데 시간이 조금 걸리지만 그런대로">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-05-19T16:36:35.631Z">
+<meta property="og:updated_time" content="2019-05-22T15:25:38.195Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="docker - 이미지&#x2F;컨테이너 파일로 저장하고 불러오기">
 <meta name="twitter:description" content="도커의 장점을 폐쇄된 네트워크 환경에서 활용하기란 쉽지가 않다.그나마 도커를 사용하니까 폐쇄된 리눅스 환경에서 이만큼의 편의를 가질수 있기도 하고.암튼 매번 업데이트마다 자꾸 여러명의 결재를 거쳐야하는 네트워크인가를 통해 서버를 열기가 껄그러워서, 이미지를 파일로 만들어서 사용하게되었다. 용량때문에 ftp서버 통해서 옮기는데 시간이 조금 걸리지만 그런대로">
@@ -115,7 +115,7 @@
       </header>
 
       <div id="post-categories"><div>
-    <a class="categories-link" href="/Dev-Env/">Dev-Env</a><a class="categories-link" href="/Docker/">Docker</a><a class="categories-link" href="/ELK/">ELK</a><a class="categories-link" href="/Python/">Python</a><a class="categories-link" href="/SQL/">SQL</a><a class="categories-link" href="/Web/">Web</a><a class="categories-link" href="/csharp/">csharp</a><a class="categories-link" href="/docker/">docker</a><a class="categories-link" href="/web/">web</a>
+    <a class="categories-link" href="/Dev-Env/">Dev-Env</a><a class="categories-link" href="/Docker/">Docker</a><a class="categories-link" href="/ELK/">ELK</a><a class="categories-link" href="/Python/">Python</a><a class="categories-link" href="/SQL/">SQL</a><a class="categories-link" href="/Web/">Web</a><a class="categories-link" href="/csharp/">csharp</a>
 </div>
       </div>
 
@@ -141,10 +141,16 @@
     
             <div class="post-content">
             <p>도커의 장점을 폐쇄된 네트워크 환경에서 활용하기란 쉽지가 않다.<br>그나마 도커를 사용하니까 폐쇄된 리눅스 환경에서 이만큼의 편의를 가질수 있기도 하고.<br>암튼 매번 업데이트마다 자꾸 여러명의 결재를 거쳐야하는 네트워크인가를 통해 서버를 열기가 껄그러워서, 이미지를 파일로 만들어서 사용하게되었다. 용량때문에 ftp서버 통해서 옮기는데 시간이 조금 걸리지만 그런대로 쓸만하다. 퇴근시간쯤에 이미지를 날려서 처음 이 명령어를 써봤는데, 덕분에 일찍 집에갈 수 있었다.</p>
-<h1 id="이미지-저장하기"><a href="#이미지-저장하기" class="headerlink" title="이미지 저장하기"></a>이미지 저장하기</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker save [option] [image:tag] -o [저장할파일명.tar]</span><br></pre></td></tr></table></figure>
-<h1 id="이미지-불러오기"><a href="#이미지-불러오기" class="headerlink" title="이미지 불러오기"></a>이미지 불러오기</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker load &lt; [tar파일 이름]</span><br></pre></td></tr></table></figure>
-<h1 id="컨테이너-저장하기"><a href="#컨테이너-저장하기" class="headerlink" title="컨테이너 저장하기"></a>컨테이너 저장하기</h1><p>이미지 말고도 컨테이너도 저장하고 불러올 수 있다.<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="built_in">export</span> [container name] &gt; [저장할파일명.tar]</span><br></pre></td></tr></table></figure></p>
-<h1 id="컨테이너-불러오기"><a href="#컨테이너-불러오기" class="headerlink" title="컨테이너 불러오기"></a>컨테이너 불러오기</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker import [tar파일 이름]</span><br></pre></td></tr></table></figure>
+<h1 id="이미지-저장하기"><a href="#이미지-저장하기" class="headerlink" title="이미지 저장하기"></a>이미지 저장하기</h1><pre><code class="bash">docker save [option] [image:tag] -o [저장할파일명.tar]
+</code></pre>
+<h1 id="이미지-불러오기"><a href="#이미지-불러오기" class="headerlink" title="이미지 불러오기"></a>이미지 불러오기</h1><pre><code class="bash">docker load &lt; [tar파일 이름]
+</code></pre>
+<h1 id="컨테이너-저장하기"><a href="#컨테이너-저장하기" class="headerlink" title="컨테이너 저장하기"></a>컨테이너 저장하기</h1><p>이미지 말고도 컨테이너도 저장하고 불러올 수 있다.</p>
+<pre><code class="bash">docker export [container name] &gt; [저장할파일명.tar]
+</code></pre>
+<h1 id="컨테이너-불러오기"><a href="#컨테이너-불러오기" class="headerlink" title="컨테이너 불러오기"></a>컨테이너 불러오기</h1><pre><code class="bash">docker import [tar파일 이름]
+</code></pre>
+
             </div>
           
 
@@ -229,13 +235,15 @@
     <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
 <script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
 <script type="text/javascript" src="/js/src/highlight.pack.js?v=1.1"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.7.0/highlightjs-line-numbers.min.js"></script>
 <script>
-hljs.initHighlightingOnLoad();
 document.addEventListener('DOMContentLoaded', (event) => {
-  document.querySelectorAll('td.code').forEach((block) => {
+  document.querySelectorAll('figure.highlight').forEach((block) => {
     hljs.highlightBlock(block);
   });
 });
+hljs.initHighlightingOnLoad();
+hljs.initLineNumbersOnLoad();
 </script>
   </body>
 </html>
