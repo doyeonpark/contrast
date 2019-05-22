@@ -35,18 +35,18 @@
 <link rel="canonical" href="https://parkdoyeon.github.io/2019/04/18/Python/2019-04-18-python-venv/">
 
 
-<meta name="description" content="virtaulenv를 통해 활상화된 가상환경 아래에서 개발하면,파이썬 실행환경을 독립적으로 관리할 수 있는 것은 물론이고, 모듈관리를 체계적으로 할 수 있다. pip 인스톨을 통해 virtualenv를 설치하고,해당 프로젝트 경로에서 virtualenv 명령어를 통해 가상환경 이름을 명명하면해당 디렉토리에 가상환경 디렉토리가 생성된다. pip3 instal">
+<meta name="description" content="virtaulenv를 통해 활상화된 가상환경 아래에서 개발하면,파이썬 실행환경을 독립적으로 관리할 수 있는 것은 물론이고, 모듈관리를 체계적으로 할 수 있다. pip 인스톨을 통해 virtualenv를 설치하고,해당 프로젝트 경로에서 virtualenv 명령어를 통해 가상환경 이름을 명명하면해당 디렉토리에 가상환경 디렉토리가 생성된다.123pip3 inst">
 <meta name="keywords" content="Python,venv,pip">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Python - 독립실행환경 virtualenv 만들기">
 <meta property="og:url" content="https://parkdoyeon.github.io/2019/04/18/Python/2019-04-18-python-venv/index.html">
 <meta property="og:site_name" content="Park Doyeon">
-<meta property="og:description" content="virtaulenv를 통해 활상화된 가상환경 아래에서 개발하면,파이썬 실행환경을 독립적으로 관리할 수 있는 것은 물론이고, 모듈관리를 체계적으로 할 수 있다. pip 인스톨을 통해 virtualenv를 설치하고,해당 프로젝트 경로에서 virtualenv 명령어를 통해 가상환경 이름을 명명하면해당 디렉토리에 가상환경 디렉토리가 생성된다. pip3 instal">
+<meta property="og:description" content="virtaulenv를 통해 활상화된 가상환경 아래에서 개발하면,파이썬 실행환경을 독립적으로 관리할 수 있는 것은 물론이고, 모듈관리를 체계적으로 할 수 있다. pip 인스톨을 통해 virtualenv를 설치하고,해당 프로젝트 경로에서 virtualenv 명령어를 통해 가상환경 이름을 명명하면해당 디렉토리에 가상환경 디렉토리가 생성된다.123pip3 inst">
 <meta property="og:locale" content="default">
 <meta property="og:updated_time" content="2019-05-21T15:59:37.428Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python - 독립실행환경 virtualenv 만들기">
-<meta name="twitter:description" content="virtaulenv를 통해 활상화된 가상환경 아래에서 개발하면,파이썬 실행환경을 독립적으로 관리할 수 있는 것은 물론이고, 모듈관리를 체계적으로 할 수 있다. pip 인스톨을 통해 virtualenv를 설치하고,해당 프로젝트 경로에서 virtualenv 명령어를 통해 가상환경 이름을 명명하면해당 디렉토리에 가상환경 디렉토리가 생성된다. pip3 instal">
+<meta name="twitter:description" content="virtaulenv를 통해 활상화된 가상환경 아래에서 개발하면,파이썬 실행환경을 독립적으로 관리할 수 있는 것은 물론이고, 모듈관리를 체계적으로 할 수 있다. pip 인스톨을 통해 virtualenv를 설치하고,해당 프로젝트 경로에서 virtualenv 명령어를 통해 가상환경 이름을 명명하면해당 디렉토리에 가상환경 디렉토리가 생성된다.123pip3 inst">
 
 
 <link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
@@ -141,20 +141,10 @@
     
             <div class="post-content">
             <p>virtaulenv를 통해 활상화된 가상환경 아래에서 개발하면,<br>파이썬 실행환경을 독립적으로 관리할 수 있는 것은 물론이고, 모듈관리를 체계적으로 할 수 있다.</p>
-<p>pip 인스톨을 통해 virtualenv를 설치하고,<br>해당 프로젝트 경로에서 virtualenv 명령어를 통해 가상환경 이름을 명명하면<br>해당 디렉토리에 가상환경 디렉토리가 생성된다.</p>
-<pre><code class="bash">pip3 install virtualenv
-cd [프로젝트 폴더]
-virtualenv venv
-</code></pre>
-<h1 id="가상환경-활성화하기"><a href="#가상환경-활성화하기" class="headerlink" title="가상환경 활성화하기"></a>가상환경 활성화하기</h1><p>윈도우와 리눅스 활성화 방식이 조금씩 다르다. 위에가 윈도우고 아래가 리눅스 실행 명령어이다. </p>
-<pre><code class="bash">venv/scripts/activate
-source venv/bin/activate
-</code></pre>
-<h1 id="비활성화-하기"><a href="#비활성화-하기" class="headerlink" title="비활성화 하기"></a>비활성화 하기</h1><pre><code class="bash">deactivate
-</code></pre>
-<h1 id="패키지-정리-파일-만들기"><a href="#패키지-정리-파일-만들기" class="headerlink" title="패키지 정리 파일 만들기"></a>패키지 정리 파일 만들기</h1><pre><code class="bash">pip freeze &gt; requirement.txt
-</code></pre>
-
+<p>pip 인스톨을 통해 virtualenv를 설치하고,<br>해당 프로젝트 경로에서 virtualenv 명령어를 통해 가상환경 이름을 명명하면<br>해당 디렉토리에 가상환경 디렉토리가 생성된다.<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pip3 install virtualenv</span><br><span class="line"><span class="built_in">cd</span> [프로젝트 폴더]</span><br><span class="line">virtualenv venv</span><br></pre></td></tr></table></figure></p>
+<h1 id="가상환경-활성화하기"><a href="#가상환경-활성화하기" class="headerlink" title="가상환경 활성화하기"></a>가상환경 활성화하기</h1><p>윈도우와 리눅스 활성화 방식이 조금씩 다르다. 위에가 윈도우고 아래가 리눅스 실행 명령어이다.<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">venv/scripts/activate</span><br><span class="line"><span class="built_in">source</span> venv/bin/activate</span><br></pre></td></tr></table></figure></p>
+<h1 id="비활성화-하기"><a href="#비활성화-하기" class="headerlink" title="비활성화 하기"></a>비활성화 하기</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">deactivate</span><br></pre></td></tr></table></figure>
+<h1 id="패키지-정리-파일-만들기"><a href="#패키지-정리-파일-만들기" class="headerlink" title="패키지 정리 파일 만들기"></a>패키지 정리 파일 만들기</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip freeze &gt; requirement.txt</span><br></pre></td></tr></table></figure>
             </div>
           
 

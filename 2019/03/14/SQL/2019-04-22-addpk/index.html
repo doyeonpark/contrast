@@ -35,18 +35,18 @@
 <link rel="canonical" href="https://parkdoyeon.github.io/2019/03/14/SQL/2019-04-22-addpk/">
 
 
-<meta name="description" content="mssql에서 PK를 추가하려면 기존의 PK를 삭제해주고 재생성해줘야한다.mytable에 PK을 하나 더 추가하려고 PK 추가 구문을 아래와 같이 호출하면,아래와 같이 이미 기본키가 정의되었다는 에러메세지가 나오면서 실패한다. ALTER TABLE [dbo].[mytable] ADD  CONSTRAINT [PK_mytable] PRIMARY KEY CLUS">
+<meta name="description" content="mssql에서 PK를 추가하려면 기존의 PK를 삭제해주고 재생성해줘야한다.mytable에 PK을 하나 더 추가하려고 PK 추가 구문을 아래와 같이 호출하면,아래와 같이 이미 기본키가 정의되었다는 에러메세지가 나오면서 실패한다. 12345ALTER TABLE [dbo].[mytable] ADD  CONSTRAINT [PK_mytable] PRIMARY KEY">
 <meta name="keywords" content="mssql,insert,pk">
 <meta property="og:type" content="article">
 <meta property="og:title" content="기존 테이블에 PK키 추가하기">
 <meta property="og:url" content="https://parkdoyeon.github.io/2019/03/14/SQL/2019-04-22-addpk/index.html">
 <meta property="og:site_name" content="Park Doyeon">
-<meta property="og:description" content="mssql에서 PK를 추가하려면 기존의 PK를 삭제해주고 재생성해줘야한다.mytable에 PK을 하나 더 추가하려고 PK 추가 구문을 아래와 같이 호출하면,아래와 같이 이미 기본키가 정의되었다는 에러메세지가 나오면서 실패한다. ALTER TABLE [dbo].[mytable] ADD  CONSTRAINT [PK_mytable] PRIMARY KEY CLUS">
+<meta property="og:description" content="mssql에서 PK를 추가하려면 기존의 PK를 삭제해주고 재생성해줘야한다.mytable에 PK을 하나 더 추가하려고 PK 추가 구문을 아래와 같이 호출하면,아래와 같이 이미 기본키가 정의되었다는 에러메세지가 나오면서 실패한다. 12345ALTER TABLE [dbo].[mytable] ADD  CONSTRAINT [PK_mytable] PRIMARY KEY">
 <meta property="og:locale" content="default">
 <meta property="og:updated_time" content="2019-05-19T15:51:03.844Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="기존 테이블에 PK키 추가하기">
-<meta name="twitter:description" content="mssql에서 PK를 추가하려면 기존의 PK를 삭제해주고 재생성해줘야한다.mytable에 PK을 하나 더 추가하려고 PK 추가 구문을 아래와 같이 호출하면,아래와 같이 이미 기본키가 정의되었다는 에러메세지가 나오면서 실패한다. ALTER TABLE [dbo].[mytable] ADD  CONSTRAINT [PK_mytable] PRIMARY KEY CLUS">
+<meta name="twitter:description" content="mssql에서 PK를 추가하려면 기존의 PK를 삭제해주고 재생성해줘야한다.mytable에 PK을 하나 더 추가하려고 PK 추가 구문을 아래와 같이 호출하면,아래와 같이 이미 기본키가 정의되었다는 에러메세지가 나오면서 실패한다. 12345ALTER TABLE [dbo].[mytable] ADD  CONSTRAINT [PK_mytable] PRIMARY KEY">
 
 
 <link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
@@ -141,33 +141,13 @@
     
             <div class="post-content">
             <p>mssql에서 PK를 추가하려면 기존의 PK를 삭제해주고 재생성해줘야한다.<br>mytable에 PK을 하나 더 추가하려고 PK 추가 구문을 아래와 같이 호출하면,<br>아래와 같이 이미 기본키가 정의되었다는 에러메세지가 나오면서 실패한다.</p>
-<pre><code class="SQL">ALTER TABLE [dbo].[mytable] ADD  CONSTRAINT [PK_mytable] PRIMARY KEY CLUSTERED 
-(
-    [otherPKColumn] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-GO
-</code></pre>
-<pre><code class="SQL">메시지 1779, 수준 16, 상태 0, 줄 9
-테이블 &#39;mytable&#39;에 이미 기본 키가 정의되어 있습니다.
-메시지 1750, 수준 16, 상태 0, 줄 9
-제약 조건을 만들 수 없습니다. 이전 오류를 참조하십시오.
-</code></pre>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> [dbo].[mytable] <span class="keyword">ADD</span>  <span class="keyword">CONSTRAINT</span> [PK_mytable] PRIMARY <span class="keyword">KEY</span> CLUSTERED </span><br><span class="line">(</span><br><span class="line">	[otherPKColumn] <span class="keyword">ASC</span></span><br><span class="line">)<span class="keyword">WITH</span> (PAD_INDEX = <span class="keyword">OFF</span>, STATISTICS_NORECOMPUTE = <span class="keyword">OFF</span>, SORT_IN_TEMPDB = <span class="keyword">OFF</span>, IGNORE_DUP_KEY = <span class="keyword">OFF</span>, <span class="keyword">ONLINE</span> = <span class="keyword">OFF</span>, ALLOW_ROW_LOCKS = <span class="keyword">ON</span>, ALLOW_PAGE_LOCKS = <span class="keyword">ON</span>) <span class="keyword">ON</span> [PRIMARY]</span><br><span class="line"><span class="keyword">GO</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">메시지 1779, 수준 16, 상태 0, 줄 9</span><br><span class="line">테이블 'mytable'에 이미 기본 키가 정의되어 있습니다.</span><br><span class="line">메시지 1750, 수준 16, 상태 0, 줄 9</span><br><span class="line">제약 조건을 만들 수 없습니다. 이전 오류를 참조하십시오.</span><br></pre></td></tr></table></figure>
 <p>때문에 아래 호출을 통해 기본키를 정의한 PK 테이블 이름을 확인한다음, </p>
-<pre><code class="SQL">sp_helpconstraint [mytable]
-</code></pre>
-<pre><code class="SQL">constraint_type constraint_name delete_action   update_action   status_enabled  status_for_replication  constraint_keys
-PRIMARY KEY(clustered)  PK_mytable  (n/a)  (n/a)  (n/a)  (n/a) Seq
-</code></pre>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sp_helpconstraint [mytable]</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">constraint_type constraint_name delete_action   update_action   status_enabled  status_for_replication  constraint_keys</span><br><span class="line">PRIMARY KEY(clustered)  PK_mytable  (n/a)  (n/a)  (n/a)  (n/a) Seq</span><br></pre></td></tr></table></figure>
 <p>Drop문으로 날려주고 재생성해야한다.</p>
-<pre><code class="SQL">ALTER TABLE dbo.mytable DROP CONSTRAINT PK_mytable
-ALTER TABLE [dbo].[mytable] ADD  CONSTRAINT [PK_mytable] PRIMARY KEY CLUSTERED 
-(
-    [Seq] ASC,
-    [otherPKColumn] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-GO
-</code></pre>
-
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> dbo.mytable <span class="keyword">DROP</span> <span class="keyword">CONSTRAINT</span> PK_mytable</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> [dbo].[mytable] <span class="keyword">ADD</span>  <span class="keyword">CONSTRAINT</span> [PK_mytable] PRIMARY <span class="keyword">KEY</span> CLUSTERED </span><br><span class="line">(</span><br><span class="line">	[Seq] <span class="keyword">ASC</span>,</span><br><span class="line">	[otherPKColumn] <span class="keyword">ASC</span></span><br><span class="line">)<span class="keyword">WITH</span> (PAD_INDEX = <span class="keyword">OFF</span>, STATISTICS_NORECOMPUTE = <span class="keyword">OFF</span>, SORT_IN_TEMPDB = <span class="keyword">OFF</span>, IGNORE_DUP_KEY = <span class="keyword">OFF</span>, <span class="keyword">ONLINE</span> = <span class="keyword">OFF</span>, ALLOW_ROW_LOCKS = <span class="keyword">ON</span>, ALLOW_PAGE_LOCKS = <span class="keyword">ON</span>) <span class="keyword">ON</span> [PRIMARY]</span><br><span class="line"><span class="keyword">GO</span></span><br></pre></td></tr></table></figure>
             </div>
           
 

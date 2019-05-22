@@ -163,38 +163,7 @@
 <li>아래의 코드는 plist파일 최소의 스펙이다.<ul>
 <li>참고로 다운로드중일 때 백색 이미지 말고 별개의 이미지를 설정할수도 있다. 이건 in house 배포 검색하면 나올것이다.</li>
 <li>배포와 상관없는 key값이 더 추가되면 문제가 생긴다는 글을 보기도 했다. 애플은 버전별 변동이 잦아서 상이하므로 아무튼 주의.</li>
-<li>특히 Metadata가 빠지거나 잘못되어있으면 별다른 피드백 없이 그냥 다운로드가 되지 않으므로 반드시 xcode 프로젝트의 info.plist와 일치시켜 넣도록 하자.<pre><code class="xml">  &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-  &lt;!DOCTYPE plist PUBLIC &quot;-//Apple//DTD PLIST 1.0//EN&quot; &quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;&gt;
-  &lt;plist version=&quot;1.0&quot;&gt;
-  &lt;dict&gt;
-      &lt;key&gt;items&lt;/key&gt;
-      &lt;array&gt;
-          &lt;dict&gt;
-              &lt;key&gt;assets&lt;/key&gt;
-              &lt;array&gt;
-                  &lt;dict&gt;
-                      &lt;key&gt;kind&lt;/key&gt;
-                      &lt;string&gt;software-package&lt;/string&gt;
-                      &lt;key&gt;url&lt;/key&gt;
-                      &lt;string&gt;https://company.url/folder/app.ipa&lt;/string&gt;
-                  &lt;/dict&gt;
-              &lt;/array&gt;
-              &lt;key&gt;metadata&lt;/key&gt;
-              &lt;dict&gt;
-                  &lt;key&gt;bundle-identifier&lt;/key&gt;
-                  &lt;string&gt;com.company.app&lt;/string&gt;
-                  &lt;key&gt;bundle-version&lt;/key&gt;
-                  &lt;string&gt;1.0&lt;/string&gt;
-                  &lt;key&gt;kind&lt;/key&gt;
-                  &lt;string&gt;software&lt;/string&gt;
-                  &lt;key&gt;title&lt;/key&gt;
-                  &lt;string&gt;Monitor&lt;/string&gt;
-              &lt;/dict&gt;
-          &lt;/dict&gt;
-      &lt;/array&gt;
-  &lt;/dict&gt;
-&lt;/plist&gt;
-</code></pre>
+<li>특히 Metadata가 빠지거나 잘못되어있으면 별다른 피드백 없이 그냥 다운로드가 되지 않으므로 반드시 xcode 프로젝트의 info.plist와 일치시켜 넣도록 하자.<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">    <span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line">    <span class="meta">&lt;!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">plist</span> <span class="attr">version</span>=<span class="string">"1.0"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">key</span>&gt;</span>items<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">array</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">key</span>&gt;</span>assets<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">array</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">key</span>&gt;</span>kind<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">string</span>&gt;</span>software-package<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">key</span>&gt;</span>url<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">string</span>&gt;</span>https://company.url/folder/app.ipa<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">dict</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">array</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">key</span>&gt;</span>metadata<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">key</span>&gt;</span>bundle-identifier<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">string</span>&gt;</span>com.company.app<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">key</span>&gt;</span>bundle-version<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">string</span>&gt;</span>1.0<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">key</span>&gt;</span>kind<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">string</span>&gt;</span>software<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">key</span>&gt;</span>title<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">string</span>&gt;</span>Monitor<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">dict</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">dict</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">array</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dict</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">plist</span>&gt;</span></span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 </li>
@@ -211,11 +180,7 @@
 </ul>
 </li>
 </ol>
-<pre><code class="html">&lt;a href=&quot;itms-services://?action=download-manifest&amp;url=https://company.url/folder/app.plist&quot;&gt;
-    &lt;button type=&quot;button&quot; class=&quot;btn btn-default&quot; id=&quot;iosDownload&quot;&gt;
-&lt;/a&gt;
-</code></pre>
-
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"itms-services://?action=download-manifest&amp;url=https://company.url/folder/app.plist"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span> <span class="attr">type</span>=<span class="string">"button"</span> <span class="attr">class</span>=<span class="string">"btn btn-default"</span> <span class="attr">id</span>=<span class="string">"iosDownload"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br></pre></td></tr></table></figure>
             </div>
           
 

@@ -149,74 +149,29 @@
 <li><code>System.Threading.Tasks.ValueTask</code>가 추가되었는데, 마찬가지로 지원하지 않으므로 <code>System.Threading.Tasks.Extensions.dll</code>을 참조추가해야한다.</li>
 </ul>
 <h3 id="out-매개변수-쉽게-사용하기"><a href="#out-매개변수-쉽게-사용하기" class="headerlink" title="out 매개변수 쉽게 사용하기"></a>out 매개변수 쉽게 사용하기</h3><ul>
-<li>기본에는 out매개변수 사용을 위해서는 따로 선언을 해줬어야했지만, 이제는 타입을 함께 입력해주면 선언이 필요없다.<pre><code class="c#">  int.TryParse(&quot;5&quot;, out int result);
-  int.TryParse(&quot;6&quot;, out int result); //컴파일시 6.0코드로 변환 하기때문에 같은 변수명으로 입력하면 컴파일 에러발생!
-</code></pre>
+<li>기본에는 out매개변수 사용을 위해서는 따로 선언을 해줬어야했지만, 이제는 타입을 함께 입력해주면 선언이 필요없다.  <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span>.TryParse(<span class="string">"5"</span>, <span class="keyword">out</span> <span class="keyword">int</span> result);</span><br><span class="line"><span class="keyword">int</span>.TryParse(<span class="string">"6"</span>, <span class="keyword">out</span> <span class="keyword">int</span> result); <span class="comment">//컴파일시 6.0코드로 변환 하기때문에 같은 변수명으로 입력하면 컴파일 에러발생!</span></span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 <h3 id="반환값-로컬변수에-ref-사용"><a href="#반환값-로컬변수에-ref-사용" class="headerlink" title="반환값/로컬변수에 ref 사용"></a>반환값/로컬변수에 ref 사용</h3><ul>
 <li>메서드를 통해 배열의 특정 요소만 반환하는 등의 사용이 가능하다</li>
-<li>가독성 문제가 있지만 메서드의 값 설정과 할당이 동시에 가능해진다.<pre><code class="c#">  class MyMetrix
-  {
-      int[,] _matrix = new int[100, 100]
-      public ref int Put(int c, int r)
-      {
-          return ref _matrix[c, r];
-      }
-  }
-  {
-      MyMetrix m = new MyMetrix();
-      int result = Matrix.Put(1, 1) = 1;
-      Console.WriteLine(result) //1
-  }
-</code></pre>
+<li><p>가독성 문제가 있지만 메서드의 값 설정과 할당이 동시에 가능해진다.</p>
+  <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">MyMetrix</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">int</span>[,] _matrix = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">100</span>, <span class="number">100</span>]</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">ref</span> <span class="keyword">int</span> <span class="title">Put</span>(<span class="params"><span class="keyword">int</span> c, <span class="keyword">int</span> r</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">ref</span> _matrix[c, r];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">&#123;</span><br><span class="line">    MyMetrix m = <span class="keyword">new</span> MyMetrix();</span><br><span class="line">    <span class="keyword">int</span> result = Matrix.Put(<span class="number">1</span>, <span class="number">1</span>) = <span class="number">1</span>;</span><br><span class="line">    Console.WriteLine(result) <span class="comment">//1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
-<li>주의할 점은 메서드 내부에서 선언한 지역변수와 같은 경우 실행 후 호출측으로 넘어갈 때 스택이 해제되어 return ref으로 반환된 인스턴스가 남아있을거라는 보장이 없다.</li>
+<li><p>주의할 점은 메서드 내부에서 선언한 지역변수와 같은 경우 실행 후 호출측으로 넘어갈 때 스택이 해제되어 return ref으로 반환된 인스턴스가 남아있을거라는 보장이 없다.</p>
+</li>
 <li>또한, ref 예약어를 지정한 지역변수는 다시 다른 변수를 가리키도록 변경할 수 없다.</li>
 </ul>
 <h3 id="ValueTuple-도입-이유-dynamic-System-Tuple의-한계"><a href="#ValueTuple-도입-이유-dynamic-System-Tuple의-한계" class="headerlink" title="ValueTuple 도입 이유: dynamic, System.Tuple의 한계"></a>ValueTuple 도입 이유: dynamic, System.Tuple의 한계</h3><ul>
-<li>튜플은 기본적으로 여러개의 요소를 반환해야하지만 일일히 클래스를 만들기가 번거로울 때 사용된다.<ul>
-<li>물론 아래와같이 c# 3.0의 익명 타입과 4.0의  dynamic 예약어를 이용할수도 있지만, 런타임시 리스크가 있다.<pre><code class="c#">{
-    dynamic result = ParseInteger(&quot;20&quot;); //dynamic
-    Console.WriteLine(result.Parsed);
-    Console.WriteLine(result.Number);
-    //정적 형식검사가 안돼 나중이 필드 이름이 바뀌어도 컴파일시 문제를 알아낼 수 없는 문제가 있다.
-}
-dynamic ParseInteger(string text)
-{
-    int number = 0;
-    try
-    {
-        number = Int32.Parse(text);
-        return new { Number = number, Parsed = true }; //익명 타입
-    }
-    catch
-    {
-        return new { Number = number, Parsed = false };
-    }
-}
-</code></pre>
+<li><p>튜플은 기본적으로 여러개의 요소를 반환해야하지만 일일히 클래스를 만들기가 번거로울 때 사용된다.</p>
+<ul>
+<li>물론 아래와같이 c# 3.0의 익명 타입과 4.0의  dynamic 예약어를 이용할수도 있지만, 런타임시 리스크가 있다.<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="keyword">dynamic</span> result = ParseInteger(<span class="string">"20"</span>); <span class="comment">//dynamic</span></span><br><span class="line">    Console.WriteLine(result.Parsed);</span><br><span class="line">    Console.WriteLine(result.Number);</span><br><span class="line">    <span class="comment">//정적 형식검사가 안돼 나중이 필드 이름이 바뀌어도 컴파일시 문제를 알아낼 수 없는 문제가 있다.</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">dynamic</span> <span class="title">ParseInteger</span>(<span class="params"><span class="keyword">string</span> text</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> number = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">try</span></span><br><span class="line">    &#123;</span><br><span class="line">        number = Int32.Parse(text);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> &#123; Number = number, Parsed = <span class="literal">true</span> &#125;; <span class="comment">//익명 타입</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">catch</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> &#123; Number = number, Parsed = <span class="literal">false</span> &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 </li>
-<li>System.Tuple을 이용해 문제를 해결할수도 있지만<ul>
+<li><p>System.Tuple을 이용해 문제를 해결할수도 있지만</p>
+<ul>
 <li>변수 이름이 무조건 Item1, 2.. 와같이 정해지며</li>
-<li>파이썬과같은 언어랑 비교했을 때 상대적으로 복잡하다.<pre><code class="c#">{
-    Tuple&lt;bool, int&gt; result = pg.ParseInteger(&quot;40&quot;);
-}
-Tuple&lt;bool, int&gt; ParseInteger(string text)
-{
-    int number = 0;
-    bool result = false;
-    try
-    {
-        number = Int32.Parse(text);
-        result = true
-    }
-    catch { }
-    return Tuple.create(result, number);
-}
-</code></pre>
+<li>파이썬과같은 언어랑 비교했을 때 상대적으로 복잡하다.<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    Tuple&lt;<span class="keyword">bool</span>, <span class="keyword">int</span>&gt; result = pg.ParseInteger(<span class="string">"40"</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">Tuple&lt;<span class="keyword">bool</span>, <span class="keyword">int</span>&gt; <span class="title">ParseInteger</span>(<span class="params"><span class="keyword">string</span> text</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> number = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">bool</span> result = <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">try</span></span><br><span class="line">    &#123;</span><br><span class="line">        number = Int32.Parse(text);</span><br><span class="line">        result = <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">catch</span> &#123; &#125;</span><br><span class="line">    <span class="keyword">return</span> Tuple.create(result, number);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 </li>
@@ -232,29 +187,7 @@ Tuple&lt;bool, int&gt; ParseInteger(string text)
 <li>4.7의 ValueTuple은 struct로 정의되어있다는 차이가 있다.</li>
 </ul>
 </li>
-<li><p>Deconstruct라는 특별한 이름을 지정한 메서드를 정의해서 out 파라미터를 받아 직접 튜플을 구현할수도 있다.</p>
-<pre><code class="c#">  {
-      var result = pg.ParseInteger(&quot;40&quot;);
-      Console.WriteLine(result.Parsed);
-      Console.WriteLine(result.Number);
-
-      (bool success, int n) caller = pg.ParseInteger(&quot;40&quot;);
-      Console.WriteLine(caller.success);
-      Console.WriteLine(caller.n);
-
-      (bool ret, int num) = pg.ParseInteger(&quot;40&quot;);
-      Console.WriteLine(ret);
-      Console.WriteLine(num);
-
-      (var _, var _) = pg.ParseInteger(&quot;40&quot;); //2개값 모두 생략
-      (var _, var n) = pg.ParseInteger(&quot;40&quot;); //마지막 값만 n으로 받음
-  }
-  (bool Parsed, int Number) ParseInteger(string text) //Return 타입에 이름 지정
-  {
-      //생략
-      return (result, number)
-  }
-</code></pre>
+<li>Deconstruct라는 특별한 이름을 지정한 메서드를 정의해서 out 파라미터를 받아 직접 튜플을 구현할수도 있다.  <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="keyword">var</span> result = pg.ParseInteger(<span class="string">"40"</span>);</span><br><span class="line">    Console.WriteLine(result.Parsed);</span><br><span class="line">    Console.WriteLine(result.Number);</span><br><span class="line"></span><br><span class="line">    (<span class="keyword">bool</span> success, <span class="keyword">int</span> n) caller = pg.ParseInteger(<span class="string">"40"</span>);</span><br><span class="line">    Console.WriteLine(caller.success);</span><br><span class="line">    Console.WriteLine(caller.n);</span><br><span class="line"></span><br><span class="line">    (<span class="keyword">bool</span> ret, <span class="keyword">int</span> num) = pg.ParseInteger(<span class="string">"40"</span>);</span><br><span class="line">    Console.WriteLine(ret);</span><br><span class="line">    Console.WriteLine(num);</span><br><span class="line"></span><br><span class="line">    (<span class="keyword">var</span> _, <span class="keyword">var</span> _) = pg.ParseInteger(<span class="string">"40"</span>); <span class="comment">//2개값 모두 생략</span></span><br><span class="line">    (<span class="keyword">var</span> _, <span class="keyword">var</span> n) = pg.ParseInteger(<span class="string">"40"</span>); <span class="comment">//마지막 값만 n으로 받음</span></span><br><span class="line">&#125;</span><br><span class="line">(<span class="keyword">bool</span> Parsed, <span class="keyword">int</span> Number) ParseInteger(<span class="keyword">string</span> text) <span class="comment">//Return 타입에 이름 지정</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//생략</span></span><br><span class="line">    <span class="keyword">return</span> (result, number)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 <h3 id="lambda-메서드-정의-확대"><a href="#lambda-메서드-정의-확대" class="headerlink" title="lambda 메서드 정의 확대"></a>lambda 메서드 정의 확대</h3><ul>
@@ -273,19 +206,8 @@ Tuple&lt;bool, int&gt; ParseInteger(string text)
 <h3 id="ValueTask-async메서드-반환타입으로-사용자-정의-Task타입을-반환할-수-있게됨"><a href="#ValueTask-async메서드-반환타입으로-사용자-정의-Task타입을-반환할-수-있게됨" class="headerlink" title="ValueTask: async메서드 반환타입으로 사용자 정의 Task타입을 반환할 수 있게됨"></a>ValueTask<t>: async메서드 반환타입으로 사용자 정의 Task타입을 반환할 수 있게됨</t></h3><ul>
 <li>async 예약어가 붙는 메서드는 반환타입이 void, Task, Task<t> 중에 하나여야한다</t></li>
 <li>문제는 메서드 내에서 await호출이 되지 않아 비동기 처리가 필요 없을때도 Task 객체가 생성되어 성능상 불이익이 발생한다.</li>
-<li><p>여기서 반환 타입을 ValueTask<t>형식으로 바꿔주면 비동기 처리를 하지 않을 경우에는 Task 객체 생성이 일어나지 않는다.</t></p>
-<pre><code class="c#">  static string _filecontents = string.Empty;
-  private static async Task&lt;(string, int)&gt; FileReadAsync(string filePath)
-  {
-      if (string.IsNullOrEmpty(_filecontents) == false)
-              return (_filecontents, Thread.CurrentThread.ManagedThreadId);
-
-      _filecontents = await ReadAllTextAsync(filePath);
-      return (_filecontents, Thread.CurrentThread.ManagedThreadId);
-  }
-
-</code></pre>
-</li>
+<li>여기서 반환 타입을 ValueTask<t>형식으로 바꿔주면 비동기 처리를 하지 않을 경우에는 Task 객체 생성이 일어나지 않는다.  <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">string</span> _filecontents = <span class="keyword">string</span>.Empty;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">async</span> Task&lt;(<span class="keyword">string</span>, <span class="keyword">int</span>)&gt; FileReadAsync(<span class="keyword">string</span> filePath)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">string</span>.IsNullOrEmpty(_filecontents) == <span class="literal">false</span>)</span><br><span class="line">            <span class="keyword">return</span> (_filecontents, Thread.CurrentThread.ManagedThreadId);</span><br><span class="line">    </span><br><span class="line">    _filecontents = <span class="keyword">await</span> ReadAllTextAsync(filePath);</span><br><span class="line">    <span class="keyword">return</span> (_filecontents, Thread.CurrentThread.ManagedThreadId);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</t></li>
 </ul>
 <h3 id="자유로운-throw-사용"><a href="#자유로운-throw-사용" class="headerlink" title="자유로운 throw 사용"></a>자유로운 throw 사용</h3><ul>
 <li>throw는 식(expression)이 아닌 문(statement)에 해당한다.</li>
@@ -306,24 +228,10 @@ Tuple&lt;bool, int&gt; ParseInteger(string text)
 <li>is는 as와 기본적으로 동일한 기능을 수행한다.</li>
 <li>차이점은 as는 변수에 캐스팅 결과가 담기지만,</li>
 <li><p>is는 구문자체로는 True/False를 반환하고, 비교 타입 뒤에 변수명을 입력하면 해당 변수에 캐스팅된 값이 할당된다는 차이점이 있다.</p>
-<pre><code class="c#">  object obj = new List&lt;string&gt;();
-  if(obj is List&lt;string&gt; list)
-      list.ForEach(e =&gt; Console.WriteLine(e));
-
-  object[] object = new object[] { 100, null, DateTime.Now, new ArrayList() };
-  foreach(object item in objList)
-  {
-      if (item is 100) {
-          //item 사용
-      } else if (item is null) { 
-          //item 사용
-      } else if (item is DateTime dt) {
-          //dt 사용
-      }
-  }
-</code></pre>
+  <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">object</span> obj = <span class="keyword">new</span> List&lt;<span class="keyword">string</span>&gt;();</span><br><span class="line"><span class="keyword">if</span>(obj <span class="keyword">is</span> List&lt;<span class="keyword">string</span>&gt; list)</span><br><span class="line">    list.ForEach(e =&gt; Console.WriteLine(e));</span><br><span class="line"></span><br><span class="line"><span class="keyword">object</span>[] <span class="keyword">object</span> = <span class="keyword">new</span> <span class="keyword">object</span>[] &#123; <span class="number">100</span>, <span class="literal">null</span>, DateTime.Now, <span class="keyword">new</span> ArrayList() &#125;;</span><br><span class="line"><span class="keyword">foreach</span>(<span class="keyword">object</span> item <span class="keyword">in</span> objList)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (item <span class="keyword">is</span> <span class="number">100</span>) &#123;</span><br><span class="line">        <span class="comment">//item 사용</span></span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (item <span class="keyword">is</span> <span class="literal">null</span>) &#123; </span><br><span class="line">        <span class="comment">//item 사용</span></span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (item <span class="keyword">is</span> DateTime dt) &#123;</span><br><span class="line">        <span class="comment">//dt 사용</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
-<li>var도 가능하지만 사실상 의미가 없다.<ul>
+<li><p>var도 가능하지만 사실상 의미가 없다.</p>
+<ul>
 <li>단 var 타입뒤에 변수명 반드시 써줘야하며, 이것도 의미가 없으면 언더바(_)로 입력하면된다.</li>
 </ul>
 </li>
@@ -331,18 +239,7 @@ Tuple&lt;bool, int&gt; ParseInteger(string text)
 <h3 id="패턴-매칭-switch-case-연산"><a href="#패턴-매칭-switch-case-연산" class="headerlink" title="패턴 매칭: switch/case 연산"></a>패턴 매칭: switch/case 연산</h3><ul>
 <li>case 예약어 다음에 “[타입] [변수명]”을 넣으면 is 예약어처럼 사용 가능하다</li>
 <li>case 구문 뒤에 when 예약어를 추가하면 조건을 한번 더 검사할 수 있다. 예외필터의 when과 사용법이 동일하다.</li>
-<li>튜플타입과 같은 복잡한 인자를 받을 때 var와 when 구문을 사용하면 훨씬 간결하게 사용할 수 있다.<pre><code class="c#">  Action&lt;(int, int)&gt; detectZeroOr = (arg) =&gt;
-  {
-      switch (arg)
-      {
-          case var r when r.Equals(0, 0):
-          case var r1 when r1.Item == 0:
-          case var r2 when r2.Item == 0:
-              return;
-      }
-      Console.WriteLine(&quot;both nonzero&quot;)
-  }
-</code></pre>
+<li>튜플타입과 같은 복잡한 인자를 받을 때 var와 when 구문을 사용하면 훨씬 간결하게 사용할 수 있다.  <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Action&lt;(<span class="keyword">int</span>, <span class="keyword">int</span>)&gt; detectZeroOr = (arg) =&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">switch</span> (arg)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="keyword">var</span> r when r.Equals(<span class="number">0</span>, <span class="number">0</span>):</span><br><span class="line">        <span class="keyword">case</span> <span class="keyword">var</span> r1 when r1.Item == <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">case</span> <span class="keyword">var</span> r2 when r2.Item == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    Console.WriteLine(<span class="string">"both nonzero"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 
@@ -379,15 +276,15 @@ Tuple&lt;bool, int&gt; ParseInteger(string text)
         
   <nav class="post-nav">
     
-      <a class="prev" href="/2018/12/07/Csharp/2018-12-11-csharp-7.1-tuple,async,is/">
+      <a class="prev" href="/2018/12/07/Csharp/2018-12-07-csharp-6.0-syntheticsugar/">
         <i class="iconfont icon-left"></i>
-        <span class="prev-text nav-default">c# 기본서 - c# 7.1: Tuple, ValueTuple, async, is</span>
+        <span class="prev-text nav-default">c# 기본서 - c# 6.0: 간편표기법</span>
         <span class="prev-text nav-mobile">Prev</span>
       </a>
     
     
-      <a class="next" href="/2018/12/07/Csharp/2018-12-07-csharp-6.0-syntheticsugar/">
-        <span class="next-text nav-default">c# 기본서 - c# 6.0: 간편표기법</span>
+      <a class="next" href="/2018/12/07/Csharp/2018-12-07-csharp-5.0-asyncawait/">
+        <span class="next-text nav-default">c# 기본서 - c# 5.0: async, await</span>
         <span class="prev-text nav-mobile">Next</span>
         <i class="iconfont icon-right"></i>
       </a>

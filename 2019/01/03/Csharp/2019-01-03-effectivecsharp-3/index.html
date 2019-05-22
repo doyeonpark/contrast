@@ -158,32 +158,20 @@
 </ul>
 <h3 id="타입-매개변수가-IDisposable을-구현한-경우를-대비하여-제네릭-클래스를-작성하라"><a href="#타입-매개변수가-IDisposable을-구현한-경우를-대비하여-제네릭-클래스를-작성하라" class="headerlink" title="타입 매개변수가 IDisposable을 구현한 경우를 대비하여 제네릭 클래스를 작성하라"></a>타입 매개변수가 IDisposable을 구현한 경우를 대비하여 제네릭 클래스를 작성하라</h3><ul>
 <li>타입 매개변수가 IDisposable을 구현했을때 using(a as IDisposable) 구문을 사용하여 dispose 호출이 가능하다<ul>
-<li>만약 a가 IDisposable을 구현하지 않았다면 null이 리턴되고 dispose 호출을 하지 않기때문에, 깔끔한 코드 작성이 된다.<pre><code class="c#">{
-    public void GetThingsDone()
-    {
-        T driver = new T();
-        using(driver as IDisposable)
-        {
-            driver.DoWork();
-        }
-    }
-}
-</code></pre>
+<li>만약 a가 IDisposable을 구현하지 않았다면 null이 리턴되고 dispose 호출을 하지 않기때문에, 깔끔한 코드 작성이 된다.<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">GetThingsDone</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        T driver = <span class="keyword">new</span> T();</span><br><span class="line">        <span class="keyword">using</span>(driver <span class="keyword">as</span> IDisposable)</span><br><span class="line">        &#123;</span><br><span class="line">            driver.DoWork();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 </li>
 </ul>
 <h3 id="공변성과-반공변성을-지원하라-고민해볼-것"><a href="#공변성과-반공변성을-지원하라-고민해볼-것" class="headerlink" title="공변성과 반공변성을 지원하라 (고민해볼 것)"></a>공변성과 반공변성을 지원하라 (고민해볼 것)</h3><h3 id="타입-매개변수에-대해-메서드-제약-조건을-서정하려면-델리게이트를-사용하라"><a href="#타입-매개변수에-대해-메서드-제약-조건을-서정하려면-델리게이트를-사용하라" class="headerlink" title="타입 매개변수에 대해 메서드 제약 조건을 서정하려면 델리게이트를 사용하라"></a>타입 매개변수에 대해 메서드 제약 조건을 서정하려면 델리게이트를 사용하라</h3><ul>
-<li>특정 메서드를 구현하기위해서 인터페이스를 설정하기보다, 해당 메서드를 호출부에서 구현하는 것이 더 편리할때가 있다.<ul>
+<li><p>특정 메서드를 구현하기위해서 인터페이스를 설정하기보다, 해당 메서드를 호출부에서 구현하는 것이 더 편리할때가 있다.</p>
+<ul>
 <li>가령</li>
-<li>특정 매개변수를 받는 생성자 시퀀스 함수를 호출할 때, 타입 제약조건으로 ‘매개변수가 있는’ 생성자를 설정할 순 없다. 여기서 델리게이트를 사용하면 제약을 둘 수 있다. <pre><code class="c#">{
-    List&lt;Point&gt; values = new List&lt;Point&gt;(
-        Utilities.Zip(xValues, yValues, (x, y) -&gt; new Point(x, y))
-    )
-}
-</code></pre>
+<li><p>특정 매개변수를 받는 생성자 시퀀스 함수를 호출할 때, 타입 제약조건으로 ‘매개변수가 있는’ 생성자를 설정할 순 없다. 여기서 델리게이트를 사용하면 제약을 둘 수 있다. </p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    List&lt;Point&gt; values = <span class="keyword">new</span> List&lt;Point&gt;(</span><br><span class="line">        Utilities.Zip(xValues, yValues, (x, y) -&gt; <span class="keyword">new</span> Point(x, y))</span><br><span class="line">    )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
-<li>인터페이스 구현시 다양한 타입이 전달되면 타입별로 오버라이드를 해야할 수 있다.</li>
+<li><p>인터페이스 구현시 다양한 타입이 전달되면 타입별로 오버라이드를 해야할 수 있다.</p>
+</li>
 </ul>
 </li>
 </ul>
@@ -250,8 +238,8 @@
       </a>
     
     
-      <a class="next" href="/2018/12/18/Csharp/2018-12-31-effectivecsharp-2/">
-        <span class="next-text nav-default">effective c# - 2. 리소스 관리</span>
+      <a class="next" href="/2018/12/18/Csharp/2018-12-18-effectivecsharp-1/">
+        <span class="next-text nav-default">effective c# - 1. 언어요소</span>
         <span class="prev-text nav-mobile">Next</span>
         <i class="iconfont icon-right"></i>
       </a>

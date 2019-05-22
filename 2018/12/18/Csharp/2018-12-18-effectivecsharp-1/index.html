@@ -166,54 +166,18 @@
 <li>캐스트 연산의 경우 형변환 실패시 <code>InvalidCastException</code>이 발생한다. 따라서 안전한 캐스팅을 위해서는 실패시 null 리턴을 반환하는 is/as를 적극 활용하는 것이 좋다.</li>
 <li><p>foreach구문에서는 참조형식과 값형식 모두 형변환이 가능해야해서 캐스팅 형변환이 일어나기때문에 캐스팅 익셉션이 발생할 수 있다.</p>
 <ul>
-<li><p>다만 컴파일 단계에서 IEnumerator.Current로 변환가능한지(System.Object), 또 다시 for문 앞에 루프변수로 변환가능한지만 확인한다.</p>
-<pre><code class="csharp">{
-   //foreach 구문
-   public void UseCollection(IEnumerable theCollection)
-   {
-       foreach(MyType t in theCollection)
-           t.DoStuff();
-   }
-
-   //실제 foreach가 동작하는 구문
-   public void UseCollection(IEnumerable theCollection)
-   {
-       IEnumerator it = theCollection.GetEnumerator();
-       while (it.MoveNext())
-       {
-           MyType t = (MyType)it.Current;
-           t.DoStuff();
-       }
-   }
-}
-</code></pre>
+<li>다만 컴파일 단계에서 IEnumerator.Current로 변환가능한지(System.Object), 또 다시 for문 앞에 루프변수로 변환가능한지만 확인한다.<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="comment">//foreach 구문</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">UseCollection</span>(<span class="params">IEnumerable theCollection</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">foreach</span>(MyType t <span class="keyword">in</span> theCollection)</span><br><span class="line">            t.DoStuff();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//실제 foreach가 동작하는 구문</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">UseCollection</span>(<span class="params">IEnumerable theCollection</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        IEnumerator it = theCollection.GetEnumerator();</span><br><span class="line">        <span class="keyword">while</span> (it.MoveNext())</span><br><span class="line">        &#123;</span><br><span class="line">            MyType t = (MyType)it.Current;</span><br><span class="line">            t.DoStuff();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 </li>
-<li>시퀀스 요소를 특정한 타입으로 형변환해주는 IEnumerator.Cast<t>()함수가 있는데, 이 또한 변환 타입에 제약이 발생하므로 캐스팅 연산을 수행한다. 다만, 제너릭타입 컬렉션에 대해서는 호출이 불가능하다.</t></li>
+<li><p>시퀀스 요소를 특정한 타입으로 형변환해주는 IEnumerator.Cast<t>()함수가 있는데, 이 또한 변환 타입에 제약이 발생하므로 캐스팅 연산을 수행한다. 다만, 제너릭타입 컬렉션에 대해서는 호출이 불가능하다.</t></p>
+</li>
 </ul>
 <h3 id="델리게이트를-이용하여-콜백을-표현하라"><a href="#델리게이트를-이용하여-콜백을-표현하라" class="headerlink" title="델리게이트를 이용하여 콜백을 표현하라"></a>델리게이트를 이용하여 콜백을 표현하라</h3><ul>
 <li>인터페이스가 아닌 델리게이트를 통해 콜백을 표현하면 클래스간의 결합도를 낮춰준다.</li>
-<li><p>다만 델리게이트는 한번만 호출해도 델리게이트에 추가된 모든 대상함수가 호출되므로</p>
-<ul>
+<li>다만 델리게이트는 한번만 호출해도 델리게이트에 추가된 모든 대상함수가 호출되므로<ul>
 <li>반환값이 멀티캐스트 체인의 마지막으로 호출된 함수 반환값이 되며, 이전 함수의 반환값은 무시된다는 무시된다는 문제가 있다.</li>
-<li><p>때문에 아래와 같은 루프연산을 통해 반환값을 전체 받을 수 있도록 해야한다.</p>
-<pre><code class="csharp">{
-    public void LengthyOperation(Func&lt;bool&gt; pred)
-    {
-        bool bContinue =ture;
-        foreach(ComplicatedClass cl in container)
-        {
-            cl.DoLengthyOperation();
-            foreach(Func&lt;bool&gt; pr in pred.GetInvocationList())
-                bContinue &amp;= pr();
-
-            if (!bContinue)
-                return;
-        }
-    }
-}
-</code></pre>
+<li>때문에 아래와 같은 루프연산을 통해 반환값을 전체 받을 수 있도록 해야한다.<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">LengthyOperation</span>(<span class="params">Func&lt;<span class="keyword">bool</span>&gt; pred</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">bool</span> bContinue =ture;</span><br><span class="line">        <span class="keyword">foreach</span>(ComplicatedClass cl <span class="keyword">in</span> container)</span><br><span class="line">        &#123;</span><br><span class="line">            cl.DoLengthyOperation();</span><br><span class="line">            <span class="keyword">foreach</span>(Func&lt;<span class="keyword">bool</span>&gt; pr <span class="keyword">in</span> pred.GetInvocationList())</span><br><span class="line">                bContinue &amp;= pr();</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (!bContinue)</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 </li>
@@ -250,15 +214,15 @@
         
   <nav class="post-nav">
     
-      <a class="prev" href="/2018/12/18/Csharp/2018-12-31-effectivecsharp-2/">
+      <a class="prev" href="/2019/01/03/Csharp/2019-01-03-effectivecsharp-3/">
         <i class="iconfont icon-left"></i>
-        <span class="prev-text nav-default">effective c# - 2. 리소스 관리</span>
+        <span class="prev-text nav-default">effective c# - 3. 제네릭 활용</span>
         <span class="prev-text nav-mobile">Prev</span>
       </a>
     
     
-      <a class="next" href="/2018/12/07/Csharp/2018-12-11-csharp-7.1-tuple,async,is/">
-        <span class="next-text nav-default">c# 기본서 - c# 7.1: Tuple, ValueTuple, async, is</span>
+      <a class="next" href="/2018/12/18/Csharp/2018-12-31-effectivecsharp-2/">
+        <span class="next-text nav-default">effective c# - 2. 리소스 관리</span>
         <span class="prev-text nav-mobile">Next</span>
         <i class="iconfont icon-right"></i>
       </a>

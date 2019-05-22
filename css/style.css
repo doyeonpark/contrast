@@ -373,7 +373,7 @@ p {
   text-align: justify; }
 
 html {
-  font-size: 15px;
+  font-size: 16px;
   box-sizing: border-box; }
 
 body {
@@ -465,7 +465,7 @@ h6 {
   float: left; }
 
 #primary {
-  max-width: 850px;
+  max-width: 90%;
   margin: 0 auto; }
 
 @media only screen and (max-width: 750px) {
@@ -539,7 +539,7 @@ h6 {
     padding-left: 0px;
     margin: 0 auto; }
     #nav-top .nav-top-items .menu-item {
-      font-size: 15px;
+      font-size: 16px;
       margin-left: 30px;
       display: inline-block; }
       #nav-top .nav-top-items .menu-item a {
@@ -654,8 +654,8 @@ Original One Dark Syntax theme from https://github.com/atom/one-dark-syntax
         border: 1px double #f0f0f0;
         text-align: left; }
     .post .post-content .code, .post .post-content pre {
-      padding: 7px;
-      font-size: 13px;
+      padding: 15px;
+      font-size: 14px;
       font-family: "Bitstream Vera Sans Mono", "Open Sans", sans-serif;
       background: #282c34; }
     .post .post-content .code {

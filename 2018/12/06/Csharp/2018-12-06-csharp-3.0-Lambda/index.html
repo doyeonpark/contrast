@@ -161,18 +161,18 @@
 <li>Func<tresult>()가 인자가 있는 경우에는 마지막 타입지정에 TResult만 있으면 된다.</tresult></li>
 </ul>
 <h3 id="Action-Func-활용과-확장-매서드"><a href="#Action-Func-활용과-확장-매서드" class="headerlink" title="Action, Func 활용과 확장 매서드"></a>Action<t>, Func<tresult> 활용과 확장 매서드</tresult></t></h3><ul>
-<li>List<t>에 정의된 ForEach는 다음과 Action<t>를 인자로 받는다. 이를 다음과 같이 표현 가능하다.<pre><code class="c#">  list.ForEach((elem) =&gt; { Console.WriteLine(elem + &quot; * 2 == &quot;+ (elem*2)); }); //list의 요소 수만큼 델리게이트가 실행된다.
-</code></pre>
-</t></t></li>
-<li>List<t>의 FindAll()은 Predicate<t>로 표기되는 Func&lt;T, bool&gt;을 인자로 받는다.</t></t></li>
-<li>FindAll과 유사한 기능을 가진 Where()의 경우 iEnumerable<tsource>의 확장 메서드로, 열거자를 통해 직접 요소를 순회할때서야 람다식이 하나씩 실행된다.<pre><code class="c#">  //확장 메서드: 기존 클래스의 내부구조를 바꾸지 않고 새로운 인스턴스 메서드를 정의하는 것처럼 추가하는 것. static클래스에 static 메서드로 확장하려는 타입의 매개변수를 this 예약와함께 명시하는 식.
-  public static IEnumerable&lt;TSource&gt; Where&lt;TSource&gt;(this IEnumerable&lt;TSource&gt; source, Func&lt;TSoucem bool&gt; predicate)
-</code></pre>
+<li><p>List<t>에 정의된 ForEach는 다음과 Action<t>를 인자로 받는다. 이를 다음과 같이 표현 가능하다.</t></t></p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">list.ForEach((elem) =&gt; &#123; Console.WriteLine(elem + &quot; * 2 == &quot;+ (elem*2)); &#125;); //list의 요소 수만큼 델리게이트가 실행된다.</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>List<t>의 FindAll()은 Predicate<t>로 표기되는 Func&lt;T, bool&gt;을 인자로 받는다.</t></t></p>
+</li>
+<li><p>FindAll과 유사한 기능을 가진 Where()의 경우 iEnumerable<tsource>의 확장 메서드로, 열거자를 통해 직접 요소를 순회할때서야 람다식이 하나씩 실행된다.</tsource></p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//확장 메서드: 기존 클래스의 내부구조를 바꾸지 않고 새로운 인스턴스 메서드를 정의하는 것처럼 추가하는 것. static클래스에 static 메서드로 확장하려는 타입의 매개변수를 this 예약와함께 명시하는 식.</span><br><span class="line">public static IEnumerable&lt;TSource&gt; Where&lt;TSource&gt;(this IEnumerable&lt;TSource&gt; source, Func&lt;TSoucem bool&gt; predicate)</span><br></pre></td></tr></table></figure>
 <ul>
 <li>이를 지연된 평가(lazy evaluation)이라고 하며,</li>
 <li>CPU가 실제로 데이터가 필요한 순간에서야 실행된다는 특징이 있다.</li>
 </ul>
-</tsource></li>
+</li>
 </ul>
 <h3 id="데이터로서의-람다"><a href="#데이터로서의-람다" class="headerlink" title="데이터로서의 람다"></a>데이터로서의 람다</h3><ul>
 <li>데이터 구조로 표현된 것을 식트리(expression tree)라고 한다</li>

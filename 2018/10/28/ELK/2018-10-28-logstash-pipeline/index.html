@@ -142,101 +142,19 @@
             <div class="post-content">
             <p>ElasticSearch와 Filebeat와의 호환성, 다른 어플리케이션보단 조금 더 프로그래밍적인 파이프라인 설정방식을 사용한다는 이유로 logstash를 쓰기로 했다. 생각만큼 쉽지 않게 파이프라인 설정을 마치고나니 세상에 공짜는 없구나 싶었다. 어떤 기술을 제대로 이해하고 올바른 방식으로 활용하려면 시행착오를 겪어야 한다는 걸. 이 포스트에는 Logstash의 디버깅 모드 설정하는 방법과 파일비트에서 전달된 데이터의 형식, 그리고 여기에 맞는 logstash 데이터의 파이프라인 필터 설정과정을 기록했다.</p>
 <h3 id="디버깅-모드-세팅하기"><a href="#디버깅-모드-세팅하기" class="headerlink" title="디버깅 모드 세팅하기"></a>디버깅 모드 세팅하기</h3><p>먼저 파일비트-카프카-로그스태시-엘라스틱서치 구간을 실행시킨 다음에 설정테스트를 하다가, 쉽게 끝나지 않으리라는걸 깨닫고 디버깅 모드를 세팅했다. 이 판단이 더 빠르게 이뤄졌음 좋았을텐데. 세팅 전까지 파일비트를 껐다 키고, 데이터를 보려고 es인덱스를 지우기를 반복했다. 아래의 설정은 커맨드라인에서 로그를 입력받고 명령창에 출력 및 json파일로 남긴다. 방법은 <a href="https://deviantony.wordpress.com/2014/06/04/logstash-debug-configuration/" target="_blank" rel="noopener">이 포스트</a>를 참조했다.</p>
-<pre><code class="yml">input {
-  stdin { } # 커맨드라인에서 받은 로그를 input으로 받는다
-}
-
-filter {
-  # 필터 세팅
-}
-
-output {
-  stdout { codec =&gt; &quot;json&quot; }
-  file { codec =&gt; &quot;json&quot; path =&gt; &quot;tmp/output.json&quot; }
-  # 로그스태시 home 디렉토리에서 디버깅 결과 로그를 파일로 남긴다
-  # 이때 권한문제가 발생하면 도커 attach된 상태에서 권한 주는 것을 잊지말자
-}
-</code></pre>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">input</span> <span class="string">&#123;</span></span><br><span class="line">  <span class="string">stdin</span> <span class="string">&#123;</span> <span class="string">&#125;</span> <span class="comment"># 커맨드라인에서 받은 로그를 input으로 받는다</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="string">filter</span> <span class="string">&#123;</span></span><br><span class="line">  <span class="comment"># 필터 세팅</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="string">output</span> <span class="string">&#123;</span></span><br><span class="line">  <span class="string">stdout</span> <span class="string">&#123;</span> <span class="string">codec</span> <span class="string">=&gt;</span> <span class="string">"json"</span> <span class="string">&#125;</span></span><br><span class="line">  <span class="string">file</span> <span class="string">&#123;</span> <span class="string">codec</span> <span class="string">=&gt;</span> <span class="string">"json"</span> <span class="string">path</span> <span class="string">=&gt;</span> <span class="string">"tmp/output.json"</span> <span class="string">&#125;</span></span><br><span class="line">  <span class="comment"># 로그스태시 home 디렉토리에서 디버깅 결과 로그를 파일로 남긴다</span></span><br><span class="line">  <span class="comment"># 이때 권한문제가 발생하면 도커 attach된 상태에서 권한 주는 것을 잊지말자</span></span><br><span class="line"><span class="string">&#125;</span></span><br></pre></td></tr></table></figure>
 <h3 id="파일비트에서-전달된-raw-data의-형태"><a href="#파일비트에서-전달된-raw-data의-형태" class="headerlink" title="파일비트에서 전달된 raw data의 형태"></a>파일비트에서 전달된 raw data의 형태</h3><p>데이터가 파일비트 -&gt; 카프카 를 통해 -&gt; 로그스태시로 들어올때 로그라인은 아래와 같다. 파일비트에는 필드만 추가해주는 정도의 최소한의 설정을 해줬다. 포스트를 쓰면서 json 형식에 맞춰서 줄바꿈을 해줬지만 실제로는 아래처럼 한줄짜리 라인으로 온다. </p>
-<pre><code class="json">{&quot;@timestamp&quot;:&quot;2018-10-25T07:53:39.249Z&quot;,&quot;@metadata&quot;:{&quot;beat&quot;:&quot;filebeat&quot;,&quot;type&quot;:&quot;doc&quot;,&quot;version&quot;:&quot;6.4.2&quot;,&quot;topic&quot;:&quot;kr-r2&quot;},&quot;message&quot;:&quot;2018-10-11 05:40:30 172.0.0.1 GET /news/updates/detail bbmNo=89 443 - 10.1.30.99 Mozilla/5.0+(Windows+NT+6.1;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/69.0.3497.100+Safari/537.36 https://test.webpage.com/main 200 0 0 288&quot;,&quot;prospector&quot;:{&quot;type&quot;:&quot;log&quot;},&quot;input&quot;:{&quot;type&quot;:&quot;log&quot;},&quot;fields&quot;:{&quot;level&quot;:&quot;none&quot;,&quot;logtype&quot;:&quot;iis&quot;},&quot;beat&quot;:{&quot;name&quot;:&quot;WEB-TEST-01&quot;,&quot;hostname&quot;:&quot;WEB-TEST-01&quot;,&quot;version&quot;:&quot;6.4.2&quot;},&quot;host&quot;:{&quot;name&quot;:&quot;WEB-TEST-01&quot;},&quot;source&quot;:&quot;C:\\\\inetpub\\\\logs\\\\LogFiles\\\\W3SVC2\\\\u_ex181011.log&quot;,&quot;offset&quot;:&quot;697632&quot;}
-</code></pre>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="attr">"@timestamp"</span>:<span class="string">"2018-10-25T07:53:39.249Z"</span>,<span class="attr">"@metadata"</span>:&#123;<span class="attr">"beat"</span>:<span class="string">"filebeat"</span>,<span class="attr">"type"</span>:<span class="string">"doc"</span>,<span class="attr">"version"</span>:<span class="string">"6.4.2"</span>,<span class="attr">"topic"</span>:<span class="string">"kr-r2"</span>&#125;,<span class="attr">"message"</span>:<span class="string">"2018-10-11 05:40:30 172.0.0.1 GET /news/updates/detail bbmNo=89 443 - 10.1.30.99 Mozilla/5.0+(Windows+NT+6.1;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/69.0.3497.100+Safari/537.36 https://test.webpage.com/main 200 0 0 288"</span>,<span class="attr">"prospector"</span>:&#123;<span class="attr">"type"</span>:<span class="string">"log"</span>&#125;,<span class="attr">"input"</span>:&#123;<span class="attr">"type"</span>:<span class="string">"log"</span>&#125;,<span class="attr">"fields"</span>:&#123;<span class="attr">"level"</span>:<span class="string">"none"</span>,<span class="attr">"logtype"</span>:<span class="string">"iis"</span>&#125;,<span class="attr">"beat"</span>:&#123;<span class="attr">"name"</span>:<span class="string">"WEB-TEST-01"</span>,<span class="attr">"hostname"</span>:<span class="string">"WEB-TEST-01"</span>,<span class="attr">"version"</span>:<span class="string">"6.4.2"</span>&#125;,<span class="attr">"host"</span>:&#123;<span class="attr">"name"</span>:<span class="string">"WEB-TEST-01"</span>&#125;,<span class="attr">"source"</span>:<span class="string">"C:\\\\inetpub\\\\logs\\\\LogFiles\\\\W3SVC2\\\\u_ex181011.log"</span>,<span class="attr">"offset"</span>:<span class="string">"697632"</span>&#125;</span><br></pre></td></tr></table></figure>
 <p>정리하면 아래와 같다. 앞서 말했듯이 중개자인 카프카는 로그라인만 전달하고, 파일비트가 로그라인을 json형식으로 만들어서 전달한다. <code>message</code> 필드가 실제 로그파일에서 갖고오는 데이터이고, 나머지 필드는 파일비트가 자체적으로 생성한다. field에는 <code>filebeat.yml</code>파일에 개발자가 경로별로 세팅해준 데이터가 전달된다.</p>
-<pre><code class="json">{
-    &quot;@timestamp&quot;:&quot;2018-10-25T07:53:39.249Z&quot;,
-    &quot;@metadata&quot;:{&quot;beat&quot;:&quot;filebeat&quot;,&quot;type&quot;:&quot;doc&quot;,&quot;version&quot;:&quot;6.4.2&quot;,&quot;topic&quot;:&quot;kr-r2&quot;},
-    &quot;message&quot;:&quot;2018-10-11 05:40:30 172.0.0.1 GET /news/updates/detail bbmNo=89 443 - 10.1.30.99 Mozilla/5.0+(Windows+NT+6.1;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/69.0.3497.100+Safari/537.36 https://test.webpage.com/main 200 0 0 288&quot;,
-    &quot;prospector&quot;:{&quot;type&quot;:&quot;log&quot;},
-    &quot;input&quot;:{&quot;type&quot;:&quot;log&quot;},
-    &quot;fields&quot;:{&quot;level&quot;:&quot;none&quot;,&quot;logtype&quot;:&quot;iis&quot;},
-    &quot;beat&quot;:{&quot;name&quot;:&quot;WEB-TEST-01&quot;,&quot;hostname&quot;:&quot;WEB-TEST-01&quot;,&quot;version&quot;:&quot;6.4.2&quot;},
-    &quot;host&quot;:{&quot;name&quot;:&quot;WEB-TEST-01&quot;},
-    &quot;source&quot;:&quot;C:\\\\inetpub\\\\logs\\\\LogFiles\\\\W3SVC2\\\\u_ex181011.log&quot;,
-    &quot;offset&quot;:&quot;697632&quot;
-}
-</code></pre>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"@timestamp"</span>:<span class="string">"2018-10-25T07:53:39.249Z"</span>,</span><br><span class="line">    <span class="attr">"@metadata"</span>:&#123;<span class="attr">"beat"</span>:<span class="string">"filebeat"</span>,<span class="attr">"type"</span>:<span class="string">"doc"</span>,<span class="attr">"version"</span>:<span class="string">"6.4.2"</span>,<span class="attr">"topic"</span>:<span class="string">"kr-r2"</span>&#125;,</span><br><span class="line">    <span class="attr">"message"</span>:<span class="string">"2018-10-11 05:40:30 172.0.0.1 GET /news/updates/detail bbmNo=89 443 - 10.1.30.99 Mozilla/5.0+(Windows+NT+6.1;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/69.0.3497.100+Safari/537.36 https://test.webpage.com/main 200 0 0 288"</span>,</span><br><span class="line">    <span class="attr">"prospector"</span>:&#123;<span class="attr">"type"</span>:<span class="string">"log"</span>&#125;,</span><br><span class="line">    <span class="attr">"input"</span>:&#123;<span class="attr">"type"</span>:<span class="string">"log"</span>&#125;,</span><br><span class="line">    <span class="attr">"fields"</span>:&#123;<span class="attr">"level"</span>:<span class="string">"none"</span>,<span class="attr">"logtype"</span>:<span class="string">"iis"</span>&#125;,</span><br><span class="line">    <span class="attr">"beat"</span>:&#123;<span class="attr">"name"</span>:<span class="string">"WEB-TEST-01"</span>,<span class="attr">"hostname"</span>:<span class="string">"WEB-TEST-01"</span>,<span class="attr">"version"</span>:<span class="string">"6.4.2"</span>&#125;,</span><br><span class="line">    <span class="attr">"host"</span>:&#123;<span class="attr">"name"</span>:<span class="string">"WEB-TEST-01"</span>&#125;,</span><br><span class="line">    <span class="attr">"source"</span>:<span class="string">"C:\\\\inetpub\\\\logs\\\\LogFiles\\\\W3SVC2\\\\u_ex181011.log"</span>,</span><br><span class="line">    <span class="attr">"offset"</span>:<span class="string">"697632"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="filter-세팅"><a href="#filter-세팅" class="headerlink" title="filter 세팅"></a>filter 세팅</h3><p>로그스태시 설정을 하면서 가장 애를 먹었던 부분은 로그스태시가 파이프라인의 input 영역을 지나면서 <strong>위의 데이터를 message영역으로 한번 더 감싼다는 것</strong>을 너무 늦게알았기 때문이다. 뿐만 아니라, 파일비트에서 제이슨 형식으로 만들어서 전달한 데이터를 deserialize한다. 이렇게 되면 filter에 들어왔을 때 root 영역에 있는 field만 인식이 되고, nested field영역은 접근이 되지 않는다. 그렇기 때문에 먼저 json serialize를 해줘야했다. json 필터는 <code>source</code>를 message 영역으로 지정해주면 감싸진 message 필드는 삭제하고, 그 안의 데이터가 루트가 되어 필드가 구성된다.</p>
-<pre><code class="conf">filter {
-  json { source =&gt; &#39;message&#39; }
-}
-</code></pre>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">filter &#123;</span><br><span class="line">  json &#123; source =&gt; &apos;message&apos; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>json serialize 필터를 지나면 다음과 같은 형태가 된다. 그리고 임의로 다음 필터를 만들어 에러를 내면 디버거에서 다음과 같은 상태의 데이터를 출력해주며 에러 메세지를 전달한다. ‘=&gt;’ 표기를 통해 로그스태시가 nested field까지 제이슨 필드로 인식하는지 알 수 있다. 언뜻보면 없던 event 영역이 감싸진 것 처럼 보이는데, event는 로그스태시 데이터의 root 필드 이름이라고 보면된다. json필터의 <code>target</code>이 지정되어있지않으면 자동으로 루트 필더로 데이터가 전달된다.</p>
-<pre><code class="json">{
-    &quot;event&quot;=&gt; {
-        &quot;source&quot;=&gt;&quot;C:\\\\inetpub\\\\logs\\\\LogFiles\\\\W3SVC2\\\\u_ex181011.log&quot;,
-        &quot;beat&quot;=&gt; { &quot;name&quot;=&gt;&quot;WEB-TEST-01&quot;, &quot;hostname&quot;=&gt;&quot;WEB-TEST-01&quot;, &quot;version&quot;=&gt;&quot;6.4.2&quot;},
-        &quot;@timestamp&quot;=&gt;2018-10-25T07:53:39.249Z,
-        &quot;fields&quot;=&gt;{&quot;logtype&quot;=&gt;&quot;iis&quot;, &quot;level&quot;=&gt;&quot;none&quot;},
-        &quot;offset&quot;=&gt;&quot;697632&quot;,
-        &quot;@version&quot;=&gt;&quot;1&quot;,
-        &quot;message&quot;=&gt;&quot;2018-10-11 05:40:30 172.0.0.1 GET /news/updates/detail bbmNo=89 443 - 10.1.30.99 Mozilla/5.0+(Windows+NT+6.1;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/69.0.3497.100+Safari/537.36 https://test.webpage.com/main 200 0 0 288&quot;,
-        &quot;host&quot;=&gt; {&quot;name&quot;=&gt;&quot;WEB-TEST-01&quot;},
-        &quot;prospector&quot;=&gt; {&quot;type&quot;=&gt;&quot;log&quot;},
-        &quot;input&quot;=&gt; {&quot;type&quot;=&gt;&quot;log&quot;}
-    }
-}
-</code></pre>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    "event"=&gt; &#123;</span><br><span class="line">        "source"=&gt;"C:\\\\inetpub\\\\logs\\\\LogFiles\\\\W3SVC2\\\\u_ex181011.log",</span><br><span class="line">        "beat"=&gt; &#123; "name"=&gt;"WEB-TEST-01", "hostname"=&gt;"WEB-TEST-01", "version"=&gt;"6.4.2"&#125;,</span><br><span class="line">        "@timestamp"=&gt;2018-10-25T07:53:39.249Z,</span><br><span class="line">        "fields"=&gt;&#123;"logtype"=&gt;"iis", "level"=&gt;"none"&#125;,</span><br><span class="line">        "offset"=&gt;"697632",</span><br><span class="line">        "@version"=&gt;"1",</span><br><span class="line">        "message"=&gt;"2018-10-11 05:40:30 172.0.0.1 GET /news/updates/detail bbmNo=89 443 - 10.1.30.99 Mozilla/5.0+(Windows+NT+6.1;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/69.0.3497.100+Safari/537.36 https://test.webpage.com/main 200 0 0 288",</span><br><span class="line">        "host"=&gt; &#123;"name"=&gt;"WEB-TEST-01"&#125;,</span><br><span class="line">        "prospector"=&gt; &#123;"type"=&gt;"log"&#125;,</span><br><span class="line">        "input"=&gt; &#123;"type"=&gt;"log"&#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="nested-field에-접근하는-조건문-만들기"><a href="#nested-field에-접근하는-조건문-만들기" class="headerlink" title="nested field에 접근하는 조건문 만들기"></a>nested field에 접근하는 조건문 만들기</h3><p>로직을 만들기위해 필드에 접근하려면 괄호(₩[]₩)를 통해서 접근하면 된다. 필드 내부의 필드에 접근하려면 배열처럼 괄호를 두번 표기하면 된다. 나는 로그타입이 iis인경우와 nlog인경우로 나뉘기때문에, 해당 필드에 접근해서 타입을 확인하고 적절한 형식으로 grok 파싱을 해주고, 필요없는 필드는 <code>mutate</code> 영역에서 삭제했다.</p>
-<pre><code class="json">filter {
-  json { source =&gt; &#39;message&#39; }
-  if [fields][logtype] == &quot;nlog&quot; {
-    grok {
-      match =&gt; [ &#39;message&#39;, &#39;%{DATESTAMP:date},%{DATA:url},%{NUMBER:status},%{IP:serverip},%{IP:clientip},{&quot;PostData&quot; : %{DATA:postdata},&quot;GetData&quot; : %{DATA:getdata}},%{DATA:stopwatch},{&quot;message&quot;:&quot;%{DATA:message}&quot;},%{DATA:exception}$&#39; ]
-    }
-  } else if [fields][logtype] == &quot;iis&quot; {
-    grok {
-      match =&gt; [ &quot;message&quot;, &quot;%{DATESTAMP:date} %{IP:server} %{WORD:method} %{DATA:uri_stem} %{DATA:uri_query} %{NUMBER:port} %{DATA:user_name} %{IP:client} %{DATA:user_agent} %{NUMBER:status} %{NUMBER:sub_status} %{NUMBER:win32_status} %{NUMBER:time_taken}&quot; ]
-    }
-  }
-  mutate {
-    remove_field =&gt; [&#39;beat&#39;, &#39;input&#39;, &#39;prospector&#39;]
-  }
-}
-</code></pre>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">filter &#123;</span><br><span class="line">  json &#123; source =&gt; 'message' &#125;</span><br><span class="line">  if [fields][logtype] == "nlog" &#123;</span><br><span class="line">    grok &#123;</span><br><span class="line">      match =&gt; [ 'message', '%&#123;DATESTAMP:date&#125;,%&#123;DATA:url&#125;,%&#123;NUMBER:status&#125;,%&#123;IP:serverip&#125;,%&#123;IP:clientip&#125;,&#123;"PostData" : %&#123;DATA:postdata&#125;,"GetData" : %&#123;DATA:getdata&#125;&#125;,%&#123;DATA:stopwatch&#125;,&#123;"message":"%&#123;DATA:message&#125;"&#125;,%&#123;DATA:exception&#125;$' ]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; else if [fields][logtype] == "iis" &#123;</span><br><span class="line">    grok &#123;</span><br><span class="line">      match =&gt; [ "message", "%&#123;DATESTAMP:date&#125; %&#123;IP:server&#125; %&#123;WORD:method&#125; %&#123;DATA:uri_stem&#125; %&#123;DATA:uri_query&#125; %&#123;NUMBER:port&#125; %&#123;DATA:user_name&#125; %&#123;IP:client&#125; %&#123;DATA:user_agent&#125; %&#123;NUMBER:status&#125; %&#123;NUMBER:sub_status&#125; %&#123;NUMBER:win32_status&#125; %&#123;NUMBER:time_taken&#125;" ]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  mutate &#123;</span><br><span class="line">    remove_field =&gt; ['beat', 'input', 'prospector']</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>이렇게 한면 최종적으로 es에 전달되는 데이터 형태는 다음과 같다.</p>
-<pre><code class="json">{
-    &quot;message&quot;:&quot;2018-10-11 05:40:30 172.0.0.1 GET /news/updates/detail bbmNo=89 443 - 10.1.30.99 Mozilla/5.0+(Windows+NT+6.1;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/69.0.3497.100+Safari/537.36 https://test.webpage.com/main 200 0 0 288&quot;,
-    &quot;fields&quot;:{&quot;level&quot;:&quot;none&quot;,&quot;logtype&quot;:&quot;iis&quot;},
-    &quot;uri_stem&quot;:&quot;/news/updates/detail&quot;,
-    &quot;sub_status&quot;:&quot;0&quot;,
-    &quot;time_taken&quot;:&quot;288&quot;,
-    &quot;client&quot;:&quot;10.1.30.99&quot;,
-    &quot;user_agent&quot;:&quot;Mozilla/5.0+(Windows+NT+6.1;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/69.0.3497.100+Safari/537.36 https://test.webpage.com/main&quot;,
-    &quot;@timestamp&quot;:&quot;2018-10-25T07:53:39.249Z&quot;,
-    &quot;date&quot;:&quot;18-10-11 05:40:30&quot;,
-    &quot;server&quot;:&quot;172.0.0.1&quot;,
-    &quot;win32_status&quot;:&quot;0&quot;,
-    &quot;host&quot;:{&quot;name&quot;:&quot;WEB-TEST-01&quot;},
-    &quot;user_name&quot;:&quot;-&quot;,
-    &quot;offset&quot;:&quot;697632&quot;,
-    &quot;status&quot;:&quot;200&quot;,
-    &quot;uri_query&quot;:&quot;bbmNo=89&quot;,
-    &quot;method&quot;:&quot;GET&quot;,
-    &quot;port&quot;:&quot;443&quot;,
-    &quot;source&quot;:&quot;C:\\\\inetpub\\\\logs\\\\LogFiles\\\\W3SVC2\\\\u_ex181011.log&quot;,
-    &quot;@version&quot;:&quot;1&quot;
-}
-</code></pre>
-
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"message"</span>:<span class="string">"2018-10-11 05:40:30 172.0.0.1 GET /news/updates/detail bbmNo=89 443 - 10.1.30.99 Mozilla/5.0+(Windows+NT+6.1;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/69.0.3497.100+Safari/537.36 https://test.webpage.com/main 200 0 0 288"</span>,</span><br><span class="line">    <span class="attr">"fields"</span>:&#123;<span class="attr">"level"</span>:<span class="string">"none"</span>,<span class="attr">"logtype"</span>:<span class="string">"iis"</span>&#125;,</span><br><span class="line">    <span class="attr">"uri_stem"</span>:<span class="string">"/news/updates/detail"</span>,</span><br><span class="line">    <span class="attr">"sub_status"</span>:<span class="string">"0"</span>,</span><br><span class="line">    <span class="attr">"time_taken"</span>:<span class="string">"288"</span>,</span><br><span class="line">    <span class="attr">"client"</span>:<span class="string">"10.1.30.99"</span>,</span><br><span class="line">    <span class="attr">"user_agent"</span>:<span class="string">"Mozilla/5.0+(Windows+NT+6.1;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/69.0.3497.100+Safari/537.36 https://test.webpage.com/main"</span>,</span><br><span class="line">    <span class="attr">"@timestamp"</span>:<span class="string">"2018-10-25T07:53:39.249Z"</span>,</span><br><span class="line">    <span class="attr">"date"</span>:<span class="string">"18-10-11 05:40:30"</span>,</span><br><span class="line">    <span class="attr">"server"</span>:<span class="string">"172.0.0.1"</span>,</span><br><span class="line">    <span class="attr">"win32_status"</span>:<span class="string">"0"</span>,</span><br><span class="line">    <span class="attr">"host"</span>:&#123;<span class="attr">"name"</span>:<span class="string">"WEB-TEST-01"</span>&#125;,</span><br><span class="line">    <span class="attr">"user_name"</span>:<span class="string">"-"</span>,</span><br><span class="line">    <span class="attr">"offset"</span>:<span class="string">"697632"</span>,</span><br><span class="line">    <span class="attr">"status"</span>:<span class="string">"200"</span>,</span><br><span class="line">    <span class="attr">"uri_query"</span>:<span class="string">"bbmNo=89"</span>,</span><br><span class="line">    <span class="attr">"method"</span>:<span class="string">"GET"</span>,</span><br><span class="line">    <span class="attr">"port"</span>:<span class="string">"443"</span>,</span><br><span class="line">    <span class="attr">"source"</span>:<span class="string">"C:\\\\inetpub\\\\logs\\\\LogFiles\\\\W3SVC2\\\\u_ex181011.log"</span>,</span><br><span class="line">    <span class="attr">"@version"</span>:<span class="string">"1"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
             </div>
           
 
@@ -258,15 +176,15 @@ output {
         
   <nav class="post-nav">
     
-      <a class="prev" href="/2018/10/28/ELK/2018-01-08-logstash-multiline/">
+      <a class="prev" href="/2018/11/06/Csharp/2018-11-06-csharp-basic/">
         <i class="iconfont icon-left"></i>
-        <span class="prev-text nav-default">Logstash - 멀티라인 세팅하기</span>
+        <span class="prev-text nav-default">c# 기본서 - 빌드환경과 GC, 힙과 스택</span>
         <span class="prev-text nav-mobile">Prev</span>
       </a>
     
     
-      <a class="next" href="/2018/10/25/Csharp/2018-10-25-csharp-basic/">
-        <span class="next-text nav-default">c# 기본서 - 멤버별 유형확장</span>
+      <a class="next" href="/2018/10/28/ELK/2018-01-08-logstash-multiline/">
+        <span class="next-text nav-default">Logstash - 멀티라인 세팅하기</span>
         <span class="prev-text nav-mobile">Next</span>
         <i class="iconfont icon-right"></i>
       </a>

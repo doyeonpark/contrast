@@ -35,18 +35,18 @@
 <link rel="canonical" href="https://parkdoyeon.github.io/2019/02/13/Web/2019-02-13-facebook-share/">
 
 
-<meta name="description" content="(function (d, s, id) {     var js, fjs = d.getElementsByTagName(s)[0];     if (d.getElementById(id)) { return; }     js = d.createElement(s); js.id = id;     js.src = &amp;#39;//connect.facebook.net/en_US">
+<meta name="description" content="123456789101112131415(function (d, s, id) &amp;#123;    var js, fjs = d.getElementsByTagName(s)[0];    if (d.getElementById(id)) &amp;#123; return; &amp;#125;    js = d.createElement(s); js.id = id;    js.src = &apos;">
 <meta name="keywords" content="web,facebook">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Facebook - 공유하기 스크립트 만들기">
 <meta property="og:url" content="https://parkdoyeon.github.io/2019/02/13/Web/2019-02-13-facebook-share/index.html">
 <meta property="og:site_name" content="Park Doyeon">
-<meta property="og:description" content="(function (d, s, id) {     var js, fjs = d.getElementsByTagName(s)[0];     if (d.getElementById(id)) { return; }     js = d.createElement(s); js.id = id;     js.src = &amp;#39;//connect.facebook.net/en_US">
+<meta property="og:description" content="123456789101112131415(function (d, s, id) &amp;#123;    var js, fjs = d.getElementsByTagName(s)[0];    if (d.getElementById(id)) &amp;#123; return; &amp;#125;    js = d.createElement(s); js.id = id;    js.src = &apos;">
 <meta property="og:locale" content="default">
 <meta property="og:updated_time" content="2019-05-21T16:15:37.863Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Facebook - 공유하기 스크립트 만들기">
-<meta name="twitter:description" content="(function (d, s, id) {     var js, fjs = d.getElementsByTagName(s)[0];     if (d.getElementById(id)) { return; }     js = d.createElement(s); js.id = id;     js.src = &amp;#39;//connect.facebook.net/en_US">
+<meta name="twitter:description" content="123456789101112131415(function (d, s, id) &amp;#123;    var js, fjs = d.getElementsByTagName(s)[0];    if (d.getElementById(id)) &amp;#123; return; &amp;#125;    js = d.createElement(s); js.id = id;    js.src = &apos;">
 
 
 <link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
@@ -140,28 +140,8 @@
 
     
             <div class="post-content">
-            <pre><code class="javascript">(function (d, s, id) {
-    var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) { return; }
-    js = d.createElement(s); js.id = id;
-    js.src = &#39;//connect.facebook.net/en_US/sdk.js&#39;;
-    fjs.parentNode.insertBefore(js, fjs);
-}(document, &#39;script&#39;, &#39;facebook-jssdk&#39;));
-
-window.fbAsyncInit = function () {
-    FB.init({
-        appId: &#39;appid 고유 번호&#39;,
-        xfbml: true,
-        version: &#39;버전&#39;
-    });
-};
-</code></pre>
-<p>객체를 통해 쏴주면 된다.</p>
-<pre><code class="javascript">FB.ui({
-    method: &#39;feed&#39;,
-     link: &#39;전달할 링크 url&#39;
- });
-</code></pre>
+            <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params">d, s, id</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> js, fjs = d.getElementsByTagName(s)[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">if</span> (d.getElementById(id)) &#123; <span class="keyword">return</span>; &#125;</span><br><span class="line">    js = d.createElement(s); js.id = id;</span><br><span class="line">    js.src = <span class="string">'//connect.facebook.net/en_US/sdk.js'</span>;</span><br><span class="line">    fjs.parentNode.insertBefore(js, fjs);</span><br><span class="line">&#125;(<span class="built_in">document</span>, <span class="string">'script'</span>, <span class="string">'facebook-jssdk'</span>));</span><br><span class="line"></span><br><span class="line"><span class="built_in">window</span>.fbAsyncInit = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    FB.init(&#123;</span><br><span class="line">        appId: <span class="string">'appid 고유 번호'</span>,</span><br><span class="line">        xfbml: <span class="literal">true</span>,</span><br><span class="line">        version: <span class="string">'버전'</span></span><br><span class="line">    &#125;);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>객체를 통해 쏴주면 된다.<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">FB.ui(&#123;</span><br><span class="line">    method: <span class="string">'feed'</span>,</span><br><span class="line">     link: <span class="string">'전달할 링크 url'</span></span><br><span class="line"> &#125;);</span><br></pre></td></tr></table></figure></p>
 
             </div>
           
