@@ -142,7 +142,10 @@
             <div class="post-content">
             <p>사실 성능이 강조되지 않는 개발이라면 세가지의 엄밀한 차이를 알 필요가 있을까 할수도 있지만,<br>그래도 알지 못한채로 세 자료타입을 사용하는건 영 찜찜한 일이기 때문에 한번 정리를 하기로 했다.<br>가장 명쾌하게 정리된 글이 스택오버플로우에 올라와있다.</p>
 <p>참고글 <a href="https://stackoverflow.com/questions/32020000/what-is-the-difference-between-an-array-arraylist-and-a-list/32020072" target="_blank" rel="noopener">https://stackoverflow.com/questions/32020000/what-is-the-difference-between-an-array-arraylist-and-a-list/32020072</a></p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">string</span>[] safelist = <span class="keyword">new</span> <span class="keyword">string</span>[<span class="number">3</span>];</span><br><span class="line">ArrayList item = <span class="keyword">new</span> ArrayList();</span><br><span class="line">List list = <span class="keyword">new</span> List();</span><br></pre></td></tr></table></figure>
+<pre><code class="csharp">string[] safelist = new string[3];
+ArrayList item = new ArrayList();
+List list = new List();
+</code></pre>
 <p>위에서부터 순서대로 각 객체의 선언 방법이다. </p>
 <p>참고글을 번역/정리하면 아래와 같다.</p>
 <table>

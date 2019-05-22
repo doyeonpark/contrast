@@ -35,18 +35,18 @@
 <link rel="canonical" href="https://parkdoyeon.github.io/2018/12/05/Csharp/2018-12-05-csharp-2.0-Generic/">
 
 
-<meta name="description" content="새로운 제네릭 문법 와 제약조건 제너릭의 박싱/언박싱 문제를 보완한 새로운 버전의 컬렉션이 2.0에 등장한다. 대표적인 예가 ArrayList -&amp;gt; List 에 타입을 지정해주면 CLR이 JIT컴파일 시에 대응되는 타입을 대체해서 코드를 확장한다. 기존에 여러개의 타입인자를 지정해줘야했던 문제도 를 지정하면서 한번에 해결할 수 있다. 1234publi">
+<meta name="description" content="새로운 제네릭 문법 와 제약조건 제너릭의 박싱/언박싱 문제를 보완한 새로운 버전의 컬렉션이 2.0에 등장한다. 대표적인 예가 ArrayList -&amp;gt; List 에 타입을 지정해주면 CLR이 JIT컴파일 시에 대응되는 타입을 대체해서 코드를 확장한다. 기존에 여러개의 타입인자를 지정해줘야했던 문제도 를 지정하면서 한번에 해결할 수 있다.public sta">
 <meta name="keywords" content="c#,c#2.0,IEnumerator,AnonymousMethod,T,Generic,yield,where">
 <meta property="og:type" content="article">
 <meta property="og:title" content="c# 기본서 - c# 2.0, Generic과 syntatic sugar">
 <meta property="og:url" content="https://parkdoyeon.github.io/2018/12/05/Csharp/2018-12-05-csharp-2.0-Generic/index.html">
 <meta property="og:site_name" content="Park Doyeon">
-<meta property="og:description" content="새로운 제네릭 문법 와 제약조건 제너릭의 박싱/언박싱 문제를 보완한 새로운 버전의 컬렉션이 2.0에 등장한다. 대표적인 예가 ArrayList -&amp;gt; List 에 타입을 지정해주면 CLR이 JIT컴파일 시에 대응되는 타입을 대체해서 코드를 확장한다. 기존에 여러개의 타입인자를 지정해줘야했던 문제도 를 지정하면서 한번에 해결할 수 있다. 1234publi">
+<meta property="og:description" content="새로운 제네릭 문법 와 제약조건 제너릭의 박싱/언박싱 문제를 보완한 새로운 버전의 컬렉션이 2.0에 등장한다. 대표적인 예가 ArrayList -&amp;gt; List 에 타입을 지정해주면 CLR이 JIT컴파일 시에 대응되는 타입을 대체해서 코드를 확장한다. 기존에 여러개의 타입인자를 지정해줘야했던 문제도 를 지정하면서 한번에 해결할 수 있다.public sta">
 <meta property="og:locale" content="default">
 <meta property="og:updated_time" content="2019-05-19T15:51:03.846Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="c# 기본서 - c# 2.0, Generic과 syntatic sugar">
-<meta name="twitter:description" content="새로운 제네릭 문법 와 제약조건 제너릭의 박싱/언박싱 문제를 보완한 새로운 버전의 컬렉션이 2.0에 등장한다. 대표적인 예가 ArrayList -&amp;gt; List 에 타입을 지정해주면 CLR이 JIT컴파일 시에 대응되는 타입을 대체해서 코드를 확장한다. 기존에 여러개의 타입인자를 지정해줘야했던 문제도 를 지정하면서 한번에 해결할 수 있다. 1234publi">
+<meta name="twitter:description" content="새로운 제네릭 문법 와 제약조건 제너릭의 박싱/언박싱 문제를 보완한 새로운 버전의 컬렉션이 2.0에 등장한다. 대표적인 예가 ArrayList -&amp;gt; List 에 타입을 지정해주면 CLR이 JIT컴파일 시에 대응되는 타입을 대체해서 코드를 확장한다. 기존에 여러개의 타입인자를 지정해줘야했던 문제도 를 지정하면서 한번에 해결할 수 있다.public sta">
 
 
 <link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
@@ -143,29 +143,47 @@
             <h3 id="새로운-제네릭-문법-와-제약조건"><a href="#새로운-제네릭-문법-와-제약조건" class="headerlink" title="새로운 제네릭 문법 와 제약조건"></a>새로운 제네릭 문법 <t>와 제약조건</t></h3><ul>
 <li>제너릭의 박싱/언박싱 문제를 보완한 새로운 버전의 컬렉션이 2.0에 등장한다. 대표적인 예가 ArrayList -&gt; List<t></t></li>
 <li><t>에 타입을 지정해주면 CLR이 JIT컴파일 시에 대응되는 타입을 대체해서 코드를 확장한다.</t></li>
-<li><p>기존에 여러개의 타입인자를 지정해줘야했던 문제도 <t>를 지정하면서 한번에 해결할 수 있다.</t></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">public static void WriteLog&lt;T&gt;(T item)</span><br><span class="line">&#123;</span><br><span class="line">    string output = string.Format(&quot;&#123;0&#125;: &#123;1&#125;&quot;, DateTime.Now, item);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
+<li>기존에 여러개의 타입인자를 지정해줘야했던 문제도 <t>를 지정하면서 한번에 해결할 수 있다.<pre><code class="c#">public static void WriteLog&lt;T&gt;(T item)
+{
+  string output = string.Format(&quot;{0}: {1}&quot;, DateTime.Now, item);
+}
+</code></pre>
+</t></li>
 <li><p>이렇게 여러타입을 매개변수로 받으면 조건을 넣어줘야하는 경우가 있을 수 있다. 그럴땐 Where 예약어를 사용하면 된다.</p>
 <ul>
 <li>T대신 K, V 등을 써서 여러개의 파라미터에 서로 다른 타입을 명시해줄수도 있고, 여기에 where문을 각각 지정줄수도 있다. (590p)</li>
 <li><p>아래의 예시에 있는 인터페이스 상속 조건 말고도 여러 타입을 지정해줄 수 있다.</p>
 <p>  | 제약조건 | 설명 |<br>  |————–|—————|<br>  | where T: U | U형식 인수에 해당하는 타입이거나 상속받은 클래스만  |<br>  | where T: struct | 값 형식만 |<br>  | where T: class | 참조 형식만  |<br>  | where T: new() | 기본생성자(매개변수가 없는)가 정의된 타입만  |</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public static T Max&lt;T&gt;(T item, T item2) where T : IComparable //[, ...] 조건을 여러개 받을 수도 있다</span><br><span class="line">&#123;</span><br><span class="line">    if(item1.CompareTo(item2) &gt;= 0)</span><br><span class="line">        return item1;</span><br><span class="line">    return item2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="c#">public static T Max&lt;T&gt;(T item, T item2) where T : IComparable //[, ...] 조건을 여러개 받을 수도 있다
+{
+if(item1.CompareTo(item2) &gt;= 0)
+  return item1;
+return item2;
+}
+</code></pre>
 </li>
 </ul>
 </li>
-<li><p>default 예약어: 제네릭 형식 매개변수로 전달된 값의 초기값을 반환해야하는 경우가 있을 수 있다. 이때 컴파일러가 자동으로 결정할 수 있도록 하는게 default(T) 예약어이다.</p>
-</li>
+<li>default 예약어: 제네릭 형식 매개변수로 전달된 값의 초기값을 반환해야하는 경우가 있을 수 있다. 이때 컴파일러가 자동으로 결정할 수 있도록 하는게 default(T) 예약어이다.</li>
 </ul>
 <h3 id="yield-return-break와-IEnumerator"><a href="#yield-return-break와-IEnumerator" class="headerlink" title="yield return/break와 IEnumerator"></a>yield return/break와 IEnumerator</h3><ul>
-<li><p>foreach문법은 IEnumerable, IEnumerator 인터페이스를 구현한 객체를 열거할때 사용할 수 있다.</p>
-<ul>
-<li><p>멤버는 아래와 같다</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">interface IEnumerable</span><br><span class="line">&#123;</span><br><span class="line">    IEnumerator GetEnumerator();</span><br><span class="line">&#125;</span><br><span class="line">interface IEnumerator</span><br><span class="line">&#123;</span><br><span class="line">    bool MoveNext(); //다음 요소 위치로 이동, 더 이상 없으면 false 반환</span><br><span class="line">    void Reset();       //초기 상태로 바꿈</span><br><span class="line">    Object Current    //현재 위치의 요소를 가져오기</span><br><span class="line">    &#123;</span><br><span class="line">        get;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<li>foreach문법은 IEnumerable, IEnumerator 인터페이스를 구현한 객체를 열거할때 사용할 수 있다.<ul>
+<li>멤버는 아래와 같다<pre><code class="c#">interface IEnumerable
+{
+  IEnumerator GetEnumerator();
+}
+interface IEnumerator
+{
+  bool MoveNext(); //다음 요소 위치로 이동, 더 이상 없으면 false 반환
+  void Reset();       //초기 상태로 바꿈
+  Object Current    //현재 위치의 요소를 가져오기
+  {
+      get;
+  }
+}
+</code></pre>
 </li>
-<li><p>IEnumerable의 독특한 점은 “무한집합”을 표현할 수 있다는 것이다.</p>
-</li>
+<li>IEnumerable의 독특한 점은 “무한집합”을 표현할 수 있다는 것이다.</li>
 </ul>
 </li>
 <li>IEnumerable, IEnumerator를 간편하게 구현하고싶다면 yield 예약어를 사용하면 된다.<ul>
@@ -178,7 +196,18 @@
 <li>partial 클래스: C#컴파일러는 빌드 시에 ‘같은 프로젝트’에 있는 partial 클래스를 하나로 모아 단일 클래스로 빌드한다.</li>
 <li>nullable 형식:  System.Nullable<t>은 값이 없는 상태 자체를 표기하기 위한 타입으로, T? 형식으로 간편하게 표기할 수 있다. HasValue와 Value 두 가지 속성을 제공한다.</t></li>
 <li>익명메서드: 이름이 없는 메서드로, 메서드가 일회성으로만 필요할때 편의상 사용된다(syntactic sugar)<ul>
-<li>delegate 예약어를 사용해 메서드의 코드를 전달한다.<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">delegate int? MyDevide(int a, int b)</span><br><span class="line">static void Main(string[] args)</span><br><span class="line">&#123;</span><br><span class="line">    MyDivde myFunc = delegate (int a, int b)</span><br><span class="line">    &#123;</span><br><span class="line">        if (b==0)</span><br><span class="line">            return null;</span><br><span class="line">        return a/b;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>delegate 예약어를 사용해 메서드의 코드를 전달한다.<pre><code class="c#">delegate int? MyDevide(int a, int b)
+static void Main(string[] args)
+{
+  MyDivde myFunc = delegate (int a, int b)
+  {
+      if (b==0)
+          return null;
+      return a/b;
+  }
+}
+</code></pre>
+</li>
 </ul>
 </li>
 </ul>
@@ -219,8 +248,8 @@
       </a>
     
     
-      <a class="next" href="/2018/12/03/Csharp/2018-12-03-csharp-database/">
-        <span class="next-text nav-default">c# 기본서 - 데이터베이스</span>
+      <a class="next" href="/2018/12/03/Csharp/2018-12-03-csharp-else/">
+        <span class="next-text nav-default">c# 기본서 - AppDomain과 리플렉션</span>
         <span class="prev-text nav-mobile">Next</span>
         <i class="iconfont icon-right"></i>
       </a>

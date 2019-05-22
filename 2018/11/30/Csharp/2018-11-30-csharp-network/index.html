@@ -156,17 +156,22 @@
 <li>이러한 구분을 위해 포트를 사용한다</li>
 </ul>
 </li>
-<li><p>DNS: 도메인 하나에 여러개의 IP를 묶을 수 있다. 이를 통해 부하분산(load balance)을 할 수 있다.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">string myComputer = Dns.GetHostName();</span><br><span class="line">IPHostEntry entry = Dns.GetHostEntry(myComputer);</span><br><span class="line">foreach (IPAddress ipAddress in entry.AddressList)</span><br><span class="line">    Console.WriteLine(ipAddress.AddressFamily+&quot;: &quot;+ipAddress)</span><br><span class="line">    //ex) InterNetworkV6: fe80::bcae:bc0f:10d5:4ec4%12</span><br><span class="line">    //ex) InterNetwork: 192.168.50.95</span><br></pre></td></tr></table></figure>
+<li>DNS: 도메인 하나에 여러개의 IP를 묶을 수 있다. 이를 통해 부하분산(load balance)을 할 수 있다.<pre><code class="c#">string myComputer = Dns.GetHostName();
+IPHostEntry entry = Dns.GetHostEntry(myComputer);
+foreach (IPAddress ipAddress in entry.AddressList)
+  Console.WriteLine(ipAddress.AddressFamily+&quot;: &quot;+ipAddress)
+  //ex) InterNetworkV6: fe80::bcae:bc0f:10d5:4ec4%12
+  //ex) InterNetwork: 192.168.50.95
+</code></pre>
 <ul>
 <li>클라이언트는 ping 명령어를 통해 dns의 어떤 IP와 바인딩이 됐는지 확인할 수 있으며</li>
 <li>바인딩 정보는 시스템에 저장된다</li>
-<li>관리자모드로 cmd를 실행하고 아래의 명령어를 통해 목록을 비울 수 있다.<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ipconfig \flushdns</span><br></pre></td></tr></table></figure>
+<li>관리자모드로 cmd를 실행하고 아래의 명령어를 통해 목록을 비울 수 있다.<pre><code class="c#">$ ipconfig \flushdns
+</code></pre>
 </li>
 </ul>
 </li>
-<li><p>사설 IP의 경우로 많이 사용되는 대역은 아래와 같다 </p>
-<ul>
+<li>사설 IP의 경우로 많이 사용되는 대역은 아래와 같다 <ul>
 <li>10.0.0.0 ~ 10.255.255.255</li>
 <li>172.16.0.0 ~ 172.31.255.255</li>
 <li>192.168.0.0 ~ 192.168.255.255</li>
@@ -252,9 +257,9 @@
         
   <nav class="post-nav">
     
-      <a class="prev" href="/2018/12/03/Csharp/2018-12-03-csharp-else/">
+      <a class="prev" href="/2018/12/03/Csharp/2018-12-03-csharp-database/">
         <i class="iconfont icon-left"></i>
-        <span class="prev-text nav-default">c# 기본서 - AppDomain과 리플렉션</span>
+        <span class="prev-text nav-default">c# 기본서 - 데이터베이스</span>
         <span class="prev-text nav-mobile">Prev</span>
       </a>
     

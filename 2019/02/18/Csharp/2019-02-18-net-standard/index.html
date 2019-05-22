@@ -143,9 +143,43 @@
             <p>참고원문 <a href="https://weblog.west-wind.com/posts/2017/Jun/22/MultiTargeting-and-Porting-a-NET-Library-to-NET-Core-20" target="_blank" rel="noopener">https://weblog.west-wind.com/posts/2017/Jun/22/MultiTargeting-and-Porting-a-NET-Library-to-NET-Core-20</a></p>
 <p>.Net Standard로 프로젝트를 생성하면 .Net Core와 .Net Framework에서 사용될 수 있는 특성들을 함께 적용할 수 있다.</p>
 <p>닷넷 스탠다드 프로젝트를 생성하면 Linq to Sql class가 추가가 안되는데, 이 때 타겟 프레임워크를 csproj의 targetframework 태그를 수정하면 된다.<br>(properties에서 표시되는 ui로는 .net framwork로 타겟 프레임워크를 변경할 수 없다.)</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">TargetFrameworks</span>&gt;</span>net45;net40;netstandard2.0<span class="tag">&lt;/<span class="name">TargetFrameworks</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<pre><code class="xml">&lt;TargetFrameworks&gt;net45;net40;netstandard2.0&lt;/TargetFrameworks&gt;
+</code></pre>
 <p>복수의 타깃을 지정하고 싶으면 세미콜론으로 구분하면 된다.<br>타깃별 설정을 지정하고 싶다면 조건식을 사용할수도 있다.<br>위의 링크에서 가져온 개략적인 사용법을 담은 전체 설정파일</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- common NuGet package refs that affect all projects --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">ItemGroup</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">TargetFrameworks</span>&gt;</span>net45;net40;netstandard2.0<span class="tag">&lt;/<span class="name">TargetFrameworks</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">PackageReference</span> <span class="attr">Include</span>=<span class="string">"Newtonsoft.Json"</span> <span class="attr">Version</span>=<span class="string">"10.0.2"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ItemGroup</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- .NET Standard 2.0 references, compilation flags and build options --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">PropertyGroup</span> <span class="attr">Condition</span>=<span class="string">" '$(TargetFramework)' == 'netstandard2.0'"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">DefineConstants</span>&gt;</span>NETCORE;NETSTANDARD;NETSTANDARD2_0<span class="tag">&lt;/<span class="name">DefineConstants</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">PropertyGroup</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">ItemGroup</span> <span class="attr">Condition</span>=<span class="string">" '$(TargetFramework)' == 'netstandard2.0'"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">PackageReference</span> <span class="attr">Include</span>=<span class="string">"System.Data.SqlClient"</span> <span class="attr">Version</span>=<span class="string">"4.4.0-preview1-25305-02"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ItemGroup</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- .NET 4.5 references, compilation flags and build options --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">ItemGroup</span> <span class="attr">Condition</span>=<span class="string">" '$(TargetFramework)' == 'net45' "</span>&gt;</span>		</span><br><span class="line">	<span class="tag">&lt;<span class="name">Reference</span> <span class="attr">Include</span>=<span class="string">"mscorlib"</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">Reference</span> <span class="attr">Include</span>=<span class="string">"System"</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">Reference</span> <span class="attr">Include</span>=<span class="string">"System.Core"</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">Reference</span> <span class="attr">Include</span>=<span class="string">"Microsoft.CSharp"</span> /&gt;</span>		</span><br><span class="line">	<span class="tag">&lt;<span class="name">Reference</span> <span class="attr">Include</span>=<span class="string">"System.Data"</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">Reference</span> <span class="attr">Include</span>=<span class="string">"System.Web"</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">Reference</span> <span class="attr">Include</span>=<span class="string">"System.Drawing"</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">Reference</span> <span class="attr">Include</span>=<span class="string">"System.Security"</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">Reference</span> <span class="attr">Include</span>=<span class="string">"System.Xml"</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">Reference</span> <span class="attr">Include</span>=<span class="string">"System.Configuration"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ItemGroup</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">PropertyGroup</span> <span class="attr">Condition</span>=<span class="string">" '$(TargetFramework)' == 'net45'"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">DefineConstants</span>&gt;</span>NET45;NETFULL<span class="tag">&lt;/<span class="name">DefineConstants</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">PropertyGroup</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<pre><code class="xml">&lt;!-- common NuGet package refs that affect all projects --&gt;
+&lt;ItemGroup&gt;
+    &lt;TargetFrameworks&gt;net45;net40;netstandard2.0&lt;/TargetFrameworks&gt;
+    &lt;PackageReference Include=&quot;Newtonsoft.Json&quot; Version=&quot;10.0.2&quot; /&gt;
+&lt;/ItemGroup&gt;
+
+
+&lt;!-- .NET Standard 2.0 references, compilation flags and build options --&gt;
+&lt;PropertyGroup Condition=&quot; &#39;$(TargetFramework)&#39; == &#39;netstandard2.0&#39;&quot;&gt;
+    &lt;DefineConstants&gt;NETCORE;NETSTANDARD;NETSTANDARD2_0&lt;/DefineConstants&gt;
+&lt;/PropertyGroup&gt;
+&lt;ItemGroup Condition=&quot; &#39;$(TargetFramework)&#39; == &#39;netstandard2.0&#39;&quot;&gt;
+    &lt;PackageReference Include=&quot;System.Data.SqlClient&quot; Version=&quot;4.4.0-preview1-25305-02&quot; /&gt;
+&lt;/ItemGroup&gt;
+
+
+&lt;!-- .NET 4.5 references, compilation flags and build options --&gt;
+&lt;ItemGroup Condition=&quot; &#39;$(TargetFramework)&#39; == &#39;net45&#39; &quot;&gt;        
+    &lt;Reference Include=&quot;mscorlib&quot; /&gt;
+    &lt;Reference Include=&quot;System&quot; /&gt;
+    &lt;Reference Include=&quot;System.Core&quot; /&gt;
+    &lt;Reference Include=&quot;Microsoft.CSharp&quot; /&gt;        
+    &lt;Reference Include=&quot;System.Data&quot; /&gt;
+    &lt;Reference Include=&quot;System.Web&quot; /&gt;
+    &lt;Reference Include=&quot;System.Drawing&quot; /&gt;
+    &lt;Reference Include=&quot;System.Security&quot; /&gt;
+    &lt;Reference Include=&quot;System.Xml&quot; /&gt;
+    &lt;Reference Include=&quot;System.Configuration&quot; /&gt;
+&lt;/ItemGroup&gt;
+&lt;PropertyGroup Condition=&quot; &#39;$(TargetFramework)&#39; == &#39;net45&#39;&quot;&gt;
+    &lt;DefineConstants&gt;NET45;NETFULL&lt;/DefineConstants&gt;
+&lt;/PropertyGroup&gt;
+</code></pre>
+
             </div>
           
 

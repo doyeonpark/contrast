@@ -147,14 +147,48 @@
 </ul>
 <h3 id="비동기-호출-Delegate"><a href="#비동기-호출-Delegate" class="headerlink" title="비동기 호출: Delegate"></a>비동기 호출: Delegate</h3><ul>
 <li>I/O말고도 일반 메서드에서도 비동기 호출을 할 수 있는 수단으로, BCL이 제공하는 기능이다.</li>
-<li>간결하기때문에 좋다.<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">public delegate long CalcMethod(int start, int end);</span><br><span class="line">static void Main(string[] args) &#123;</span><br><span class="line">    CalcMethod calc = new CalcMethod(Calc.Cumsum);</span><br><span class="line">     </span><br><span class="line">    IAsyncResult ar = calc.BeginInvoke(1, 100, null, null);</span><br><span class="line">    //delegate타입의 BeginInvoke 메서드 호출하며 ThreadPool의 스레드에서 실행된다</span><br><span class="line"></span><br><span class="line">    ar.AsyncWaitHandle.WaitOne(); </span><br><span class="line">    //AsyncWaitHandle은 EventWaitHandle타입이고, Cal.CumSum이 완료될때까지 현재 스레드를 대기시킨다.</span><br><span class="line"></span><br><span class="line">    long result = calc.EndInvoke(ar);</span><br><span class="line">    //반환 값을 얻기 위해 호출하는 메서드, 없어도 반드시 호출하는 것을 권장한다.</span><br><span class="line">    //실행을 차단할 수있으므로 사용자 인터페이스 제공하는 스레드에서는 호출하지 말아야한다</span><br><span class="line">&#125;</span><br><span class="line">public class Calc &#123;</span><br><span class="line">    public static long Cumsum(int start, int end) &#123;</span><br><span class="line">        long sum = 0;</span><br><span class="line">        for(int i=start; i&lt;=end; i++;) &#123;</span><br><span class="line">            sum += i;</span><br><span class="line">        &#125;</span><br><span class="line">        return sum;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<li><p>간결하기때문에 좋다.</p>
+<pre><code class="c#">public delegate long CalcMethod(int start, int end);
+static void Main(string[] args) {
+  CalcMethod calc = new CalcMethod(Calc.Cumsum);
+
+  IAsyncResult ar = calc.BeginInvoke(1, 100, null, null);
+  //delegate타입의 BeginInvoke 메서드 호출하며 ThreadPool의 스레드에서 실행된다
+
+  ar.AsyncWaitHandle.WaitOne(); 
+  //AsyncWaitHandle은 EventWaitHandle타입이고, Cal.CumSum이 완료될때까지 현재 스레드를 대기시킨다.
+
+  long result = calc.EndInvoke(ar);
+  //반환 값을 얻기 위해 호출하는 메서드, 없어도 반드시 호출하는 것을 권장한다.
+  //실행을 차단할 수있으므로 사용자 인터페이스 제공하는 스레드에서는 호출하지 말아야한다
+}
+public class Calc {
+  public static long Cumsum(int start, int end) {
+      long sum = 0;
+      for(int i=start; i&lt;=end; i++;) {
+          sum += i;
+      }
+      return sum;
+  }
+}
+</code></pre>
 </li>
 </ul>
 <h3 id="FileStream-BeginRead-구현과-유사하게-비동기-구현하기"><a href="#FileStream-BeginRead-구현과-유사하게-비동기-구현하기" class="headerlink" title="FileStream.BeginRead 구현과 유사하게 비동기 구현하기"></a>FileStream.BeginRead 구현과 유사하게 비동기 구현하기</h3><ul>
 <li>MSDN문서를 보면 delegate구현 방식에 따라 FileStream의 BeginRead/EndRead가 구현되었다.</li>
 <li>BeginInvoke의 세번째 인자로 콜백메서드를 지정해주면된다.</li>
 <li><p>네번째 인자는 StateObject로, 해당 메서드를 여러 곳에서 비동기 호출 했을 때 각각의 비동기 호출을 구분하는 역할을 갖는다.(stateObject - A user-provided object that distinguishes this particular asynchronous read request from other requests.) <a href="http://www.java2s.com/Tutorials/CSharp/System.IO/FileStream/C_FileStream_BeginRead.htm" target="_blank" rel="noopener">참고</a></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">public delegate long CalcMethod(int start, int end);</span><br><span class="line">static void Main(string[] args) &#123;</span><br><span class="line">    CalcMethod calc = new CalcMethod(Calc.Cumsum);</span><br><span class="line">    calc.BeginInvoke(1, 100, calcCompleted, calc);</span><br><span class="line">&#125;</span><br><span class="line">static void calcCompleted(IAsyncResult ar) &#123;</span><br><span class="line">    CalcMethod calc = ar,AsyncState as CalcMethod;</span><br><span class="line">    long result = calc.EndInvoke(ar);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<pre><code class="c#">public delegate long CalcMethod(int start, int end);
+static void Main(string[] args) {
+  CalcMethod calc = new CalcMethod(Calc.Cumsum);
+  calc.BeginInvoke(1, 100, calcCompleted, calc);
+}
+static void calcCompleted(IAsyncResult ar) {
+  CalcMethod calc = ar,AsyncState as CalcMethod;
+  long result = calc.EndInvoke(ar);
+}
+</code></pre>
+</li>
 </ul>
 
             </div>

@@ -35,18 +35,18 @@
 <link rel="canonical" href="https://parkdoyeon.github.io/2019/02/12/SQL/2019-02-12-datacheck/">
 
 
-<meta name="description" content="집계 데이터중에서 특정갯수만큼의 열을 갖고있는 데이터를 확인하고싶으면 having을 통해 확인하면된다 1234SELECT [varchar_col]FROM [table]GROUP BY [varchar_col]HAVING count(*) &amp;gt; 1; group by 인자가 여러개일경우 순서에 따라서 집계된다.">
+<meta name="description" content="집계 데이터중에서 특정갯수만큼의 열을 갖고있는 데이터를 확인하고싶으면 having을 통해 확인하면된다 SELECT [varchar_col] FROM [table] GROUP BY [varchar_col] HAVING count(*) &amp;gt; 1;  group by 인자가 여러개일경우 순서에 따라서 집계된다.">
 <meta name="keywords" content="mssql,select">
 <meta property="og:type" content="article">
 <meta property="og:title" content="데이터별 갯수 확인 쿼리">
 <meta property="og:url" content="https://parkdoyeon.github.io/2019/02/12/SQL/2019-02-12-datacheck/index.html">
 <meta property="og:site_name" content="Park Doyeon">
-<meta property="og:description" content="집계 데이터중에서 특정갯수만큼의 열을 갖고있는 데이터를 확인하고싶으면 having을 통해 확인하면된다 1234SELECT [varchar_col]FROM [table]GROUP BY [varchar_col]HAVING count(*) &amp;gt; 1; group by 인자가 여러개일경우 순서에 따라서 집계된다.">
+<meta property="og:description" content="집계 데이터중에서 특정갯수만큼의 열을 갖고있는 데이터를 확인하고싶으면 having을 통해 확인하면된다 SELECT [varchar_col] FROM [table] GROUP BY [varchar_col] HAVING count(*) &amp;gt; 1;  group by 인자가 여러개일경우 순서에 따라서 집계된다.">
 <meta property="og:locale" content="default">
 <meta property="og:updated_time" content="2019-05-19T15:51:03.844Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="데이터별 갯수 확인 쿼리">
-<meta name="twitter:description" content="집계 데이터중에서 특정갯수만큼의 열을 갖고있는 데이터를 확인하고싶으면 having을 통해 확인하면된다 1234SELECT [varchar_col]FROM [table]GROUP BY [varchar_col]HAVING count(*) &amp;gt; 1; group by 인자가 여러개일경우 순서에 따라서 집계된다.">
+<meta name="twitter:description" content="집계 데이터중에서 특정갯수만큼의 열을 갖고있는 데이터를 확인하고싶으면 having을 통해 확인하면된다 SELECT [varchar_col] FROM [table] GROUP BY [varchar_col] HAVING count(*) &amp;gt; 1;  group by 인자가 여러개일경우 순서에 따라서 집계된다.">
 
 
 <link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
@@ -141,7 +141,11 @@
     
             <div class="post-content">
             <p>집계 데이터중에서 특정갯수만큼의 열을 갖고있는 데이터를 확인하고싶으면 having을 통해 확인하면된다</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> [varchar_col]</span><br><span class="line"><span class="keyword">FROM</span> [<span class="keyword">table</span>]</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> [varchar_col]</span><br><span class="line"><span class="keyword">HAVING</span> <span class="keyword">count</span>(*) &gt; <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+<pre><code class="SQL">SELECT [varchar_col]
+FROM [table]
+GROUP BY [varchar_col]
+HAVING count(*) &gt; 1;
+</code></pre>
 <p>group by 인자가 여러개일경우 순서에 따라서 집계된다.</p>
 
             </div>

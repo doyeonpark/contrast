@@ -146,8 +146,8 @@
 <li>같은동작을 하는 어셈블리를 .NET 2.0, .NET 4.0으로 각각 빌드해서 제공해야한다.</li>
 </ul>
 <h3 id="선택적-매개변스와-명명된-인자"><a href="#선택적-매개변스와-명명된-인자" class="headerlink" title="선택적 매개변스와 명명된 인자"></a>선택적 매개변스와 명명된 인자</h3><ul>
-<li><p>파라미터 값이 없을때 초기값을 주고싶다면 다음과 같이 기재하면 된다.</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public void Output(string name, int age = 0)</span><br></pre></td></tr></table></figure>
+<li>파라미터 값이 없을때 초기값을 주고싶다면 다음과 같이 기재하면 된다.<pre><code class="c#">  public void Output(string name, int age = 0)
+</code></pre>
 <ul>
 <li>이때 ref, out 예약어는 함께 사용할 수 없고</li>
 <li>선택 매개변수가 시작되면 필수 매개변수를 사용할 수 없으며</li>
@@ -155,7 +155,8 @@
 </ul>
 </li>
 <li>주의할 점은 선택적 매개변수에 전달되는 인자 역시 차례대로 대응되며, 중간에 생략될 수 없다는 점이다.<ul>
-<li>이는 다음과같이 명명을 통해 해결할 수 있다.<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Output(age: 26, name: &quot;박도연&quot;)</span><br></pre></td></tr></table></figure>
+<li>이는 다음과같이 명명을 통해 해결할 수 있다.<pre><code class="c#">Output(age: 26, name: &quot;박도연&quot;)
+</code></pre>
 </li>
 </ul>
 </li>
@@ -169,11 +170,23 @@
 <h3 id="dynamic을-통한-리플렉션-개선"><a href="#dynamic을-통한-리플렉션-개선" class="headerlink" title="dynamic을 통한 리플렉션 개선"></a>dynamic을 통한 리플렉션 개선</h3><ul>
 <li>*12/5일자 글에 리플렉션에 대한 설명이 있다</li>
 <li>기존에 리플렉션을 사용하려면 메소드 정보를 호출한 다음 invoke 메소드를 통해 인자를 넘겨줘야하는데,</li>
-<li>dynamic 예약어를 사용하면 아래정도의 코드로 간단하게 해결가능하다  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dynamic txt = &quot;test func&quot;</span><br><span class="line">bool result = txt.Contains(&quot;test&quot;);</span><br></pre></td></tr></table></figure>
+<li>dynamic 예약어를 사용하면 아래정도의 코드로 간단하게 해결가능하다<pre><code class="c#">  dynamic txt = &quot;test func&quot;
+  bool result = txt.Contains(&quot;test&quot;);
+</code></pre>
 </li>
 </ul>
 <h3 id="덕타이핑"><a href="#덕타이핑" class="headerlink" title="덕타이핑"></a>덕타이핑</h3><ul>
-<li>공통되는 상속없이 이름만 동일한 메서드나 속성을 호출하는 경우 맥락에 따라 적절한 객체를 실행시켜준다.  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">int DuckTypingCall(dynamic target, dynamic item) &#123;</span><br><span class="line">    return target.IndexOf(item);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">string txt = &quot;test func&quot;</span><br><span class="line">List&lt;int&gt; list = new List&lt;int&gt;();</span><br><span class="line"></span><br><span class="line">DuckTypingCall(txt, &quot;text&quot;); // 0</span><br><span class="line">DuckTypingCall(list, 3); // 2</span><br></pre></td></tr></table></figure>
+<li><p>공통되는 상속없이 이름만 동일한 메서드나 속성을 호출하는 경우 맥락에 따라 적절한 객체를 실행시켜준다.</p>
+<pre><code class="c#">  int DuckTypingCall(dynamic target, dynamic item) {
+      return target.IndexOf(item);
+  }
+
+  string txt = &quot;test func&quot;
+  List&lt;int&gt; list = new List&lt;int&gt;();
+
+  DuckTypingCall(txt, &quot;text&quot;); // 0
+  DuckTypingCall(list, 3); // 2
+</code></pre>
 </li>
 </ul>
 

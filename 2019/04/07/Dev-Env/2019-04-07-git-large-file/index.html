@@ -35,18 +35,18 @@
 <link rel="canonical" href="https://parkdoyeon.github.io/2019/04/07/Dev-Env/2019-04-07-git-large-file/">
 
 
-<meta name="description" content="회사에서 gitlab을 쓰면서 쾌적한 git life를 즐기다가 github에서는 100MB이상의 파일이 푸시가 안된다는 것을 알았다.R 스터디 할때 써놓은 코드를 기록하려고 데이터와 함께 커밋을 해버렸는데, 커밋때 경고가 한번 떴(던거같은데)다가 푸시할때도 아래와 같은 에러를 뱉으며 push fail이 일어났다1remote: error: GH001: La">
+<meta name="description" content="회사에서 gitlab을 쓰면서 쾌적한 git life를 즐기다가 github에서는 100MB이상의 파일이 푸시가 안된다는 것을 알았다.R 스터디 할때 써놓은 코드를 기록하려고 데이터와 함께 커밋을 해버렸는데, 커밋때 경고가 한번 떴(던거같은데)다가 푸시할때도 아래와 같은 에러를 뱉으며 push fail이 일어났다 remote: error: GH001: La">
 <meta name="keywords" content="git,filter-branch">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Git - 실수로 용량이 큰 파일을 커밋했을 때">
 <meta property="og:url" content="https://parkdoyeon.github.io/2019/04/07/Dev-Env/2019-04-07-git-large-file/index.html">
 <meta property="og:site_name" content="Park Doyeon">
-<meta property="og:description" content="회사에서 gitlab을 쓰면서 쾌적한 git life를 즐기다가 github에서는 100MB이상의 파일이 푸시가 안된다는 것을 알았다.R 스터디 할때 써놓은 코드를 기록하려고 데이터와 함께 커밋을 해버렸는데, 커밋때 경고가 한번 떴(던거같은데)다가 푸시할때도 아래와 같은 에러를 뱉으며 push fail이 일어났다1remote: error: GH001: La">
+<meta property="og:description" content="회사에서 gitlab을 쓰면서 쾌적한 git life를 즐기다가 github에서는 100MB이상의 파일이 푸시가 안된다는 것을 알았다.R 스터디 할때 써놓은 코드를 기록하려고 데이터와 함께 커밋을 해버렸는데, 커밋때 경고가 한번 떴(던거같은데)다가 푸시할때도 아래와 같은 에러를 뱉으며 push fail이 일어났다 remote: error: GH001: La">
 <meta property="og:locale" content="default">
 <meta property="og:updated_time" content="2019-05-19T16:29:38.670Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Git - 실수로 용량이 큰 파일을 커밋했을 때">
-<meta name="twitter:description" content="회사에서 gitlab을 쓰면서 쾌적한 git life를 즐기다가 github에서는 100MB이상의 파일이 푸시가 안된다는 것을 알았다.R 스터디 할때 써놓은 코드를 기록하려고 데이터와 함께 커밋을 해버렸는데, 커밋때 경고가 한번 떴(던거같은데)다가 푸시할때도 아래와 같은 에러를 뱉으며 push fail이 일어났다1remote: error: GH001: La">
+<meta name="twitter:description" content="회사에서 gitlab을 쓰면서 쾌적한 git life를 즐기다가 github에서는 100MB이상의 파일이 푸시가 안된다는 것을 알았다.R 스터디 할때 써놓은 코드를 기록하려고 데이터와 함께 커밋을 해버렸는데, 커밋때 경고가 한번 떴(던거같은데)다가 푸시할때도 아래와 같은 에러를 뱉으며 push fail이 일어났다 remote: error: GH001: La">
 
 
 <link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
@@ -140,8 +140,13 @@
 
     
             <div class="post-content">
-            <p>회사에서 gitlab을 쓰면서 쾌적한 git life를 즐기다가 github에서는 100MB이상의 파일이 푸시가 안된다는 것을 알았다.<br>R 스터디 할때 써놓은 코드를 기록하려고 데이터와 함께 커밋을 해버렸는데, 커밋때 경고가 한번 떴(던거같은데)다가 푸시할때도 아래와 같은 에러를 뱉으며 push fail이 일어났다<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">remote: error: GH001: Large files detected. You may want to try Git Large File Storage - https://git-lfs.github.com.</span><br></pre></td></tr></table></figure></p>
-<p>–force 명령어에도 푸시가 안돼서 찾아보니, filter-branch를 통해 커밋 히스토리에서 삭제해야한다고.<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git filter-branch --tree-filter <span class="string">'rm -f path/to/bigRdata/biggy.sav'</span> HEAD</span><br><span class="line">git push origin master --force</span><br></pre></td></tr></table></figure></p>
+            <p>회사에서 gitlab을 쓰면서 쾌적한 git life를 즐기다가 github에서는 100MB이상의 파일이 푸시가 안된다는 것을 알았다.<br>R 스터디 할때 써놓은 코드를 기록하려고 데이터와 함께 커밋을 해버렸는데, 커밋때 경고가 한번 떴(던거같은데)다가 푸시할때도 아래와 같은 에러를 뱉으며 push fail이 일어났다</p>
+<pre><code class="bash">remote: error: GH001: Large files detected. You may want to try Git Large File Storage - https://git-lfs.github.com.
+</code></pre>
+<p>–force 명령어에도 푸시가 안돼서 찾아보니, filter-branch를 통해 커밋 히스토리에서 삭제해야한다고.</p>
+<pre><code class="bash">git filter-branch --tree-filter &#39;rm -f path/to/bigRdata/biggy.sav&#39; HEAD
+git push origin master --force
+</code></pre>
 <p>필터 브랜치 명령어에서 삭제할 데이터의 path는 git bash에서 접근한 경로기준으로 (보통은 git의 루트디렉토리) 입력하면 된다.</p>
 
             </div>
